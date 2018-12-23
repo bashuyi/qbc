@@ -18,13 +18,14 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.ObjectUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
+import com.google.common.base.CaseFormat;
 import com.qbc.core.biz.DatabaseInfoBVO.ColumnInfo;
 import com.qbc.core.biz.DatabaseInfoBVO.TableInfo;
+import com.qbc.core.utils.QbcStringUtils;
 
 import lombok.SneakyThrows;
 
@@ -57,18 +58,13 @@ public class DatabaseInfoBIZ {
 	/**
 	 * 获得数据库所有表和试图信息
 	 * 
-	 * @param catalog
-	 *            类别名称；它必须与存储在数据库中的类别名称匹配；该参数为 "" 表示获取没有类别的那些描述；为null
-	 *            则表示该类别名称不应该用于缩小搜索范围
-	 * @param schemaPattern
-	 *            模式名称的模式； 它必须与存储在数据库中的模式名称匹配； 该参数为 "" 表示获取没有模式的那些描述； 为null
-	 *            则表示该模式名称不应该用于缩小搜索范围
-	 * @param tableNamePattern
-	 *            表名称模式； 它必须与存储在数据库中的表名称匹配
-	 * @param tableTypes
-	 *            要包括的表类型所组成的列表； 为null则表示返回所有类型
-	 * @param jdbcTypeMap
-	 *            java.sql.Types的SQL类型与Java类型的映射关系
+	 * @param catalog          类别名称；它必须与存储在数据库中的类别名称匹配；该参数为 "" 表示获取没有类别的那些描述；为null
+	 *                         则表示该类别名称不应该用于缩小搜索范围
+	 * @param schemaPattern    模式名称的模式； 它必须与存储在数据库中的模式名称匹配； 该参数为 "" 表示获取没有模式的那些描述；
+	 *                         为null 则表示该模式名称不应该用于缩小搜索范围
+	 * @param tableNamePattern 表名称模式； 它必须与存储在数据库中的表名称匹配
+	 * @param tableTypes       要包括的表类型所组成的列表； 为null则表示返回所有类型
+	 * @param jdbcTypeMap      java.sql.Types的SQL类型与Java类型的映射关系
 	 * @return 数据库所有表和试图信息
 	 */
 	@SneakyThrows
@@ -113,8 +109,8 @@ public class DatabaseInfoBIZ {
 			tableInfo.setTableName(tableResultSet.getString("TABLE_NAME"));
 			tableInfo.setTableType(tableResultSet.getString("TABLE_TYPE"));
 			tableInfo.setRemarks(tableResultSet.getString("REMARKS"));
-			tableInfo.setClassName(Arrays.asList(tableInfo.getTableName().split("_")).stream()
-					.map(StringUtils::capitalize).collect(Collectors.joining()));
+			tableInfo.setClassName(QbcStringUtils.caseFormat(tableInfo.getTableName().toLowerCase(),
+					CaseFormat.LOWER_UNDERSCORE, CaseFormat.UPPER_CAMEL));
 
 			// 获取可在指定类别中使用的表列的描述
 			ResultSet columnResultSet = databaseMetaData.getColumns(catalog, schemaPattern, tableInfo.getTableName(),
@@ -131,8 +127,8 @@ public class DatabaseInfoBIZ {
 				columnInfo.setRemarks(columnResultSet.getString("REMARKS"));
 				columnInfo.setOrdinalPosition(columnResultSet.getInt("ORDINAL_POSITION"));
 				columnInfo.setAutoincrement("YES".equals(columnResultSet.getString("IS_AUTOINCREMENT")));
-				columnInfo.setFieldName(StringUtils.uncapitalize(Arrays.asList(columnInfo.getColumnName().split("_"))
-						.stream().map(StringUtils::capitalize).collect(Collectors.joining())));
+				columnInfo.setFieldName(QbcStringUtils.caseFormat(columnInfo.getColumnName().toLowerCase(),
+						CaseFormat.LOWER_UNDERSCORE, CaseFormat.UPPER_CAMEL));
 				columnInfo.setFieldType(defaultJdbcTypeMap.get(JDBCType.valueOf(columnInfo.getDataType())));
 				columnInfos.add(columnInfo);
 			}

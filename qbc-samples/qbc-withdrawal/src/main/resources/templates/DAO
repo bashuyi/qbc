@@ -1,0 +1,10 @@
+package com.qbc.dao;
+
+import org.springframework.stereotype.Repository;
+
+import com.slyak.spring.jpa.GenericJpaRepository;
+
+@Repository
+public interface ${tableInfo.className}DAO extends GenericJpaRepository<${tableInfo.className}DVO, Long> {
+	
+}

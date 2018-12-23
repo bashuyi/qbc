@@ -19,9 +19,6 @@ import lombok.SneakyThrows;
 public class CodeGeneratorBIZ {
 
 	@Autowired
-	private DatabaseInfoBIZ databaseInfoBIZ;
-
-	@Autowired
 	private Configuration configuration;
 
 	/**
@@ -29,6 +26,7 @@ public class CodeGeneratorBIZ {
 	 * 
 	 * @param templateName 模板名
 	 * @param param        模板参数
+	 * @return 替换后字符串
 	 */
 	@SneakyThrows
 	public String generateToString(String templateName, Map<String, Object> param) {
@@ -42,11 +40,11 @@ public class CodeGeneratorBIZ {
 	 * 
 	 * @param templateName 模板名
 	 * @param param        模板参数
-	 * @param pathname     输出文件路径
+	 * @param file         输出文件路径
 	 */
 	@SneakyThrows
-	public void generate(String templateName, Map<String, Object> param, String pathname) {
-		FileUtils.writeStringToFile(new File(pathname), generateToString(templateName, param), StandardCharsets.UTF_8);
+	public void generate(String templateName, Map<String, Object> param, File file) {
+		FileUtils.writeStringToFile(file, generateToString(templateName, param), StandardCharsets.UTF_8);
 	}
 
 }

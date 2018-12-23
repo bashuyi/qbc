@@ -27,6 +27,8 @@
 		<dynamic-datasource.version>2.4.2</dynamic-datasource.version>
 		<jasypt.version>2.1.0</jasypt.version>
 		<commons-io.version>2.6</commons-io.version>
+		<guava.version>27.0.1-jre</guava.version>
+		<commons-text.version>1.6</commons-text.version>
 	</properties>
 
 	<dependencyManagement>
@@ -62,6 +64,18 @@
 				<groupId>commons-io</groupId>
 				<artifactId>commons-io</artifactId>
 				<version>${commons-io.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.google.guava</groupId>
+				<artifactId>guava</artifactId>
+				<version>${guava.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.apache.commons</groupId>
+				<artifactId>commons-text</artifactId>
+				<version>${commons-text.version}</version>
 			</dependency>
 
 			<dependency>

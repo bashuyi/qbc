@@ -19,9 +19,9 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
+import com.baomidou.dynamic.datasource.DynamicRoutingDataSource;
 import com.google.common.base.CaseFormat;
 import com.qbc.core.biz.DatabaseInfoBVO.ColumnInfo;
 import com.qbc.core.biz.DatabaseInfoBVO.TableInfo;
@@ -36,7 +36,7 @@ import lombok.SneakyThrows;
 public class DatabaseInfoBIZ {
 
 	@Autowired
-	private JdbcTemplate jdbcTemplate;
+	private DynamicRoutingDataSource dynamicRoutingDataSource;
 
 	/**
 	 * 表类型
@@ -58,6 +58,7 @@ public class DatabaseInfoBIZ {
 	/**
 	 * 获得数据库所有表和试图信息
 	 * 
+	 * @param ds               数据源名称
 	 * @param catalog          类别名称；它必须与存储在数据库中的类别名称匹配；该参数为 "" 表示获取没有类别的那些描述；为null
 	 *                         则表示该类别名称不应该用于缩小搜索范围
 	 * @param schemaPattern    模式名称的模式； 它必须与存储在数据库中的模式名称匹配； 该参数为 "" 表示获取没有模式的那些描述；
@@ -68,7 +69,7 @@ public class DatabaseInfoBIZ {
 	 * @return 数据库所有表和试图信息
 	 */
 	@SneakyThrows
-	public DatabaseInfoBVO getDatabaseInfoBVO(String catalog, String schemaPattern, String tableNamePattern,
+	public DatabaseInfoBVO getDatabaseInfoBVO(String ds, String catalog, String schemaPattern, String tableNamePattern,
 			TableType[] tableTypes, Map<JDBCType, String> jdbcTypeMap) {
 		tableTypes = ObjectUtils.defaultIfNull(tableTypes, TableType.values());
 		String[] types = Arrays.asList(tableTypes).stream().map(tableType -> tableType.name()).toArray(String[]::new);
@@ -98,7 +99,7 @@ public class DatabaseInfoBIZ {
 		jdbcTypeMap = ObjectUtils.defaultIfNull(jdbcTypeMap, new HashMap<>());
 		defaultJdbcTypeMap.putAll(jdbcTypeMap);
 
-		Connection connection = jdbcTemplate.getDataSource().getConnection();
+		Connection connection = dynamicRoutingDataSource.getDataSource(ds).getConnection();
 		DatabaseMetaData databaseMetaData = connection.getMetaData();
 		ResultSet tableResultSet = databaseMetaData.getTables(catalog, schemaPattern, tableNamePattern, types);
 		List<TableInfo> tableInfos = new ArrayList<>();
@@ -162,10 +163,20 @@ public class DatabaseInfoBIZ {
 	/**
 	 * 获得数据库所有表和试图信息
 	 * 
+	 * @param ds 数据源名称
+	 * @return 数据库所有表和试图信息
+	 */
+	public DatabaseInfoBVO getDatabaseInfoBVO(String ds) {
+		return getDatabaseInfoBVO(ds, null, null, null, null, null);
+	}
+
+	/**
+	 * 获得数据库所有表和试图信息
+	 * 
 	 * @return 数据库所有表和试图信息
 	 */
 	public DatabaseInfoBVO getDatabaseInfoBVO() {
-		return getDatabaseInfoBVO(null, null, null, null, null);
+		return getDatabaseInfoBVO(null, null, null, null, null, null);
 	}
 
 }

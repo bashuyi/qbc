@@ -5,6 +5,6 @@ import org.springframework.stereotype.Repository;
 import com.slyak.spring.jpa.GenericJpaRepository;
 
 @Repository
-public interface ${className}DAO extends GenericJpaRepository<${className}DVO, Long> {
+public interface SysUserDAO extends GenericJpaRepository<SysUserDVO, Long> {
 	
 }

@@ -128,7 +128,7 @@ public class DatabaseInfoBIZ {
 				columnInfo.setOrdinalPosition(columnResultSet.getInt("ORDINAL_POSITION"));
 				columnInfo.setAutoincrement("YES".equals(columnResultSet.getString("IS_AUTOINCREMENT")));
 				columnInfo.setFieldName(QbcStringUtils.caseFormat(columnInfo.getColumnName().toLowerCase(),
-						CaseFormat.LOWER_UNDERSCORE, CaseFormat.UPPER_CAMEL));
+						CaseFormat.LOWER_UNDERSCORE, CaseFormat.LOWER_CAMEL));
 				columnInfo.setFieldType(defaultJdbcTypeMap.get(JDBCType.valueOf(columnInfo.getDataType())));
 				columnInfos.add(columnInfo);
 			}

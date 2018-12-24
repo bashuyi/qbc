@@ -2,14 +2,19 @@ package com.qbc.core.biz;
 
 import java.io.File;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
+
+import com.qbc.core.biz.DatabaseInfoBVO.TableInfo;
+import com.qbc.core.utils.QbcStringUtils;
 
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -46,5 +51,18 @@ public class CodeGeneratorBIZ {
 	public void generate(String templateName, Map<String, Object> param, File file) {
 		FileUtils.writeStringToFile(file, generateToString(templateName, param), StandardCharsets.UTF_8);
 	}
+
+	@SneakyThrows
+	public void generate(String templateName, String packageName, TableInfo tableInfo) {
+		Map<String, Object> param = PropertyUtils.describe(tableInfo);
+		File file = Paths.get("src/main/java", QbcStringUtils.packageNameToPathName(packageName),
+				tableInfo.getClassName() + templateName + ".java").toFile();
+		generate(templateName, param, file);
+	}
+
+	@SneakyThrows
+	public void generateAll(String templateName, String packageName, DatabaseInfoBVO databaseInfoBVO) {
+		databaseInfoBVO.getTableInfos().forEach(tableInfo -> generate(templateName, packageName, tableInfo));
+	}	
 
 }

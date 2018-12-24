@@ -1,22 +1,20 @@
 package com.qbc;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import com.qbc.core.biz.CodeGeneratorBIZ;
 import com.qbc.core.biz.DatabaseInfoBIZ;
 import com.qbc.core.biz.DatabaseInfoBVO;
-import com.qbc.core.utils.QbcStringUtils;
+import com.slyak.spring.jpa.GenericJpaRepositoryFactoryBean;
+import com.slyak.spring.jpa.GenericJpaRepositoryImpl;
 
 @SpringBootApplication
+@EnableJpaRepositories(basePackages = "com.qbc", repositoryBaseClass = GenericJpaRepositoryImpl.class, repositoryFactoryBeanClass = GenericJpaRepositoryFactoryBean.class)
 public class Application {
 
 	public static void main(String[] args) {
@@ -33,13 +31,8 @@ public class Application {
 	ApplicationRunner applicationRunner() {
 		return args -> {
 			DatabaseInfoBVO databaseInfoBVO = databaseInfoBIZ.getDatabaseInfoBVO();
-			databaseInfoBVO.getTableInfos().forEach(tableInfo -> {
-				Map<String, Object> param = new HashMap<>();
-				param.put("tableInfo", tableInfo);
-				Path path = Paths.get("src/main/java", QbcStringUtils.packageNameToPathName("com.qbc.dao"),
-						tableInfo.getClassName() + "DVO.java");
-				codeGeneratorBIZ.generate("DVO", param, path.toFile());
-			});
+			codeGeneratorBIZ.generateAll("DVO", "com.qbc.dao", databaseInfoBVO);
+			codeGeneratorBIZ.generateAll("DAO", "com.qbc.dao", databaseInfoBVO);
 		};
 	}
 

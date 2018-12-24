@@ -10,10 +10,10 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "${tableInfo.tableName}")
-public class ${tableInfo.className}DVO {
+@Table(name = "${tableName}")
+public class ${className}DVO {
 
-	<#list tableInfo.columnInfos as columnInfo>
+	<#list columnInfos as columnInfo>
 	<#if columnInfo_index == 0>
 	@Id
 	</#if> 

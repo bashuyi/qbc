@@ -8,6 +8,11 @@ import javax.persistence.Table;
 
 import lombok.Data;
 
+/**
+ * ${remarks}实体类
+ *
+ * @author Ma
+ */
 @Data
 @Entity
 @Table(name = "${tableName}")

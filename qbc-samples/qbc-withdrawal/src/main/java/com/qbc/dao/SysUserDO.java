@@ -8,6 +8,11 @@ import javax.persistence.Table;
 
 import lombok.Data;
 
+/**
+ * 系统用户表实体类
+ *
+ * @author Ma
+ */
 @Data
 @Entity
 @Table(name = "sys_user")

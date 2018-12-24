@@ -8,6 +8,11 @@ import javax.persistence.Table;
 
 import lombok.Data;
 
+/**
+ * 提现表实体类
+ *
+ * @author Ma
+ */
 @Data
 @Entity
 @Table(name = "tx_withdrawal")

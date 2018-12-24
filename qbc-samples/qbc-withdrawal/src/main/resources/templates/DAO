@@ -4,6 +4,11 @@ import org.springframework.stereotype.Repository;
 
 import com.slyak.spring.jpa.GenericJpaRepository;
 
+/**
+ * ${remarks}数据访问类
+ *
+ * @author Ma
+ */
 @Repository
 public interface ${className}DAO extends GenericJpaRepository<${className}DO, Long> {
 	

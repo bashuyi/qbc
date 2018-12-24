@@ -13,6 +13,11 @@ import com.qbc.core.biz.DatabaseInfoManager;
 import com.slyak.spring.jpa.GenericJpaRepositoryFactoryBean;
 import com.slyak.spring.jpa.GenericJpaRepositoryImpl;
 
+/**
+ * 项目启动类
+ *
+ * @author Ma
+ */
 @SpringBootApplication
 @EnableJpaRepositories(basePackages = "com.qbc", repositoryBaseClass = GenericJpaRepositoryImpl.class, repositoryFactoryBeanClass = GenericJpaRepositoryFactoryBean.class)
 public class Application {
@@ -30,7 +35,7 @@ public class Application {
 	@Bean
 	ApplicationRunner applicationRunner() {
 		return args -> {
-			DatabaseInfoDTO databaseInfoDTO = databaseInfoManager.getDatabaseInfoBVO();
+			DatabaseInfoDTO databaseInfoDTO = databaseInfoManager.getDatabaseInfoBVO("tx");
 			codeGeneratorManager.generateAll("DO", "com.qbc.dao", databaseInfoDTO);
 			codeGeneratorManager.generateAll("DAO", "com.qbc.dao", databaseInfoDTO);
 		};

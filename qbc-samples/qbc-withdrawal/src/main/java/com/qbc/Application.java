@@ -7,9 +7,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
-import com.qbc.core.biz.CodeGeneratorBIZ;
-import com.qbc.core.biz.DatabaseInfoBIZ;
-import com.qbc.core.biz.DatabaseInfoBVO;
+import com.qbc.core.biz.CodeGeneratorManager;
+import com.qbc.core.biz.DatabaseInfoDTO;
+import com.qbc.core.biz.DatabaseInfoManager;
 import com.slyak.spring.jpa.GenericJpaRepositoryFactoryBean;
 import com.slyak.spring.jpa.GenericJpaRepositoryImpl;
 
@@ -22,17 +22,17 @@ public class Application {
 	}
 
 	@Autowired
-	private DatabaseInfoBIZ databaseInfoBIZ;
+	private DatabaseInfoManager databaseInfoManager;
 
 	@Autowired
-	private CodeGeneratorBIZ codeGeneratorBIZ;
+	private CodeGeneratorManager codeGeneratorManager;
 
 	@Bean
 	ApplicationRunner applicationRunner() {
 		return args -> {
-			DatabaseInfoBVO databaseInfoBVO = databaseInfoBIZ.getDatabaseInfoBVO();
-			codeGeneratorBIZ.generateAll("DO", "com.qbc.dao", databaseInfoBVO);
-			codeGeneratorBIZ.generateAll("DAO", "com.qbc.dao", databaseInfoBVO);
+			DatabaseInfoDTO databaseInfoDTO = databaseInfoManager.getDatabaseInfoBVO();
+			codeGeneratorManager.generateAll("DO", "com.qbc.dao", databaseInfoDTO);
+			codeGeneratorManager.generateAll("DAO", "com.qbc.dao", databaseInfoDTO);
 		};
 	}
 

@@ -23,17 +23,19 @@ import org.springframework.stereotype.Component;
 
 import com.baomidou.dynamic.datasource.DynamicRoutingDataSource;
 import com.google.common.base.CaseFormat;
-import com.qbc.core.biz.DatabaseInfoBVO.ColumnInfo;
-import com.qbc.core.biz.DatabaseInfoBVO.TableInfo;
+import com.qbc.core.biz.DatabaseInfoDTO.ColumnInfo;
+import com.qbc.core.biz.DatabaseInfoDTO.TableInfo;
 import com.qbc.core.utils.QbcStringUtils;
 
 import lombok.SneakyThrows;
 
 /**
- * 获得数据库所有表和试图信息
+ * 数据库信息处理类
+ * 
+ * @author Ma
  */
 @Component
-public class DatabaseInfoBIZ {
+public class DatabaseInfoManager {
 
 	@Autowired
 	private DynamicRoutingDataSource dynamicRoutingDataSource;
@@ -69,7 +71,7 @@ public class DatabaseInfoBIZ {
 	 * @return 数据库所有表和试图信息
 	 */
 	@SneakyThrows
-	public DatabaseInfoBVO getDatabaseInfoBVO(String ds, String catalog, String schemaPattern, String tableNamePattern,
+	public DatabaseInfoDTO getDatabaseInfoBVO(String ds, String catalog, String schemaPattern, String tableNamePattern,
 			TableType[] tableTypes, Map<JDBCType, String> jdbcTypeMap) {
 		tableTypes = ObjectUtils.defaultIfNull(tableTypes, TableType.values());
 		String[] types = Arrays.asList(tableTypes).stream().map(tableType -> tableType.name()).toArray(String[]::new);
@@ -131,7 +133,7 @@ public class DatabaseInfoBIZ {
 		}
 
 		// 实例化数据库信息实体，并设置数据库信息到实体中。
-		DatabaseInfoBVO databaseInfoBVO = new DatabaseInfoBVO();
+		DatabaseInfoDTO databaseInfoBVO = new DatabaseInfoDTO();
 		databaseInfoBVO.setDatabaseProductName(databaseMetaData.getDatabaseProductName());
 		databaseInfoBVO.setDatabaseProductVersion(databaseMetaData.getDatabaseProductVersion());
 		databaseInfoBVO.setTableInfos(tableInfos);
@@ -171,7 +173,7 @@ public class DatabaseInfoBIZ {
 	 * @param ds 数据源名称
 	 * @return 数据库所有表和试图信息
 	 */
-	public DatabaseInfoBVO getDatabaseInfoBVO(String ds) {
+	public DatabaseInfoDTO getDatabaseInfoBVO(String ds) {
 		return getDatabaseInfoBVO(ds, null, null, null, null, null);
 	}
 
@@ -180,7 +182,7 @@ public class DatabaseInfoBIZ {
 	 * 
 	 * @return 数据库所有表和试图信息
 	 */
-	public DatabaseInfoBVO getDatabaseInfoBVO() {
+	public DatabaseInfoDTO getDatabaseInfoBVO() {
 		return getDatabaseInfoBVO(null, null, null, null, null, null);
 	}
 

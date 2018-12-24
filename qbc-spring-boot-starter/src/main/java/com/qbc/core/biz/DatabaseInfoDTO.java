@@ -4,8 +4,13 @@ import java.util.List;
 
 import lombok.Data;
 
+/**
+ * 数据库信息处理数据传输对象
+ *
+ * @author Ma
+ */
 @Data
-public class DatabaseInfoBVO {
+public class DatabaseInfoDTO {
 
 	/**
 	 * 数据库产品的名称

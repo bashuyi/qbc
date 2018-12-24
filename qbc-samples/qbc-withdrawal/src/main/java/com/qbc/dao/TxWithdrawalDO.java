@@ -10,8 +10,8 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "sys_user")
-public class SysUserDVO {
+@Table(name = "tx_withdrawal")
+public class TxWithdrawalDO {
 
 	@Id
 	private Long id;
@@ -25,10 +25,6 @@ public class SysUserDVO {
 	private java.time.LocalDateTime lastModifiedDateTime;
 
 	private Boolean deleted;
-
-	private String username;
-
-	private String password;
 
 	@PrePersist
 	public void prePersist() {

@@ -10,8 +10,8 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "tx_withdrawal")
-public class TxWithdrawalDVO {
+@Table(name = "tx_deposit")
+public class TxDepositDO {
 
 	@Id
 	private Long id;

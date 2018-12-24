@@ -10,16 +10,30 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "${tableName}")
-public class ${className}DVO {
+@Table(name = "sys_param")
+public class SysParamDO {
 
-	<#list columnInfos as columnInfo>
-	<#if columnInfo_index == 0>
 	@Id
-	</#if> 
-	private ${columnInfo.fieldType} ${columnInfo.fieldName};
+	private Long id;
 
-	</#list>
+	private String createdBy;
+
+	private java.time.LocalDateTime createdDateTime;
+
+	private String lastModifiedBy;
+
+	private java.time.LocalDateTime lastModifiedDateTime;
+
+	private Boolean deleted;
+
+	private String paramKey;
+
+	private String paramName;
+
+	private String paramValue;
+
+	private String comment;
+
 	@PrePersist
 	public void prePersist() {
 		createdBy = lastModifiedBy = "SYSTEM";

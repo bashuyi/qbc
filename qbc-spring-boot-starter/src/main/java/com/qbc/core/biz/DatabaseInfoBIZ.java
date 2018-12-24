@@ -74,29 +74,8 @@ public class DatabaseInfoBIZ {
 		tableTypes = ObjectUtils.defaultIfNull(tableTypes, TableType.values());
 		String[] types = Arrays.asList(tableTypes).stream().map(tableType -> tableType.name()).toArray(String[]::new);
 
-		Map<JDBCType, String> defaultJdbcTypeMap = new HashMap<>();
-		defaultJdbcTypeMap.put(JDBCType.CHAR, String.class.getSimpleName());
-		defaultJdbcTypeMap.put(JDBCType.VARCHAR, String.class.getSimpleName());
-		defaultJdbcTypeMap.put(JDBCType.NVARCHAR, String.class.getSimpleName());
-		defaultJdbcTypeMap.put(JDBCType.LONGVARCHAR, String.class.getSimpleName());
-		defaultJdbcTypeMap.put(JDBCType.NUMERIC, BigDecimal.class.getName());
-		defaultJdbcTypeMap.put(JDBCType.DECIMAL, BigDecimal.class.getName());
-		defaultJdbcTypeMap.put(JDBCType.BIT, Boolean.class.getSimpleName());
-		defaultJdbcTypeMap.put(JDBCType.TINYINT, Integer.class.getSimpleName());
-		defaultJdbcTypeMap.put(JDBCType.SMALLINT, Integer.class.getSimpleName());
-		defaultJdbcTypeMap.put(JDBCType.INTEGER, Integer.class.getSimpleName());
-		defaultJdbcTypeMap.put(JDBCType.BIGINT, Long.class.getSimpleName());
-		defaultJdbcTypeMap.put(JDBCType.REAL, Float.class.getSimpleName());
-		defaultJdbcTypeMap.put(JDBCType.FLOAT, Double.class.getSimpleName());
-		defaultJdbcTypeMap.put(JDBCType.DOUBLE, Double.class.getSimpleName());
-		defaultJdbcTypeMap.put(JDBCType.BINARY, byte[].class.getSimpleName());
-		defaultJdbcTypeMap.put(JDBCType.VARBINARY, byte[].class.getSimpleName());
-		defaultJdbcTypeMap.put(JDBCType.LONGVARBINARY, byte[].class.getSimpleName());
-		defaultJdbcTypeMap.put(JDBCType.DATE, LocalDate.class.getName());
-		defaultJdbcTypeMap.put(JDBCType.TIME, LocalTime.class.getName());
-		defaultJdbcTypeMap.put(JDBCType.TIMESTAMP, LocalDateTime.class.getName());
-		defaultJdbcTypeMap.put(JDBCType.TIMESTAMP_WITH_TIMEZONE, OffsetDateTime.class.getName());
-		jdbcTypeMap = ObjectUtils.defaultIfNull(jdbcTypeMap, new HashMap<>());
+		Map<JDBCType, String> defaultJdbcTypeMap = getDefaultJdbcTypeMap();
+		jdbcTypeMap = ObjectUtils.defaultIfNull(jdbcTypeMap, new HashMap<>(0));
 		defaultJdbcTypeMap.putAll(jdbcTypeMap);
 
 		Connection connection = dynamicRoutingDataSource.getDataSource(ds).getConnection();
@@ -158,6 +137,32 @@ public class DatabaseInfoBIZ {
 		databaseInfoBVO.setTableInfos(tableInfos);
 
 		return databaseInfoBVO;
+	}
+
+	private Map<JDBCType, String> getDefaultJdbcTypeMap() {
+		Map<JDBCType, String> defaultJdbcTypeMap = new HashMap<>(50);
+		defaultJdbcTypeMap.put(JDBCType.CHAR, String.class.getSimpleName());
+		defaultJdbcTypeMap.put(JDBCType.VARCHAR, String.class.getSimpleName());
+		defaultJdbcTypeMap.put(JDBCType.NVARCHAR, String.class.getSimpleName());
+		defaultJdbcTypeMap.put(JDBCType.LONGVARCHAR, String.class.getSimpleName());
+		defaultJdbcTypeMap.put(JDBCType.NUMERIC, BigDecimal.class.getName());
+		defaultJdbcTypeMap.put(JDBCType.DECIMAL, BigDecimal.class.getName());
+		defaultJdbcTypeMap.put(JDBCType.BIT, Boolean.class.getSimpleName());
+		defaultJdbcTypeMap.put(JDBCType.TINYINT, Integer.class.getSimpleName());
+		defaultJdbcTypeMap.put(JDBCType.SMALLINT, Integer.class.getSimpleName());
+		defaultJdbcTypeMap.put(JDBCType.INTEGER, Integer.class.getSimpleName());
+		defaultJdbcTypeMap.put(JDBCType.BIGINT, Long.class.getSimpleName());
+		defaultJdbcTypeMap.put(JDBCType.REAL, Float.class.getSimpleName());
+		defaultJdbcTypeMap.put(JDBCType.FLOAT, Double.class.getSimpleName());
+		defaultJdbcTypeMap.put(JDBCType.DOUBLE, Double.class.getSimpleName());
+		defaultJdbcTypeMap.put(JDBCType.BINARY, byte[].class.getSimpleName());
+		defaultJdbcTypeMap.put(JDBCType.VARBINARY, byte[].class.getSimpleName());
+		defaultJdbcTypeMap.put(JDBCType.LONGVARBINARY, byte[].class.getSimpleName());
+		defaultJdbcTypeMap.put(JDBCType.DATE, LocalDate.class.getName());
+		defaultJdbcTypeMap.put(JDBCType.TIME, LocalTime.class.getName());
+		defaultJdbcTypeMap.put(JDBCType.TIMESTAMP, LocalDateTime.class.getName());
+		defaultJdbcTypeMap.put(JDBCType.TIMESTAMP_WITH_TIMEZONE, OffsetDateTime.class.getName());
+		return defaultJdbcTypeMap;
 	}
 
 	/**

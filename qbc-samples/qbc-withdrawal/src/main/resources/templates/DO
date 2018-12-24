@@ -10,22 +10,16 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "tx_deposit")
-public class TxDepositDVO {
+@Table(name = "${tableName}")
+public class ${className}DO {
 
+	<#list columnInfos as columnInfo>
+	<#if columnInfo_index == 0>
 	@Id
-	private Long id;
+	</#if> 
+	private ${columnInfo.fieldType} ${columnInfo.fieldName};
 
-	private String createdBy;
-
-	private java.time.LocalDateTime createdDateTime;
-
-	private String lastModifiedBy;
-
-	private java.time.LocalDateTime lastModifiedDateTime;
-
-	private Boolean deleted;
-
+	</#list>
 	@PrePersist
 	public void prePersist() {
 		createdBy = lastModifiedBy = "SYSTEM";

@@ -37,7 +37,7 @@ public class CodeGeneratorBIZ {
 	public String generateToString(String templateName, Map<String, Object> param) {
 		Template template = configuration.getTemplate(templateName);
 		return FreeMarkerTemplateUtils.processTemplateIntoString(template,
-				ObjectUtils.defaultIfNull(param, new HashMap<>()));
+				ObjectUtils.defaultIfNull(param, new HashMap<>(0)));
 	}
 
 	/**

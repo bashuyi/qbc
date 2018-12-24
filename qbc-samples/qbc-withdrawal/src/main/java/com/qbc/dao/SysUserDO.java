@@ -10,8 +10,8 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "sys_param")
-public class SysParamDVO {
+@Table(name = "sys_user")
+public class SysUserDO {
 
 	@Id
 	private Long id;
@@ -26,13 +26,9 @@ public class SysParamDVO {
 
 	private Boolean deleted;
 
-	private String paramKey;
+	private String username;
 
-	private String paramName;
-
-	private String paramValue;
-
-	private String comment;
+	private String password;
 
 	@PrePersist
 	public void prePersist() {

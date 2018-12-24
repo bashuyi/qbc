@@ -5,6 +5,6 @@ import org.springframework.stereotype.Repository;
 import com.slyak.spring.jpa.GenericJpaRepository;
 
 @Repository
-public interface TxDepositDAO extends GenericJpaRepository<TxDepositDVO, Long> {
+public interface TxDepositDAO extends GenericJpaRepository<TxDepositDO, Long> {
 	
 }

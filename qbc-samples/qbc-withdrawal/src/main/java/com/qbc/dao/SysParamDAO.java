@@ -5,6 +5,6 @@ import org.springframework.stereotype.Repository;
 import com.slyak.spring.jpa.GenericJpaRepository;
 
 @Repository
-public interface SysParamDAO extends GenericJpaRepository<SysParamDVO, Long> {
+public interface SysParamDAO extends GenericJpaRepository<SysParamDO, Long> {
 	
 }

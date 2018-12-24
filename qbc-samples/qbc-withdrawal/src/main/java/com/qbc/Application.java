@@ -30,8 +30,8 @@ public class Application {
 	@Bean
 	ApplicationRunner applicationRunner() {
 		return args -> {
-			DatabaseInfoBVO databaseInfoBVO = databaseInfoBIZ.getDatabaseInfoBVO("tx");
-			codeGeneratorBIZ.generateAll("DVO", "com.qbc.dao", databaseInfoBVO);
+			DatabaseInfoBVO databaseInfoBVO = databaseInfoBIZ.getDatabaseInfoBVO();
+			codeGeneratorBIZ.generateAll("DO", "com.qbc.dao", databaseInfoBVO);
 			codeGeneratorBIZ.generateAll("DAO", "com.qbc.dao", databaseInfoBVO);
 		};
 	}

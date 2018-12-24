@@ -52,6 +52,13 @@ public class CodeGeneratorBIZ {
 		FileUtils.writeStringToFile(file, generateToString(templateName, param), StandardCharsets.UTF_8);
 	}
 
+	/**
+	 * 根据表信息和模板生成代码
+	 * 
+	 * @param templateName 模板名
+	 * @param packageName  包名
+	 * @param tableInfo    表信息
+	 */
 	@SneakyThrows
 	public void generate(String templateName, String packageName, TableInfo tableInfo) {
 		Map<String, Object> param = PropertyUtils.describe(tableInfo);
@@ -60,9 +67,16 @@ public class CodeGeneratorBIZ {
 		generate(templateName, param, file);
 	}
 
+	/**
+	 * 根据数据库信息和模板生成代码
+	 * 
+	 * @param templateName    模板名
+	 * @param packageName     包名
+	 * @param databaseInfoBVO 数据库信息
+	 */
 	@SneakyThrows
 	public void generateAll(String templateName, String packageName, DatabaseInfoBVO databaseInfoBVO) {
 		databaseInfoBVO.getTableInfos().forEach(tableInfo -> generate(templateName, packageName, tableInfo));
-	}	
+	}
 
 }

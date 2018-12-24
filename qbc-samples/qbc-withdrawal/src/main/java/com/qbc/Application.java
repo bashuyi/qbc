@@ -7,9 +7,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
-import com.qbc.core.biz.CodeGeneratorManager;
-import com.qbc.core.biz.DatabaseInfoDTO;
-import com.qbc.core.biz.DatabaseInfoManager;
+import com.qbc.core.manager.CodeGeneratorManager;
+import com.qbc.core.manager.DatabaseInfoDTO;
+import com.qbc.core.manager.DatabaseInfoManager;
 import com.slyak.spring.jpa.GenericJpaRepositoryFactoryBean;
 import com.slyak.spring.jpa.GenericJpaRepositoryImpl;
 

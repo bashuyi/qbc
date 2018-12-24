@@ -1,4 +1,4 @@
-package com.qbc.core.biz;
+package com.qbc.core.manager;
 
 import java.math.BigDecimal;
 import java.sql.Connection;
@@ -23,8 +23,8 @@ import org.springframework.stereotype.Component;
 
 import com.baomidou.dynamic.datasource.DynamicRoutingDataSource;
 import com.google.common.base.CaseFormat;
-import com.qbc.core.biz.DatabaseInfoDTO.ColumnInfo;
-import com.qbc.core.biz.DatabaseInfoDTO.TableInfo;
+import com.qbc.core.manager.DatabaseInfoDTO.ColumnInfo;
+import com.qbc.core.manager.DatabaseInfoDTO.TableInfo;
 import com.qbc.core.utils.QbcStringUtils;
 
 import lombok.SneakyThrows;

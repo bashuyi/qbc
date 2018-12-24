@@ -1,4 +1,4 @@
-package com.qbc.core.biz;
+package com.qbc.core.manager;
 
 import java.io.File;
 import java.nio.charset.StandardCharsets;
@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
-import com.qbc.core.biz.DatabaseInfoDTO.TableInfo;
+import com.qbc.core.manager.DatabaseInfoDTO.TableInfo;
 import com.qbc.core.utils.QbcStringUtils;
 
 import freemarker.template.Configuration;

@@ -1,4 +1,4 @@
-package com.qbc.core.biz;
+package com.qbc.core.manager;
 
 import java.util.List;
 

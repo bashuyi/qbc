@@ -44,8 +44,7 @@ public class ApplicationTests {
 	 */
 	@Test
 	public void encrypt() {
-		System.out.println(stringEncryptor.encrypt("Queen#Bee0223"));
-		System.out.println(stringEncryptor.decrypt("7GFPqyd8RTrgrfQBu7g1tOqWQdztkmJo"));
+		System.out.println(stringEncryptor.encrypt(""));
 	}
 
 }

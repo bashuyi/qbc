@@ -1,5 +1,6 @@
 package com.qbc;
 
+import org.jasypt.encryption.StringEncryptor;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,9 @@ public class ApplicationTests {
 	@Autowired
 	private CodeGeneratorManager codeGeneratorManager;
 
+	@Autowired
+	private StringEncryptor stringEncryptor;
+
 	/**
 	 * 生成数据访问层
 	 */
@@ -33,6 +37,15 @@ public class ApplicationTests {
 		DatabaseInfoDTO databaseInfoDTO = databaseInfoManager.getDatabaseInfoBVO("tx");
 		codeGeneratorManager.generateAll("DO", "com.qbc.dao", databaseInfoDTO);
 		codeGeneratorManager.generateAll("DAO", "com.qbc.dao", databaseInfoDTO);
+	}
+
+	/**
+	 * 加密密码，用于配置文件
+	 */
+	@Test
+	public void encrypt() {
+		System.out.println(stringEncryptor.encrypt("Queen#Bee0223"));
+		System.out.println(stringEncryptor.decrypt("7GFPqyd8RTrgrfQBu7g1tOqWQdztkmJo"));
 	}
 
 }

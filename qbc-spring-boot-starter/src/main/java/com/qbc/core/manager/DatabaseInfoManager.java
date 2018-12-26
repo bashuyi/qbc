@@ -39,6 +39,8 @@ import lombok.SneakyThrows;
 @Component
 public class DatabaseInfoManager {
 
+	private static final String DATABASE_POSTGRE_SQL = "PostgreSQL";
+
 	@Autowired
 	private DynamicRoutingDataSource dynamicRoutingDataSource;
 
@@ -62,20 +64,14 @@ public class DatabaseInfoManager {
 	/**
 	 * 获得数据库所有表和试图信息
 	 * 
-	 * @param ds
-	 *            数据源名称
-	 * @param catalog
-	 *            类别名称；它必须与存储在数据库中的类别名称匹配；该参数为 "" 表示获取没有类别的那些描述；为null
-	 *            则表示该类别名称不应该用于缩小搜索范围
-	 * @param schemaPattern
-	 *            模式名称的模式； 它必须与存储在数据库中的模式名称匹配； 该参数为 "" 表示获取没有模式的那些描述； 为null
-	 *            则表示该模式名称不应该用于缩小搜索范围
-	 * @param tableNamePattern
-	 *            表名称模式； 它必须与存储在数据库中的表名称匹配
-	 * @param tableTypes
-	 *            要包括的表类型所组成的列表； 为null则表示返回所有类型
-	 * @param jdbcTypeMap
-	 *            java.sql.Types的SQL类型与Java类型的映射关系
+	 * @param ds               数据源名称
+	 * @param catalog          类别名称；它必须与存储在数据库中的类别名称匹配；该参数为 "" 表示获取没有类别的那些描述；为null
+	 *                         则表示该类别名称不应该用于缩小搜索范围
+	 * @param schemaPattern    模式名称的模式； 它必须与存储在数据库中的模式名称匹配； 该参数为 "" 表示获取没有模式的那些描述；
+	 *                         为null 则表示该模式名称不应该用于缩小搜索范围
+	 * @param tableNamePattern 表名称模式； 它必须与存储在数据库中的表名称匹配
+	 * @param tableTypes       要包括的表类型所组成的列表； 为null则表示返回所有类型
+	 * @param jdbcTypeMap      java.sql.Types的SQL类型与Java类型的映射关系
 	 * @return 数据库所有表和试图信息
 	 */
 	@SneakyThrows
@@ -93,33 +89,13 @@ public class DatabaseInfoManager {
 
 		// PostgreSQL时，默认不查询系统表
 		String databaseProductName = databaseMetaData.getDatabaseProductName();
-		if ("PostgreSQL".equalsIgnoreCase(databaseProductName)) {
+		if (DATABASE_POSTGRE_SQL.equalsIgnoreCase(databaseProductName)) {
 			schemaPattern = StringUtils.defaultString("public");
 		}
 
 		// 获得所有字段信息
-		Table<String, String, ColumnInfo> columnInfoTable = HashBasedTable.create();
-		ResultSet columnResultSet = databaseMetaData.getColumns(catalog, schemaPattern, null, null);
-		while (columnResultSet.next()) {
-			String tableName = columnResultSet.getString("TABLE_NAME");
-			String columnName = columnResultSet.getString("COLUMN_NAME");
-
-			ColumnInfo columnInfo = new ColumnInfo();
-			columnInfo.setColumnName(columnName);
-			columnInfo.setDataType(columnResultSet.getInt("DATA_TYPE"));
-			columnInfo.setTypeName(columnResultSet.getString("TYPE_NAME"));
-			columnInfo.setColumnSize(columnResultSet.getInt("COLUMN_SIZE"));
-			columnInfo.setDecimalDigits(columnResultSet.getInt("DECIMAL_DIGITS"));
-			columnInfo.setNullable(columnResultSet.getInt("NULLABLE") == 1);
-			columnInfo.setRemarks(columnResultSet.getString("REMARKS"));
-			columnInfo.setOrdinalPosition(columnResultSet.getInt("ORDINAL_POSITION"));
-			columnInfo.setAutoincrement("YES".equals(columnResultSet.getString("IS_AUTOINCREMENT")));
-			columnInfo.setFieldName(QbcStringUtils.caseFormat(columnInfo.getColumnName().toLowerCase(),
-					CaseFormat.LOWER_UNDERSCORE, CaseFormat.LOWER_CAMEL));
-			columnInfo.setFieldType(jdbcTypeMap.get(JDBCType.valueOf(columnInfo.getDataType())));
-
-			columnInfoTable.put(tableName, columnName, columnInfo);
-		}
+		Table<String, String, ColumnInfo> columnInfoTable = getColumnInfoTable(catalog, schemaPattern, jdbcTypeMap,
+				databaseMetaData);
 
 		// 设置主键
 		ResultSet primaryKeyResultSet = databaseMetaData.getPrimaryKeys(catalog, schemaPattern, null);
@@ -165,6 +141,34 @@ public class DatabaseInfoManager {
 		return databaseInfoBVO;
 	}
 
+	@SneakyThrows
+	private Table<String, String, ColumnInfo> getColumnInfoTable(String catalog, String schemaPattern,
+			Map<JDBCType, String> jdbcTypeMap, DatabaseMetaData databaseMetaData) {
+		Table<String, String, ColumnInfo> columnInfoTable = HashBasedTable.create();
+		ResultSet columnResultSet = databaseMetaData.getColumns(catalog, schemaPattern, null, null);
+		while (columnResultSet.next()) {
+			String tableName = columnResultSet.getString("TABLE_NAME");
+			String columnName = columnResultSet.getString("COLUMN_NAME");
+
+			ColumnInfo columnInfo = new ColumnInfo();
+			columnInfo.setColumnName(columnName);
+			columnInfo.setDataType(columnResultSet.getInt("DATA_TYPE"));
+			columnInfo.setTypeName(columnResultSet.getString("TYPE_NAME"));
+			columnInfo.setColumnSize(columnResultSet.getInt("COLUMN_SIZE"));
+			columnInfo.setDecimalDigits(columnResultSet.getInt("DECIMAL_DIGITS"));
+			columnInfo.setNullable(columnResultSet.getInt("NULLABLE") == 1);
+			columnInfo.setRemarks(columnResultSet.getString("REMARKS"));
+			columnInfo.setOrdinalPosition(columnResultSet.getInt("ORDINAL_POSITION"));
+			columnInfo.setAutoincrement("YES".equals(columnResultSet.getString("IS_AUTOINCREMENT")));
+			columnInfo.setFieldName(QbcStringUtils.caseFormat(columnInfo.getColumnName().toLowerCase(),
+					CaseFormat.LOWER_UNDERSCORE, CaseFormat.LOWER_CAMEL));
+			columnInfo.setFieldType(jdbcTypeMap.get(JDBCType.valueOf(columnInfo.getDataType())));
+
+			columnInfoTable.put(tableName, columnName, columnInfo);
+		}
+		return columnInfoTable;
+	}
+
 	private Map<JDBCType, String> getDefaultJdbcTypeMap() {
 		Map<JDBCType, String> defaultJdbcTypeMap = new HashMap<>(50);
 		defaultJdbcTypeMap.put(JDBCType.CHAR, String.class.getSimpleName());
@@ -194,8 +198,7 @@ public class DatabaseInfoManager {
 	/**
 	 * 获得数据库所有表和试图信息
 	 * 
-	 * @param ds
-	 *            数据源名称
+	 * @param ds 数据源名称
 	 * @return 数据库所有表和试图信息
 	 */
 	public DatabaseInfoDTO getDatabaseInfoBVO(String ds) {

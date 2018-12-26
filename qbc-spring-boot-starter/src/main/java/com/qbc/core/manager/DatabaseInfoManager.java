@@ -60,14 +60,20 @@ public class DatabaseInfoManager {
 	/**
 	 * 获得数据库所有表和试图信息
 	 * 
-	 * @param ds               数据源名称
-	 * @param catalog          类别名称；它必须与存储在数据库中的类别名称匹配；该参数为 "" 表示获取没有类别的那些描述；为null
-	 *                         则表示该类别名称不应该用于缩小搜索范围
-	 * @param schemaPattern    模式名称的模式； 它必须与存储在数据库中的模式名称匹配； 该参数为 "" 表示获取没有模式的那些描述；
-	 *                         为null 则表示该模式名称不应该用于缩小搜索范围
-	 * @param tableNamePattern 表名称模式； 它必须与存储在数据库中的表名称匹配
-	 * @param tableTypes       要包括的表类型所组成的列表； 为null则表示返回所有类型
-	 * @param jdbcTypeMap      java.sql.Types的SQL类型与Java类型的映射关系
+	 * @param ds
+	 *            数据源名称
+	 * @param catalog
+	 *            类别名称；它必须与存储在数据库中的类别名称匹配；该参数为 "" 表示获取没有类别的那些描述；为null
+	 *            则表示该类别名称不应该用于缩小搜索范围
+	 * @param schemaPattern
+	 *            模式名称的模式； 它必须与存储在数据库中的模式名称匹配； 该参数为 "" 表示获取没有模式的那些描述； 为null
+	 *            则表示该模式名称不应该用于缩小搜索范围
+	 * @param tableNamePattern
+	 *            表名称模式； 它必须与存储在数据库中的表名称匹配
+	 * @param tableTypes
+	 *            要包括的表类型所组成的列表； 为null则表示返回所有类型
+	 * @param jdbcTypeMap
+	 *            java.sql.Types的SQL类型与Java类型的映射关系
 	 * @return 数据库所有表和试图信息
 	 */
 	@SneakyThrows
@@ -82,55 +88,8 @@ public class DatabaseInfoManager {
 
 		Connection connection = dynamicRoutingDataSource.getDataSource(ds).getConnection();
 		DatabaseMetaData databaseMetaData = connection.getMetaData();
-		ResultSet tableResultSet = databaseMetaData.getTables(catalog, schemaPattern, tableNamePattern, types);
-		List<TableInfo> tableInfos = new ArrayList<>();
-		while (tableResultSet.next()) {
-			TableInfo tableInfo = new TableInfo();
-			tableInfo.setTableCat(tableResultSet.getString("TABLE_CAT"));
-			tableInfo.setTableSchem(tableResultSet.getString("TABLE_SCHEM"));
-			tableInfo.setTableName(tableResultSet.getString("TABLE_NAME"));
-			tableInfo.setTableType(tableResultSet.getString("TABLE_TYPE"));
-			tableInfo.setRemarks(tableResultSet.getString("REMARKS"));
-			tableInfo.setClassName(QbcStringUtils.caseFormat(tableInfo.getTableName().toLowerCase(),
-					CaseFormat.LOWER_UNDERSCORE, CaseFormat.UPPER_CAMEL));
-
-			// 获取可在指定类别中使用的表列的描述
-			ResultSet columnResultSet = databaseMetaData.getColumns(catalog, schemaPattern, tableInfo.getTableName(),
-					null);
-			List<ColumnInfo> columnInfos = new ArrayList<>();
-			while (columnResultSet.next()) {
-				ColumnInfo columnInfo = new ColumnInfo();
-				columnInfo.setColumnName(columnResultSet.getString("COLUMN_NAME"));
-				columnInfo.setDataType(columnResultSet.getInt("DATA_TYPE"));
-				columnInfo.setTypeName(columnResultSet.getString("TYPE_NAME"));
-				columnInfo.setColumnSize(columnResultSet.getInt("COLUMN_SIZE"));
-				columnInfo.setDecimalDigits(columnResultSet.getInt("DECIMAL_DIGITS"));
-				columnInfo.setNullable(columnResultSet.getInt("NULLABLE") == 1);
-				columnInfo.setRemarks(columnResultSet.getString("REMARKS"));
-				columnInfo.setOrdinalPosition(columnResultSet.getInt("ORDINAL_POSITION"));
-				columnInfo.setAutoincrement("YES".equals(columnResultSet.getString("IS_AUTOINCREMENT")));
-				columnInfo.setFieldName(QbcStringUtils.caseFormat(columnInfo.getColumnName().toLowerCase(),
-						CaseFormat.LOWER_UNDERSCORE, CaseFormat.LOWER_CAMEL));
-				columnInfo.setFieldType(defaultJdbcTypeMap.get(JDBCType.valueOf(columnInfo.getDataType())));
-				columnInfos.add(columnInfo);
-			}
-
-			// 获取对给定表的主键列的描述。
-			ResultSet primaryKeyResultSet = databaseMetaData.getPrimaryKeys(catalog, schemaPattern,
-					tableInfo.getTableName());
-			Map<String, ColumnInfo> columnInfoMap = columnInfos.stream()
-					.collect(Collectors.toMap(ColumnInfo::getColumnName, Function.identity()));
-			while (primaryKeyResultSet.next()) {
-				ColumnInfo columnInfo = columnInfoMap.get(primaryKeyResultSet.getString("COLUMN_NAME"));
-				if (columnInfo != null) {
-					columnInfo.setKeySeq(primaryKeyResultSet.getShort("KEY_SEQ"));
-				}
-			}
-
-			tableInfo.setColumnInfos(columnInfos);
-
-			tableInfos.add(tableInfo);
-		}
+		List<TableInfo> tableInfos = getTableInfos(databaseMetaData, catalog, schemaPattern, tableNamePattern, types,
+				defaultJdbcTypeMap);
 
 		// 实例化数据库信息实体，并设置数据库信息到实体中。
 		DatabaseInfoDTO databaseInfoBVO = new DatabaseInfoDTO();
@@ -167,10 +126,75 @@ public class DatabaseInfoManager {
 		return defaultJdbcTypeMap;
 	}
 
+	@SneakyThrows
+	private List<TableInfo> getTableInfos(DatabaseMetaData databaseMetaData, String catalog, String schemaPattern,
+			String tableNamePattern, String types[], Map<JDBCType, String> jdbcTypeMap) {
+		ResultSet tableResultSet = databaseMetaData.getTables(catalog, schemaPattern, tableNamePattern, types);
+		List<TableInfo> tableInfos = new ArrayList<>();
+		while (tableResultSet.next()) {
+			TableInfo tableInfo = new TableInfo();
+			tableInfo.setTableCat(tableResultSet.getString("TABLE_CAT"));
+			tableInfo.setTableSchem(tableResultSet.getString("TABLE_SCHEM"));
+			tableInfo.setTableName(tableResultSet.getString("TABLE_NAME"));
+			tableInfo.setTableType(tableResultSet.getString("TABLE_TYPE"));
+			tableInfo.setRemarks(tableResultSet.getString("REMARKS"));
+			tableInfo.setClassName(QbcStringUtils.caseFormat(tableInfo.getTableName().toLowerCase(),
+					CaseFormat.LOWER_UNDERSCORE, CaseFormat.UPPER_CAMEL));
+
+			// 获得表的字段和主键信息
+			List<ColumnInfo> columnInfos = getColumnInfos(databaseMetaData, catalog, schemaPattern,
+					tableInfo.getTableName(), jdbcTypeMap);
+
+			tableInfo.setColumnInfos(columnInfos);
+
+			tableInfos.add(tableInfo);
+		}
+
+		return tableInfos;
+	}
+
+	@SneakyThrows
+	private List<ColumnInfo> getColumnInfos(DatabaseMetaData databaseMetaData, String catalog, String schemaPattern,
+			String tableNamePattern, Map<JDBCType, String> jdbcTypeMap) {
+		// 获得字段信息
+		ResultSet columnResultSet = databaseMetaData.getColumns(catalog, schemaPattern, tableNamePattern, null);
+		List<ColumnInfo> columnInfos = new ArrayList<>();
+		while (columnResultSet.next()) {
+			ColumnInfo columnInfo = new ColumnInfo();
+			columnInfo.setColumnName(columnResultSet.getString("COLUMN_NAME"));
+			columnInfo.setDataType(columnResultSet.getInt("DATA_TYPE"));
+			columnInfo.setTypeName(columnResultSet.getString("TYPE_NAME"));
+			columnInfo.setColumnSize(columnResultSet.getInt("COLUMN_SIZE"));
+			columnInfo.setDecimalDigits(columnResultSet.getInt("DECIMAL_DIGITS"));
+			columnInfo.setNullable(columnResultSet.getInt("NULLABLE") == 1);
+			columnInfo.setRemarks(columnResultSet.getString("REMARKS"));
+			columnInfo.setOrdinalPosition(columnResultSet.getInt("ORDINAL_POSITION"));
+			columnInfo.setAutoincrement("YES".equals(columnResultSet.getString("IS_AUTOINCREMENT")));
+			columnInfo.setFieldName(QbcStringUtils.caseFormat(columnInfo.getColumnName().toLowerCase(),
+					CaseFormat.LOWER_UNDERSCORE, CaseFormat.LOWER_CAMEL));
+			columnInfo.setFieldType(jdbcTypeMap.get(JDBCType.valueOf(columnInfo.getDataType())));
+			columnInfos.add(columnInfo);
+		}
+
+		// 获得主键
+		ResultSet primaryKeyResultSet = databaseMetaData.getPrimaryKeys(catalog, schemaPattern, tableNamePattern);
+		Map<String, ColumnInfo> columnInfoMap = columnInfos.stream()
+				.collect(Collectors.toMap(ColumnInfo::getColumnName, Function.identity()));
+		while (primaryKeyResultSet.next()) {
+			ColumnInfo columnInfo = columnInfoMap.get(primaryKeyResultSet.getString("COLUMN_NAME"));
+			if (columnInfo != null) {
+				columnInfo.setKeySeq(primaryKeyResultSet.getShort("KEY_SEQ"));
+			}
+		}
+
+		return columnInfos;
+	}
+
 	/**
 	 * 获得数据库所有表和试图信息
 	 * 
-	 * @param ds 数据源名称
+	 * @param ds
+	 *            数据源名称
 	 * @return 数据库所有表和试图信息
 	 */
 	public DatabaseInfoDTO getDatabaseInfoBVO(String ds) {

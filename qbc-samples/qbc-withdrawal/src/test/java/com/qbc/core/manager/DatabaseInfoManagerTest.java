@@ -15,7 +15,7 @@ public class DatabaseInfoManagerTest {
 
 	@Test
 	public void testGetDatabaseInfoBVO() {
-		DatabaseInfoDTO databaseInfoDTO = databaseInfoManager.getDatabaseInfoBVO("tx");
+		DatabaseInfoDTO databaseInfoDTO = databaseInfoManager.getDatabaseInfoBVO();
 		System.out.println(databaseInfoDTO);
 	}
 

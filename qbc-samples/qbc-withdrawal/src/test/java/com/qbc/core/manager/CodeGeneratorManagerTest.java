@@ -21,7 +21,7 @@ public class CodeGeneratorManagerTest {
 	 */
 	@Test
 	public void testGenerateAll() {
-		DatabaseInfoDTO databaseInfoDTO = databaseInfoManager.getDatabaseInfoBVO("tx");
+		DatabaseInfoDTO databaseInfoDTO = databaseInfoManager.getDatabaseInfoBVO();
 		codeGeneratorManager.generateAll("DO", "com.qbc.dao", databaseInfoDTO);
 		codeGeneratorManager.generateAll("DAO", "com.qbc.dao", databaseInfoDTO);
 	}

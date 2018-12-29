@@ -8,14 +8,14 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class SnowFlakeManagerTest {
+public class SnowflakeManagerTest {
 	
 	@Autowired
-	private SnowFlakeManager snowFlakeManager;
+	private SnowflakeManager snowflakeManager;
 
 	@Test
 	public void testNextId() {
-		System.out.println(snowFlakeManager.nextId());
+		System.out.println(snowflakeManager.nextId());
 	}
 	
 }

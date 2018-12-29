@@ -89,7 +89,7 @@ public class DatabaseInfoManager {
 		}
 
 		// 获得所有字段信息
-		Table<String, String, ColumnInfo> columnInfoTable = getColumnInfoTable(catalog, schemaPattern, jdbcTypeMap,
+		Table<String, String, ColumnInfo> columnInfoTable = getColumnInfoTable(catalog, schemaPattern, defaultJdbcTypeMap,
 				databaseMetaData);
 
 		// 设置主键

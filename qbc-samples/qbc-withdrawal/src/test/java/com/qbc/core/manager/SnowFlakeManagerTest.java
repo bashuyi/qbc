@@ -8,15 +8,14 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class DatabaseInfoManagerTest {
-
+public class SnowFlakeManagerTest {
+	
 	@Autowired
-	private DatabaseInfoManager databaseInfoManager;
+	private SnowFlakeManager snowFlakeManager;
 
 	@Test
-	public void testGetDatabaseInfoBVO() {
-		DatabaseInfoDTO databaseInfoDTO = databaseInfoManager.getDatabaseInfoBVO();
-		System.out.println(databaseInfoDTO);
+	public void testNextId() {
+		System.out.println(snowFlakeManager.nextId());
 	}
-
+	
 }

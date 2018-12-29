@@ -12,11 +12,6 @@ import com.qbc.core.manager.JobManager;
 import com.slyak.spring.jpa.GenericJpaRepositoryFactoryBean;
 import com.slyak.spring.jpa.GenericJpaRepositoryImpl;
 
-/**
- * 项目启动类
- *
- * @author Ma
- */
 @SpringBootApplication
 @EnableJpaRepositories(basePackages = "com.qbc", repositoryBaseClass = GenericJpaRepositoryImpl.class, repositoryFactoryBeanClass = GenericJpaRepositoryFactoryBean.class)
 public class Application {

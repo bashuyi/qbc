@@ -31,11 +31,6 @@ import com.qbc.core.utils.QbcStringUtils;
 
 import lombok.SneakyThrows;
 
-/**
- * 数据库信息处理类
- * 
- * @author Ma
- */
 @Component
 public class DatabaseInfoManager {
 

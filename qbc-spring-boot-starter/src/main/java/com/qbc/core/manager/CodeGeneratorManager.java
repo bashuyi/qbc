@@ -20,11 +20,6 @@ import freemarker.template.Configuration;
 import freemarker.template.Template;
 import lombok.SneakyThrows;
 
-/**
- * 代码生成处理类
- * 
- * @author Ma
- */
 @Component
 public class CodeGeneratorManager {
 

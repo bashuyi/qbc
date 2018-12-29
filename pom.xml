@@ -33,7 +33,6 @@
 
 	<dependencyManagement>
 		<dependencies>
-			<!-- Using Spring Boot without the Parent POM -->
 			<dependency>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-dependencies</artifactId>
@@ -88,7 +87,6 @@
 
 	<build>
 		<plugins>
-			<!-- Using the Spring Boot Maven Plugin -->
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>

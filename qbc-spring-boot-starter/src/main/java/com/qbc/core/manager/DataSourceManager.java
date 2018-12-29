@@ -12,11 +12,6 @@ import com.baomidou.dynamic.datasource.DynamicRoutingDataSource;
 import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DataSourceProperty;
 
-/**
- * 数据源处理类
- *
- * @author Ma
- */
 @Component
 public class DataSourceManager {
 

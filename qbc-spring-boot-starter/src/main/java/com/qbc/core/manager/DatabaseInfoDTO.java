@@ -4,11 +4,6 @@ import java.util.List;
 
 import lombok.Data;
 
-/**
- * 数据库信息处理数据传输类
- *
- * @author Ma
- */
 @Data
 public class DatabaseInfoDTO {
 

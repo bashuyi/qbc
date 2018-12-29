@@ -1,50 +1,28 @@
 package com.qbc.dao;
 
 import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 
-import lombok.Data;
+import com.qbc.core.dao.AbstractDO;
+
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * 系统用户表实体类
  *
  * @author Ma
  */
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "sys_user")
-public class SysUserDO {
+public class SysUserDO extends AbstractDO {
 
-	@Id
-	private Long id;
-
-	private String createdBy;
-
-	private java.time.LocalDateTime createdDateTime;
-
-	private String lastModifiedBy;
-
-	private java.time.LocalDateTime lastModifiedDateTime;
-
-	private Boolean deleted;
-
+	/** 用户名 */
 	private String username;
 
+	/** 密码 */
 	private String password;
-
-	@PrePersist
-	public void prePersist() {
-		createdBy = lastModifiedBy = "SYSTEM";
-		createdDateTime = lastModifiedDateTime = java.time.LocalDateTime.now();
-	}
-
-	@PreUpdate
-	public void preUpdate() {
-		lastModifiedBy = "SYSTEM";
-		lastModifiedDateTime = java.time.LocalDateTime.now();
-	}
 
 }

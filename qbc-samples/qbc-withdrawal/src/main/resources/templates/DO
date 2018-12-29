@@ -1,40 +1,29 @@
 package com.qbc.dao;
 
 import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 
-import lombok.Data;
+import com.qbc.core.dao.AbstractDO;
+
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * ${remarks}实体类
  *
  * @author Ma
  */
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "${tableName}")
-public class ${className}DO {
+public class ${className}DO extends AbstractDO {
 
 	<#list columnInfos as columnInfo>
-	<#if columnInfo_index == 0>
-	@Id
-	</#if> 
+	<#if columnInfo_index gt 5>
+	/** ${columnInfo.remarks} */
 	private ${columnInfo.fieldType} ${columnInfo.fieldName};
 
+	</#if>
 	</#list>
-	@PrePersist
-	public void prePersist() {
-		createdBy = lastModifiedBy = "SYSTEM";
-		createdDateTime = lastModifiedDateTime = java.time.LocalDateTime.now();
-	}
-
-	@PreUpdate
-	public void preUpdate() {
-		lastModifiedBy = "SYSTEM";
-		lastModifiedDateTime = java.time.LocalDateTime.now();
-	}
-
 }

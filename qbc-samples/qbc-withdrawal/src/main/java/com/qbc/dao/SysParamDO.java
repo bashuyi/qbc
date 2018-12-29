@@ -1,59 +1,34 @@
 package com.qbc.dao;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.GenericGenerator;
+import com.qbc.core.dao.AbstractDO;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * 系统用户表实体类
  *
  * @author Ma
  */
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "sys_param")
-public class SysParamDO {
+public class SysParamDO extends AbstractDO {
 
-	@Id
-	@GeneratedValue(generator = "idGenerator")
-	@GenericGenerator(name = "idGenerator", strategy = "cn.izern.hibernate.id.IDSequenceGenerator")
-	private Long id;
-
-	private String createdBy;
-
-	private java.time.LocalDateTime createdDateTime;
-
-	private String lastModifiedBy;
-
-	private java.time.LocalDateTime lastModifiedDateTime;
-
-	private Boolean deleted;
-
+	/** 系统参数键 */
 	private String paramKey;
 
+	/** 系统参数名 */
 	private String paramName;
 
+	/** 系统参数值 */
 	private String paramValue;
 
+	/** 备注 */
 	private String comment;
-
-	@PrePersist
-	public void prePersist() {
-		createdBy = lastModifiedBy = "SYSTEM";
-		createdDateTime = lastModifiedDateTime = java.time.LocalDateTime.now();
-	}
-
-	@PreUpdate
-	public void preUpdate() {
-		lastModifiedBy = "SYSTEM";
-		lastModifiedDateTime = java.time.LocalDateTime.now();
-	}
 
 }

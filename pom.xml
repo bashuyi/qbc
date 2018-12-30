@@ -30,6 +30,7 @@
 		<guava.version>27.0.1-jre</guava.version>
 		<commons-text.version>1.6</commons-text.version>
 		<sequence.version>1.0.0</sequence.version>
+		<janino.version>3.0.11</janino.version>
 	</properties>
 
 	<dependencyManagement>
@@ -88,6 +89,12 @@
 				<groupId>com.qbc</groupId>
 				<artifactId>qbc-spring-boot-starter</artifactId>
 				<version>${revision}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.codehaus.janino</groupId>
+				<artifactId>janino</artifactId>
+				<version>${janino.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

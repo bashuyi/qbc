@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 @Configuration
 public class JacksonConfig {
@@ -20,6 +21,9 @@ public class JacksonConfig {
 		objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
 		// 忽略空值
 		objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+		// Java8时间格式序列化
+		objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+		objectMapper.registerModule(new JavaTimeModule());
 		return objectMapper;
 	}
 

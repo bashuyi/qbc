@@ -1,5 +1,6 @@
 package com.qbc.dao.core;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import javax.persistence.Id;
@@ -9,13 +10,13 @@ import javax.persistence.PreUpdate;
 
 import com.qbc.utils.core.SnowflakeUtils;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 @MappedSuperclass
-public abstract class AbstractDO {
+public abstract class AbstractDO implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	/** ID */
 	@Id

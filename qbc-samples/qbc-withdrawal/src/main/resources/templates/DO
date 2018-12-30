@@ -3,21 +3,23 @@ package com.qbc.dao;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-import com.qbc.core.dao.AbstractDO;
+import com.qbc.dao.core.AbstractDO;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * ${remarks}实体类
  *
  * @author Ma
  */
-@Getter
-@Setter
+@Data
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "${tableName}")
 public class ${className}DO extends AbstractDO {
+
+	private static final long serialVersionUID = 1L;
 
 	<#list columnInfos as columnInfo>
 	<#if columnInfo_index gt 5>

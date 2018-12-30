@@ -5,19 +5,21 @@ import javax.persistence.Table;
 
 import com.qbc.dao.core.AbstractDO;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * 系统用户表实体类
  *
  * @author Ma
  */
-@Getter
-@Setter
+@Data
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "sys_param")
 public class SysParamDO extends AbstractDO {
+
+	private static final long serialVersionUID = 1L;
 
 	/** 系统参数键 */
 	private String paramKey;

@@ -1,4 +1,4 @@
-package com.qbc.api;
+package com.qbc.api.core;
 
 public class ApiController {
 

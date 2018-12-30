@@ -1,11 +1,11 @@
-package com.qbc.api;
+package com.qbc.api.core;
 
 import java.io.Serializable;
 
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Data
+@Getter
 @NoArgsConstructor
 public class ResultBean<T> implements Serializable {
 
@@ -13,7 +13,13 @@ public class ResultBean<T> implements Serializable {
 
 	public static final int SUCCESS = 0;
 
-	public static final int FAILURE = 1;
+	public static final int CHECK_FAILURE = 1;
+
+	public static final int NO_LOGIN = 2;
+
+	public static final int NO_PERMISSION = 3;
+
+	public static final int FAILURE = 4;
 
 	private int code = SUCCESS;
 
@@ -36,6 +42,10 @@ public class ResultBean<T> implements Serializable {
 		super();
 		this.code = FAILURE;
 		this.message = e.getMessage();
+	}
+
+	public boolean isSuccess() {
+		return code == SUCCESS;
 	}
 
 }

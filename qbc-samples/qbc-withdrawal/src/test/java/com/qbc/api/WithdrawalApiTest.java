@@ -15,7 +15,7 @@ public class WithdrawalApiTest {
 
 	@Test
 	public void testWithdrawal() {
-		withdrawalApi.withdrawal();
+		withdrawalApi.withdrawal(null);
 	}
 
 }

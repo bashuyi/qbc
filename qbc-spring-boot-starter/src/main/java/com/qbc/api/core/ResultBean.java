@@ -13,7 +13,7 @@ public class ResultBean<T> implements Serializable {
 
 	public static final int SUCCESS = 0;
 
-	public static final int CHECK_FAILURE = 1;
+	public static final int INVALID = 1;
 
 	public static final int NO_LOGIN = 2;
 

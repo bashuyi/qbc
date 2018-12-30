@@ -10,9 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.qbc.exception.CheckException;
 import com.qbc.exception.NoLoginException;
 import com.qbc.exception.NoPermissionException;
+import com.qbc.exception.ValidException;
 
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -38,9 +38,9 @@ public class ApiAspect {
 		ResultBean<?> resultBean = new ResultBean<>();
 		try {
 			resultBean = (ResultBean<?>) ObjectUtils.defaultIfNull(joinPoint.proceed(), new ResultBean<>());
-		} catch (CheckException e) {
+		} catch (ValidException e) {
 			// 校验异常
-			resultBean = new ResultBean<>(ResultBean.CHECK_FAILURE, e.getMessage());
+			resultBean = new ResultBean<>(ResultBean.INVALID, e.getMessage());
 		} catch (NoLoginException e) {
 			// 未登录异常
 			resultBean = new ResultBean<>(ResultBean.NO_LOGIN, e.getMessage());

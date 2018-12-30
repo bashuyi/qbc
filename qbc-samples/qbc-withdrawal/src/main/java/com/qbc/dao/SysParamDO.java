@@ -3,7 +3,7 @@ package com.qbc.dao;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-import com.qbc.core.dao.AbstractDO;
+import com.qbc.dao.core.AbstractDO;
 
 import lombok.Getter;
 import lombok.Setter;

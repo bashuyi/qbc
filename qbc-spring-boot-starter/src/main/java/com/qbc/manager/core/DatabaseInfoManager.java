@@ -1,4 +1,4 @@
-package com.qbc.core.manager;
+package com.qbc.manager.core;
 
 import java.math.BigDecimal;
 import java.sql.Connection;
@@ -25,9 +25,9 @@ import com.baomidou.dynamic.datasource.DynamicRoutingDataSource;
 import com.google.common.base.CaseFormat;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
-import com.qbc.core.manager.DatabaseInfoDTO.ColumnInfo;
-import com.qbc.core.manager.DatabaseInfoDTO.TableInfo;
-import com.qbc.core.utils.QbcStringUtils;
+import com.qbc.manager.core.DatabaseInfoDTO.ColumnInfo;
+import com.qbc.manager.core.DatabaseInfoDTO.TableInfo;
+import com.qbc.utils.core.QbcStringUtils;
 
 import lombok.SneakyThrows;
 

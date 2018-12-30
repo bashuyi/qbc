@@ -1,4 +1,4 @@
-package com.qbc.core.utils;
+package com.qbc.utils.core;
 
 import cn.izern.sequence.Sequence;
 import lombok.experimental.UtilityClass;

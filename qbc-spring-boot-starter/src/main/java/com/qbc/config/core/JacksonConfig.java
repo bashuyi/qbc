@@ -1,4 +1,4 @@
-package com.qbc.core.config;
+package com.qbc.config.core;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,4 +1,4 @@
-package com.qbc.core.config;
+package com.qbc.config.core;
 
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration;

@@ -1,4 +1,4 @@
-package com.qbc.core.dao;
+package com.qbc.dao.core;
 
 import java.time.LocalDateTime;
 
@@ -7,7 +7,7 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 
-import com.qbc.core.utils.SnowflakeUtils;
+import com.qbc.utils.core.SnowflakeUtils;
 
 import lombok.Getter;
 import lombok.Setter;

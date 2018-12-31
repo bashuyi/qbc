@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class ResultBean<T> implements Serializable {
+public class ApiResult<T> implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -27,21 +27,15 @@ public class ResultBean<T> implements Serializable {
 
 	private T data;
 
-	public ResultBean(T data) {
+	public ApiResult(T data) {
 		super();
 		this.data = data;
 	}
 
-	public ResultBean(int code, String message) {
+	public ApiResult(int code, String message) {
 		super();
 		this.code = code;
 		this.message = message;
-	}
-
-	public ResultBean(Throwable e) {
-		super();
-		this.code = FAILURE;
-		this.message = e.getMessage();
 	}
 
 	public boolean isSuccess() {

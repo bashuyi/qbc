@@ -43,42 +43,40 @@ public class ApiAspect {
 	public Object around(ProceedingJoinPoint joinPoint) {
 		Signature signature = joinPoint.getSignature();
 		long startTime = System.currentTimeMillis();
-		ResultBean<?> resultBean = new ResultBean<>();
+		ApiResult<?> ApiResult = new ApiResult<>();
 		try {
 			Object returnVal = joinPoint.proceed();
-			if (returnVal != null) {
-				if (returnVal instanceof ResultBean<?>) {
-					resultBean = (ResultBean<?>) ObjectUtils.defaultIfNull(joinPoint.proceed(), new ResultBean<>());
-				} else {
-					resultBean = new ResultBean<>(returnVal);
-				}
+			if (returnVal instanceof ApiResult<?>) {
+				ApiResult = (ApiResult<?>) ObjectUtils.defaultIfNull(returnVal, new ApiResult<>());
+			} else {
+				ApiResult = new ApiResult<>(returnVal);
 			}
 		} catch (ConstraintViolationException e) {
 			// 校验异常
-			resultBean = new ResultBean<>(ResultBean.INVALID, e.getMessage());
+			ApiResult = new ApiResult<>(ApiResult.INVALID, e.getMessage());
 		} catch (NoLoginException e) {
 			// 未登录异常
-			resultBean = new ResultBean<>(ResultBean.NO_LOGIN, e.getMessage());
+			ApiResult = new ApiResult<>(ApiResult.NO_LOGIN, e.getMessage());
 		} catch (NoPermissionException e) {
 			// 没有权限异常
-			resultBean = new ResultBean<>(ResultBean.NO_PERMISSION, e.getMessage());
+			ApiResult = new ApiResult<>(ApiResult.NO_PERMISSION, e.getMessage());
 		} catch (Throwable e) {
 			// 未知异常
 			// TODO 发邮件等方式通知开发人员
 			log.error(String.format("%s.%s未知异常", signature.getDeclaringTypeName(), signature.getName()), e);
-			resultBean = new ResultBean<>(ResultBean.FAILURE, e.getMessage());
+			ApiResult = new ApiResult<>(ApiResult.FAILURE, e.getMessage());
 		} finally {
-			if (resultBean.isSuccess() == false) {
-				log.error(getMessage(joinPoint, startTime, resultBean));
+			if (ApiResult.isSuccess() == false) {
+				log.error(getMessage(joinPoint, startTime, ApiResult));
 			} else if (log.isDebugEnabled()) {
-				log.debug(getMessage(joinPoint, startTime, resultBean));
+				log.debug(getMessage(joinPoint, startTime, ApiResult));
 			}
 		}
-		return resultBean;
+		return ApiResult;
 	}
 
 	@SneakyThrows
-	private String getMessage(ProceedingJoinPoint joinPoint, long startTime, ResultBean<?> resultBean) {
+	private String getMessage(ProceedingJoinPoint joinPoint, long startTime, ApiResult<?> ApiResult) {
 		MethodSignature signature = (MethodSignature) joinPoint.getSignature();
 		// 获得类名
 		String className = signature.getDeclaringTypeName();
@@ -105,7 +103,7 @@ public class ApiAspect {
 		String parameter = objectMapper.writeValueAsString(parameterMap);
 
 		// 获得返回值
-		String data = objectMapper.writeValueAsString(resultBean.getData());
+		String data = objectMapper.writeValueAsString(ApiResult.getData());
 
 		StringBuffer message = new StringBuffer();
 		message.append(System.lineSeparator());
@@ -119,9 +117,9 @@ public class ApiAspect {
 		message.append(System.lineSeparator());
 		message.append(String.format("┣ 请求时间：%dms", System.currentTimeMillis() - startTime));
 		message.append(System.lineSeparator());
-		message.append(String.format("┣ 结果代码：%d", resultBean.getCode()));
+		message.append(String.format("┣ 结果代码：%d", ApiResult.getCode()));
 		message.append(System.lineSeparator());
-		message.append(String.format("┣ 结果消息：%s", resultBean.getMessage()));
+		message.append(String.format("┣ 结果消息：%s", ApiResult.getMessage()));
 		message.append(System.lineSeparator());
 		message.append(String.format("┣ 结果内容：%s", data));
 		message.append(System.lineSeparator());

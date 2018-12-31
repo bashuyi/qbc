@@ -7,8 +7,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
-import com.qbc.manager.core.JobDTO;
-import com.qbc.manager.core.JobManager;
+import com.qbc.biz.core.JobDTO;
+import com.qbc.biz.core.JobManager;
 import com.slyak.spring.jpa.GenericJpaRepositoryFactoryBean;
 import com.slyak.spring.jpa.GenericJpaRepositoryImpl;
 

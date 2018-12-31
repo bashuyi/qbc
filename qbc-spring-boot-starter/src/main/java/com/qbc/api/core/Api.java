@@ -18,6 +18,7 @@ public @interface Api {
 	@AliasFor(annotation = Component.class)
 	String value() default "";
 
+	@AliasFor("value")
 	String name() default "";
 
 }

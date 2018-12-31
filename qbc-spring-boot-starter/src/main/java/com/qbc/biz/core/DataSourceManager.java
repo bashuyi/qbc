@@ -1,4 +1,4 @@
-package com.qbc.manager.core;
+package com.qbc.biz.core;
 
 import java.util.function.Supplier;
 

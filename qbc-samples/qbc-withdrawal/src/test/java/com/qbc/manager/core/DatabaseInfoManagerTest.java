@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.qbc.manager.core.DatabaseInfoDTO;
-import com.qbc.manager.core.DatabaseInfoManager;
+import com.qbc.biz.core.DatabaseInfoBvo;
+import com.qbc.biz.core.DatabaseInfoManager;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -18,7 +18,7 @@ public class DatabaseInfoManagerTest {
 
 	@Test
 	public void testGetDatabaseInfoBVO() {
-		DatabaseInfoDTO databaseInfoDTO = databaseInfoManager.getDatabaseInfoBVO();
+		DatabaseInfoBvo databaseInfoDTO = databaseInfoManager.getDatabaseInfoBVO();
 		System.out.println(databaseInfoDTO);
 	}
 

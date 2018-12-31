@@ -1,4 +1,4 @@
-package com.qbc.manager.core;
+package com.qbc.biz.core;
 
 import java.math.BigDecimal;
 import java.sql.Connection;
@@ -25,8 +25,8 @@ import com.baomidou.dynamic.datasource.DynamicRoutingDataSource;
 import com.google.common.base.CaseFormat;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
-import com.qbc.manager.core.DatabaseInfoDTO.ColumnInfo;
-import com.qbc.manager.core.DatabaseInfoDTO.TableInfo;
+import com.qbc.biz.core.DatabaseInfoBvo.ColumnInfo;
+import com.qbc.biz.core.DatabaseInfoBvo.TableInfo;
 import com.qbc.utils.core.QbcStringUtils;
 
 import lombok.SneakyThrows;
@@ -70,7 +70,7 @@ public class DatabaseInfoManager {
 	 * @return 数据库所有表和试图信息
 	 */
 	@SneakyThrows
-	public DatabaseInfoDTO getDatabaseInfoBVO(String ds, String catalog, String schemaPattern, String tableNamePattern,
+	public DatabaseInfoBvo getDatabaseInfoBVO(String ds, String catalog, String schemaPattern, String tableNamePattern,
 			TableType[] tableTypes, Map<JDBCType, String> jdbcTypeMap) {
 		tableTypes = ObjectUtils.defaultIfNull(tableTypes, TableType.values());
 		String[] types = Arrays.asList(tableTypes).stream().map(tableType -> tableType.name()).toArray(String[]::new);
@@ -128,7 +128,7 @@ public class DatabaseInfoManager {
 		}
 
 		// 实例化数据库信息实体，并设置数据库信息到实体中。
-		DatabaseInfoDTO databaseInfoBVO = new DatabaseInfoDTO();
+		DatabaseInfoBvo databaseInfoBVO = new DatabaseInfoBvo();
 		databaseInfoBVO.setDatabaseProductName(databaseMetaData.getDatabaseProductName());
 		databaseInfoBVO.setDatabaseProductVersion(databaseMetaData.getDatabaseProductVersion());
 		databaseInfoBVO.setTableInfos(tableInfos);
@@ -196,7 +196,7 @@ public class DatabaseInfoManager {
 	 * @param ds 数据源名称
 	 * @return 数据库所有表和试图信息
 	 */
-	public DatabaseInfoDTO getDatabaseInfoBVO(String ds) {
+	public DatabaseInfoBvo getDatabaseInfoBVO(String ds) {
 		return getDatabaseInfoBVO(ds, null, null, null, null, null);
 	}
 
@@ -205,7 +205,7 @@ public class DatabaseInfoManager {
 	 * 
 	 * @return 数据库所有表和试图信息
 	 */
-	public DatabaseInfoDTO getDatabaseInfoBVO() {
+	public DatabaseInfoBvo getDatabaseInfoBVO() {
 		return getDatabaseInfoBVO(null);
 	}
 

@@ -1,4 +1,4 @@
-package com.qbc.manager.core;
+package com.qbc.biz.core;
 
 import java.io.File;
 import java.nio.charset.StandardCharsets;
@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
-import com.qbc.manager.core.DatabaseInfoDTO.TableInfo;
+import com.qbc.biz.core.DatabaseInfoBvo.TableInfo;
 import com.qbc.utils.core.QbcStringUtils;
 
 import freemarker.template.Configuration;
@@ -21,7 +21,7 @@ import freemarker.template.Template;
 import lombok.SneakyThrows;
 
 @Component
-public class CodeGeneratorManager {
+public class CodeGeneratorBiz {
 
 	@Autowired
 	private Configuration configuration;
@@ -75,7 +75,7 @@ public class CodeGeneratorManager {
 	 * @param databaseInfoDTO 数据库信息
 	 */
 	@SneakyThrows
-	public void generateAll(String templateName, String packageName, DatabaseInfoDTO databaseInfoDTO) {
+	public void generateAll(String templateName, String packageName, DatabaseInfoBvo databaseInfoDTO) {
 		databaseInfoDTO.getTableInfos().forEach(tableInfo -> generate(templateName, packageName, tableInfo));
 	}
 

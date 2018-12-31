@@ -1,4 +1,4 @@
-package com.qbc.api.core;
+package com.qbc.service.core;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -7,16 +7,20 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import org.springframework.core.annotation.AliasFor;
+import org.springframework.stereotype.Component;
 
-@Target(ElementType.METHOD)
+/**
+ * 开放接口：直接封装 Service 方法暴露成 RPC 接口。
+ *
+ * @author Ma
+ */
+@Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface ApiMethod {
+@Component
+public @interface OpenInterface {
 
-	@AliasFor("name")
+	@AliasFor(annotation = Component.class)
 	String value() default "";
-
-	@AliasFor("value")
-	String name() default "";
 
 }

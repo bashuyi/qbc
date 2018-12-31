@@ -1,13 +1,19 @@
-package com.qbc.api.core;
+package com.qbc.service.core;
 
 import java.io.Serializable;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+/**
+ * 开放接口层的统一返回结果
+ *
+ * @author Ma
+ * @param <T> 结果数据的类型
+ */
 @Getter
 @NoArgsConstructor
-public class ApiResult<T> implements Serializable {
+public class OpenInterfaceResult<T> implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -27,12 +33,12 @@ public class ApiResult<T> implements Serializable {
 
 	private T data;
 
-	public ApiResult(T data) {
+	public OpenInterfaceResult(T data) {
 		super();
 		this.data = data;
 	}
 
-	public ApiResult(int code, String message) {
+	public OpenInterfaceResult(int code, String message) {
 		super();
 		this.code = code;
 		this.message = message;

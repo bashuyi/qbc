@@ -1,4 +1,4 @@
-package com.qbc.api.core;
+package com.qbc.service.core;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -6,19 +6,11 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.springframework.core.annotation.AliasFor;
-import org.springframework.stereotype.Component;
-
-@Target(ElementType.TYPE)
+@Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-@Component
-public @interface API {
+public @interface OpenInterfaceMethod {
 
-	@AliasFor(annotation = Component.class)
 	String value() default "";
-
-	@AliasFor("value")
-	String name() default "";
 
 }

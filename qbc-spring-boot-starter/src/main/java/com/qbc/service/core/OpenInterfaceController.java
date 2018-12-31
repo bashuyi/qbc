@@ -1,4 +1,4 @@
-package com.qbc.api.core;
+package com.qbc.service.core;
 
 import java.util.Map;
 
@@ -14,13 +14,13 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
-public class DispatchController {
+public class OpenInterfaceController {
 
 	@Autowired
 	private ApplicationContext applicationContext;
 
 	@PostMapping(value = "${qbc.api.url}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public String dispatch(@RequestBody RequestBean requestBean) {
+	public String dispatch(@RequestBody OpenInterfaceRequest requestBean) {
 		String apiName = requestBean.getApi();
 		String apiMethodName = requestBean.getMethod();
 		Map<String, Object> args = requestBean.getArgs();

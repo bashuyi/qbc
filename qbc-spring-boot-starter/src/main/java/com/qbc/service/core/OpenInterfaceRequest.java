@@ -1,4 +1,4 @@
-package com.qbc.api.core;
+package com.qbc.service.core;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -6,7 +6,7 @@ import java.util.Map;
 import lombok.Data;
 
 @Data
-public class RequestBean {
+public class OpenInterfaceRequest {
 
 	private String api;
 

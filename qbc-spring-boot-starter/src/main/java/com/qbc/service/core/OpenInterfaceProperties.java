@@ -1,4 +1,4 @@
-package com.qbc.api.core;
+package com.qbc.service.core;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
@@ -9,12 +9,12 @@ import lombok.Setter;
 @Getter
 @Setter
 @Configuration
-@ConfigurationProperties("qbc.api")
-public class ApiProperties {
+@ConfigurationProperties("qbc.open-interface")
+public class OpenInterfaceProperties {
 
 	/**
-	 * 外部接口URL
+	 * 开放接口的访问路径
 	 */
-	private String url = "api";
+	private String path;
 
 }

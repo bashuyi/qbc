@@ -4,9 +4,9 @@ import javax.validation.constraints.NotEmpty;
 
 import org.springframework.validation.annotation.Validated;
 
-import com.qbc.api.core.API;
+import com.qbc.service.core.OpenInterface;
 
-@API
+@OpenInterface
 @Validated
 public class WithdrawalApi {
 

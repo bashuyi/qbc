@@ -3,7 +3,7 @@ package com.qbc.biz.core;
 import lombok.Data;
 
 @Data
-public class JobDTO {
+public class JobBVO {
 
 	private String jobName;
 

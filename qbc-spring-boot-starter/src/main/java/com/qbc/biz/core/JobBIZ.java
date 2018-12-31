@@ -16,29 +16,29 @@ import org.springframework.stereotype.Component;
 import lombok.SneakyThrows;
 
 @Component
-public class JobManager {
+public class JobBIZ {
 
 	@Autowired
 	private Scheduler scheduler;
 
 	@SneakyThrows
 	@SuppressWarnings("unchecked")
-	public Date addJob(JobDTO jobDTO) {
-		Class<Job> jobClass = (Class<Job>) Class.forName(jobDTO.getJobClassName());
-		JobDetail jobDetail = JobBuilder.newJob(jobClass).withIdentity(jobDTO.getJobName(), jobDTO.getJobGroupName())
+	public Date addJob(JobBVO jobBVO) {
+		Class<Job> jobClass = (Class<Job>) Class.forName(jobBVO.getJobClassName());
+		JobDetail jobDetail = JobBuilder.newJob(jobClass).withIdentity(jobBVO.getJobName(), jobBVO.getJobGroupName())
 				.build();
 		Trigger trigger = TriggerBuilder.newTrigger()
-				.withIdentity(jobDTO.getTriggerName(), jobDTO.getTriggerGroupName())
-				.withSchedule(CronScheduleBuilder.cronSchedule(jobDTO.getCronExpression())).build();
+				.withIdentity(jobBVO.getTriggerName(), jobBVO.getTriggerGroupName())
+				.withSchedule(CronScheduleBuilder.cronSchedule(jobBVO.getCronExpression())).build();
 		return scheduler.scheduleJob(jobDetail, trigger);
 	}
 
 	@SneakyThrows
-	public Date updateJob(JobDTO jobDTO) {
-		TriggerKey triggerKey = new TriggerKey(jobDTO.getTriggerName(), jobDTO.getTriggerGroupName());
+	public Date updateJob(JobBVO jobBVO) {
+		TriggerKey triggerKey = new TriggerKey(jobBVO.getTriggerName(), jobBVO.getTriggerGroupName());
 		Trigger trigger = TriggerBuilder.newTrigger()
-				.withIdentity(jobDTO.getTriggerName(), jobDTO.getTriggerGroupName())
-				.withSchedule(CronScheduleBuilder.cronSchedule(jobDTO.getCronExpression())).build();
+				.withIdentity(jobBVO.getTriggerName(), jobBVO.getTriggerGroupName())
+				.withSchedule(CronScheduleBuilder.cronSchedule(jobBVO.getCronExpression())).build();
 		return scheduler.rescheduleJob(triggerKey, trigger);
 	}
 

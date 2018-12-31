@@ -13,7 +13,7 @@ import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DataSourceProperty;
 
 @Component
-public class DataSourceManager {
+public class DataSourceBIZ {
 
 	@Autowired
 	private DynamicRoutingDataSource dynamicRoutingDataSource;
@@ -24,22 +24,19 @@ public class DataSourceManager {
 	/**
 	 * 在指定数据源执行操作
 	 * 
-	 * @param ds
-	 *            数据源名称
-	 * @param supplier
-	 *            要执行的操作
+	 * @param dataSourceName 数据源名称
+	 * @param supplier       要执行的操作
 	 * @return 操作的返回值
 	 */
-	@DS("#ds")
-	public <T> T excute(String ds, Supplier<T> supplier) {
+	@DS("#dataSourceName")
+	public <T> T excute(String dataSourceName, Supplier<T> supplier) {
 		return supplier.get();
 	}
 
 	/**
 	 * 在指定数据源执行操作
 	 * 
-	 * @param ds
-	 *            数据源名称
+	 * @param ds 数据源名称
 	 */
 	@DS("#ds")
 	public void excute(String ds, Runnable runnable) {
@@ -49,35 +46,31 @@ public class DataSourceManager {
 	/**
 	 * 添加数据源
 	 * 
-	 * @param ds
-	 *            数据源名称
-	 * @param dataSourceProperty
-	 *            数据源属性
+	 * @param dataSourceName     数据源名称
+	 * @param dataSourceProperty 数据源属性
 	 */
-	public void addDataSource(String ds, DataSourceProperty dataSourceProperty) {
+	public void addDataSource(String dataSourceName, DataSourceProperty dataSourceProperty) {
 		DataSource dataSource = dynamicDataSourceCreator.createDataSource(dataSourceProperty);
-		dynamicRoutingDataSource.addDataSource(ds, dataSource);
+		dynamicRoutingDataSource.addDataSource(dataSourceName, dataSource);
 	}
 
 	/**
 	 * 移除数据源
 	 * 
-	 * @param ds
-	 *            数据源名称
+	 * @param dataSourceName 数据源名称
 	 */
-	public void removeDataSource(String ds) {
-		dynamicRoutingDataSource.removeDataSource(ds);
+	public void removeDataSource(String dataSourceName) {
+		dynamicRoutingDataSource.removeDataSource(dataSourceName);
 	}
 
 	/**
 	 * 获得数据源
 	 * 
-	 * @param ds
-	 *            数据源名称
+	 * @param dataSourceName 数据源名称
 	 * @return 数据源
 	 */
-	public DataSource getDataSource(String ds) {
-		return dynamicRoutingDataSource.getDataSource(ds);
+	public DataSource getDataSource(String dataSourceName) {
+		return dynamicRoutingDataSource.getDataSource(dataSourceName);
 	}
 
 }

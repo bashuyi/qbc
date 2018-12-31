@@ -5,7 +5,7 @@ import java.util.List;
 import lombok.Data;
 
 @Data
-public class DatabaseInfoBvo {
+public class DatabaseInfoBVO {
 
 	/**
 	 * 数据库产品的名称

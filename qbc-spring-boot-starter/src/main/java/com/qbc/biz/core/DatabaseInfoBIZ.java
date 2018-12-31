@@ -25,33 +25,27 @@ import com.baomidou.dynamic.datasource.DynamicRoutingDataSource;
 import com.google.common.base.CaseFormat;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
-import com.qbc.biz.core.DatabaseInfoBvo.ColumnInfo;
-import com.qbc.biz.core.DatabaseInfoBvo.TableInfo;
+import com.qbc.biz.core.DatabaseInfoBVO.ColumnInfo;
+import com.qbc.biz.core.DatabaseInfoBVO.TableInfo;
 import com.qbc.utils.core.QbcStringUtils;
 
 import lombok.SneakyThrows;
 
 @Component
-public class DatabaseInfoManager {
+public class DatabaseInfoBIZ {
 
 	private static final String DATABASE_POSTGRE_SQL = "PostgreSQL";
 
 	@Autowired
 	private DynamicRoutingDataSource dynamicRoutingDataSource;
 
-	/**
-	 * 表类型
-	 */
+	/** 表类型 */
 	public enum TableType {
 
-		/**
-		 * 表
-		 */
+		/** 表 */
 		TABLE,
 
-		/**
-		 * 视图
-		 */
+		/** 视图 */
 		VIEW
 
 	}
@@ -59,7 +53,7 @@ public class DatabaseInfoManager {
 	/**
 	 * 获得数据库所有表和试图信息
 	 * 
-	 * @param ds               数据源名称
+	 * @param dataSourceName   数据源名称
 	 * @param catalog          类别名称；它必须与存储在数据库中的类别名称匹配；该参数为 "" 表示获取没有类别的那些描述；为null
 	 *                         则表示该类别名称不应该用于缩小搜索范围
 	 * @param schemaPattern    模式名称的模式； 它必须与存储在数据库中的模式名称匹配； 该参数为 "" 表示获取没有模式的那些描述；
@@ -70,8 +64,8 @@ public class DatabaseInfoManager {
 	 * @return 数据库所有表和试图信息
 	 */
 	@SneakyThrows
-	public DatabaseInfoBvo getDatabaseInfoBVO(String ds, String catalog, String schemaPattern, String tableNamePattern,
-			TableType[] tableTypes, Map<JDBCType, String> jdbcTypeMap) {
+	public DatabaseInfoBVO getDatabaseInfoBVO(String dataSourceName, String catalog, String schemaPattern,
+			String tableNamePattern, TableType[] tableTypes, Map<JDBCType, String> jdbcTypeMap) {
 		tableTypes = ObjectUtils.defaultIfNull(tableTypes, TableType.values());
 		String[] types = Arrays.asList(tableTypes).stream().map(tableType -> tableType.name()).toArray(String[]::new);
 
@@ -79,7 +73,7 @@ public class DatabaseInfoManager {
 		jdbcTypeMap = ObjectUtils.defaultIfNull(jdbcTypeMap, new HashMap<>(0));
 		defaultJdbcTypeMap.putAll(jdbcTypeMap);
 
-		Connection connection = dynamicRoutingDataSource.getDataSource(ds).getConnection();
+		Connection connection = dynamicRoutingDataSource.getDataSource(dataSourceName).getConnection();
 		DatabaseMetaData databaseMetaData = connection.getMetaData();
 
 		// PostgreSQL时，默认不查询系统表
@@ -89,8 +83,8 @@ public class DatabaseInfoManager {
 		}
 
 		// 获得所有字段信息
-		Table<String, String, ColumnInfo> columnInfoTable = getColumnInfoTable(catalog, schemaPattern, defaultJdbcTypeMap,
-				databaseMetaData);
+		Table<String, String, ColumnInfo> columnInfoTable = getColumnInfoTable(catalog, schemaPattern,
+				defaultJdbcTypeMap, databaseMetaData);
 
 		// 设置主键
 		ResultSet primaryKeyResultSet = databaseMetaData.getPrimaryKeys(catalog, schemaPattern, null);
@@ -128,7 +122,7 @@ public class DatabaseInfoManager {
 		}
 
 		// 实例化数据库信息实体，并设置数据库信息到实体中。
-		DatabaseInfoBvo databaseInfoBVO = new DatabaseInfoBvo();
+		DatabaseInfoBVO databaseInfoBVO = new DatabaseInfoBVO();
 		databaseInfoBVO.setDatabaseProductName(databaseMetaData.getDatabaseProductName());
 		databaseInfoBVO.setDatabaseProductVersion(databaseMetaData.getDatabaseProductVersion());
 		databaseInfoBVO.setTableInfos(tableInfos);
@@ -193,11 +187,11 @@ public class DatabaseInfoManager {
 	/**
 	 * 获得数据库所有表和试图信息
 	 * 
-	 * @param ds 数据源名称
+	 * @param dataSourceName 数据源名称
 	 * @return 数据库所有表和试图信息
 	 */
-	public DatabaseInfoBvo getDatabaseInfoBVO(String ds) {
-		return getDatabaseInfoBVO(ds, null, null, null, null, null);
+	public DatabaseInfoBVO getDatabaseInfoBVO(String dataSourceName) {
+		return getDatabaseInfoBVO(dataSourceName, null, null, null, null, null);
 	}
 
 	/**
@@ -205,7 +199,7 @@ public class DatabaseInfoManager {
 	 * 
 	 * @return 数据库所有表和试图信息
 	 */
-	public DatabaseInfoBvo getDatabaseInfoBVO() {
+	public DatabaseInfoBVO getDatabaseInfoBVO() {
 		return getDatabaseInfoBVO(null);
 	}
 

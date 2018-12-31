@@ -1,4 +1,4 @@
-package com.qbc.api;
+package com.qbc.service;
 
 import javax.validation.constraints.NotEmpty;
 
@@ -8,7 +8,7 @@ import com.qbc.service.core.OpenInterface;
 
 @OpenInterface
 @Validated
-public class WithdrawalApi {
+public class WithdrawalService {
 
 	public void withdrawal(@NotEmpty String id) {
 	}

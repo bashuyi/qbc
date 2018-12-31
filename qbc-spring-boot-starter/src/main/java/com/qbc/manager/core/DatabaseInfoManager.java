@@ -64,7 +64,7 @@ public class DatabaseInfoManager {
 	 * @return 数据库所有表和试图信息
 	 */
 	@SneakyThrows
-	public DatabaseInfoDTO getDatabaseInfoBVO(String dataSourceName, String catalog, String schemaPattern,
+	public DatabaseInfoDTO getDatabaseInfoDTO(String dataSourceName, String catalog, String schemaPattern,
 			String tableNamePattern, TableType[] tableTypes, Map<JDBCType, String> jdbcTypeMap) {
 		tableTypes = ObjectUtils.defaultIfNull(tableTypes, TableType.values());
 		String[] types = Arrays.asList(tableTypes).stream().map(tableType -> tableType.name()).toArray(String[]::new);
@@ -190,8 +190,8 @@ public class DatabaseInfoManager {
 	 * @param dataSourceName 数据源名称
 	 * @return 数据库所有表和试图信息
 	 */
-	public DatabaseInfoDTO getDatabaseInfoBVO(String dataSourceName) {
-		return getDatabaseInfoBVO(dataSourceName, null, null, null, null, null);
+	public DatabaseInfoDTO getDatabaseInfoDTO(String dataSourceName) {
+		return getDatabaseInfoDTO(dataSourceName, null, null, null, null, null);
 	}
 
 	/**
@@ -199,8 +199,8 @@ public class DatabaseInfoManager {
 	 * 
 	 * @return 数据库所有表和试图信息
 	 */
-	public DatabaseInfoDTO getDatabaseInfoBVO() {
-		return getDatabaseInfoBVO(null);
+	public DatabaseInfoDTO getDatabaseInfoDTO() {
+		return getDatabaseInfoDTO(null);
 	}
 
 }

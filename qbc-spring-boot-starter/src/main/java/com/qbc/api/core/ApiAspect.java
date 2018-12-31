@@ -86,7 +86,7 @@ public class ApiAspect {
 		// 获得接口名称
 		Class<?> classType = signature.getDeclaringType();
 		String simpleName = classType.getSimpleName();
-		Api api = classType.getAnnotation(Api.class);
+		API api = classType.getAnnotation(API.class);
 		String apiName = StringUtils.defaultIfEmpty(api.name(), simpleName);
 
 		// 获得接口方法

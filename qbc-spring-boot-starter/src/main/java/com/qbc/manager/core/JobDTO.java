@@ -1,9 +1,9 @@
-package com.qbc.biz.core;
+package com.qbc.manager.core;
 
 import lombok.Data;
 
 @Data
-public class JobBVO {
+public class JobDTO {
 
 	private String jobName;
 

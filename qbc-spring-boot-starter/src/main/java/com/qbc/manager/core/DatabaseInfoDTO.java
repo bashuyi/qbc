@@ -1,11 +1,11 @@
-package com.qbc.biz.core;
+package com.qbc.manager.core;
 
 import java.util.List;
 
 import lombok.Data;
 
 @Data
-public class DatabaseInfoBVO {
+public class DatabaseInfoDTO {
 
 	/**
 	 * 数据库产品的名称

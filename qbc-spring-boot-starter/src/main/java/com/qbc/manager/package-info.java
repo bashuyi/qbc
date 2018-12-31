@@ -6,4 +6,4 @@
  * 
  * @author Ma
  */
-package com.qbc.biz;
+package com.qbc.manager;

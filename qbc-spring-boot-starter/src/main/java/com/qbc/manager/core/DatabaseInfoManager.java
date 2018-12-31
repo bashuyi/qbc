@@ -1,4 +1,4 @@
-package com.qbc.biz.core;
+package com.qbc.manager.core;
 
 import java.math.BigDecimal;
 import java.sql.Connection;
@@ -25,14 +25,14 @@ import com.baomidou.dynamic.datasource.DynamicRoutingDataSource;
 import com.google.common.base.CaseFormat;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
-import com.qbc.biz.core.DatabaseInfoBVO.ColumnInfo;
-import com.qbc.biz.core.DatabaseInfoBVO.TableInfo;
+import com.qbc.manager.core.DatabaseInfoDTO.ColumnInfo;
+import com.qbc.manager.core.DatabaseInfoDTO.TableInfo;
 import com.qbc.utils.core.QbcStringUtils;
 
 import lombok.SneakyThrows;
 
 @Component
-public class DatabaseInfoBIZ {
+public class DatabaseInfoManager {
 
 	private static final String DATABASE_POSTGRE_SQL = "PostgreSQL";
 
@@ -64,7 +64,7 @@ public class DatabaseInfoBIZ {
 	 * @return 数据库所有表和试图信息
 	 */
 	@SneakyThrows
-	public DatabaseInfoBVO getDatabaseInfoBVO(String dataSourceName, String catalog, String schemaPattern,
+	public DatabaseInfoDTO getDatabaseInfoBVO(String dataSourceName, String catalog, String schemaPattern,
 			String tableNamePattern, TableType[] tableTypes, Map<JDBCType, String> jdbcTypeMap) {
 		tableTypes = ObjectUtils.defaultIfNull(tableTypes, TableType.values());
 		String[] types = Arrays.asList(tableTypes).stream().map(tableType -> tableType.name()).toArray(String[]::new);
@@ -122,7 +122,7 @@ public class DatabaseInfoBIZ {
 		}
 
 		// 实例化数据库信息实体，并设置数据库信息到实体中。
-		DatabaseInfoBVO databaseInfoBVO = new DatabaseInfoBVO();
+		DatabaseInfoDTO databaseInfoBVO = new DatabaseInfoDTO();
 		databaseInfoBVO.setDatabaseProductName(databaseMetaData.getDatabaseProductName());
 		databaseInfoBVO.setDatabaseProductVersion(databaseMetaData.getDatabaseProductVersion());
 		databaseInfoBVO.setTableInfos(tableInfos);
@@ -190,7 +190,7 @@ public class DatabaseInfoBIZ {
 	 * @param dataSourceName 数据源名称
 	 * @return 数据库所有表和试图信息
 	 */
-	public DatabaseInfoBVO getDatabaseInfoBVO(String dataSourceName) {
+	public DatabaseInfoDTO getDatabaseInfoBVO(String dataSourceName) {
 		return getDatabaseInfoBVO(dataSourceName, null, null, null, null, null);
 	}
 
@@ -199,7 +199,7 @@ public class DatabaseInfoBIZ {
 	 * 
 	 * @return 数据库所有表和试图信息
 	 */
-	public DatabaseInfoBVO getDatabaseInfoBVO() {
+	public DatabaseInfoDTO getDatabaseInfoBVO() {
 		return getDatabaseInfoBVO(null);
 	}
 

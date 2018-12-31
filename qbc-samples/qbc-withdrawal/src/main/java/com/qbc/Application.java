@@ -7,8 +7,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
-import com.qbc.biz.core.JobBVO;
-import com.qbc.biz.core.JobBIZ;
+import com.qbc.manager.core.JobManager;
+import com.qbc.manager.core.JobDTO;
 import com.slyak.spring.jpa.GenericJpaRepositoryFactoryBean;
 import com.slyak.spring.jpa.GenericJpaRepositoryImpl;
 
@@ -21,12 +21,12 @@ public class Application {
 	}
 	
 	@Autowired
-	private JobBIZ jobManager;
+	private JobManager jobManager;
 
 	@Bean
 	ApplicationRunner applicationRunner() {
 		return args -> {
-			JobBVO jobDTO = new JobBVO();
+			JobDTO jobDTO = new JobDTO();
 			jobDTO.setJobName("StatusQueryJob");
 			jobDTO.setJobGroupName("qbc");
 			jobDTO.setTriggerName("StatusQueryJob");

@@ -14,7 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
-public class ApiController {
+public class DispatchController {
 
 	@Autowired
 	private ApplicationContext applicationContext;

@@ -1,4 +1,4 @@
-package com.qbc.biz.core;
+package com.qbc.manager.core;
 
 import java.util.function.Supplier;
 
@@ -13,7 +13,7 @@ import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DataSourceProperty;
 
 @Component
-public class DataSourceBIZ {
+public class DataSourceManager {
 
 	@Autowired
 	private DynamicRoutingDataSource dynamicRoutingDataSource;

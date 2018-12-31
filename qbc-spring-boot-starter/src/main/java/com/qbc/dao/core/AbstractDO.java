@@ -14,7 +14,7 @@ import lombok.Data;
 
 @Data
 @MappedSuperclass
-public abstract class AbstractDVO implements Serializable {
+public abstract class AbstractDO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 

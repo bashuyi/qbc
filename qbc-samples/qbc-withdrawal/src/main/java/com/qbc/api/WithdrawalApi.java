@@ -2,17 +2,15 @@ package com.qbc.api;
 
 import javax.validation.constraints.NotEmpty;
 
-import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
 
-import com.qbc.api.core.ResultBean;
+import com.qbc.api.core.Api;
 
-@Component
+@Api
 @Validated
 public class WithdrawalApi {
 
-	public ResultBean<Object> withdrawal(@NotEmpty String id) {
-		return new ResultBean<>();
+	public void withdrawal(@NotEmpty String id) {
 	}
 
 }

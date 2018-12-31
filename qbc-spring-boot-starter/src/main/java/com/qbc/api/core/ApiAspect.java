@@ -1,14 +1,19 @@
 package com.qbc.api.core;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+
 import javax.validation.ConstraintViolationException;
 
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
+import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -27,7 +32,10 @@ public class ApiAspect {
 	@Autowired
 	private ObjectMapper objectMapper;
 
-	@Pointcut("execution(public com.qbc.api.core.ResultBean *(..))")
+	/**
+	 * 拦截带有@Api注解的所有类的public方法
+	 */
+	@Pointcut("@within(com.qbc.api.core.Api) && execution(public * *(..))")
 	public void pointcut() {
 	}
 
@@ -37,7 +45,14 @@ public class ApiAspect {
 		long startTime = System.currentTimeMillis();
 		ResultBean<?> resultBean = new ResultBean<>();
 		try {
-			resultBean = (ResultBean<?>) ObjectUtils.defaultIfNull(joinPoint.proceed(), new ResultBean<>());
+			Object returnVal = joinPoint.proceed();
+			if (returnVal != null) {
+				if (returnVal instanceof ResultBean<?>) {
+					resultBean = (ResultBean<?>) ObjectUtils.defaultIfNull(joinPoint.proceed(), new ResultBean<>());
+				} else {
+					resultBean = new ResultBean<>(returnVal);
+				}
+			}
 		} catch (ConstraintViolationException e) {
 			// 校验异常
 			resultBean = new ResultBean<>(ResultBean.INVALID, e.getMessage());
@@ -64,17 +79,43 @@ public class ApiAspect {
 
 	@SneakyThrows
 	private String getMessage(ProceedingJoinPoint joinPoint, long startTime, ResultBean<?> resultBean) {
-		Signature signature = joinPoint.getSignature();
+		MethodSignature signature = (MethodSignature) joinPoint.getSignature();
+		// 获得类名
 		String className = signature.getDeclaringTypeName();
+		// 获得方法名
 		String methodName = signature.getName();
-		String args = ArrayUtils.toString(joinPoint.getArgs());
+
+		// 获得接口名称
+		Class<?> classType = signature.getDeclaringType();
+		String simpleName = classType.getSimpleName();
+		Api api = classType.getAnnotation(Api.class);
+		String apiName = StringUtils.defaultIfEmpty(api.name(), simpleName);
+
+		// 获得接口方法
+		ApiMethod apiMethod = signature.getMethod().getAnnotation(ApiMethod.class);
+		String apiMethodName = Optional.ofNullable(apiMethod).map(ApiMethod::name).orElse(methodName);
+
+		// 获得接口参数
+		String[] parameterNames = signature.getParameterNames();
+		Object[] args = joinPoint.getArgs();
+		Map<String, Object> parameterMap = new HashMap<>();
+		for (int i = 0; i < args.length; i++) {
+			parameterMap.put(parameterNames[i], args[i]);
+		}
+		String parameter = objectMapper.writeValueAsString(parameterMap);
+
+		// 获得返回值
 		String data = objectMapper.writeValueAsString(resultBean.getData());
 
 		StringBuffer message = new StringBuffer();
 		message.append(System.lineSeparator());
 		message.append(String.format("┏━━━━━ [%s.%s] ━━━", className, methodName));
 		message.append(System.lineSeparator());
-		message.append(String.format("┣ 请求参数：%s", args));
+		message.append(String.format("┣ 接口名称：%s", apiName));
+		message.append(System.lineSeparator());
+		message.append(String.format("┣ 接口方法：%s", apiMethodName));
+		message.append(System.lineSeparator());
+		message.append(String.format("┣ 接口参数：%s", parameter));
 		message.append(System.lineSeparator());
 		message.append(String.format("┣ 请求时间：%dms", System.currentTimeMillis() - startTime));
 		message.append(System.lineSeparator());

@@ -2,7 +2,6 @@ package com.qbc.utils.core;
 
 import java.util.Map;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.StringSubstitutor;
 
 import com.google.common.base.CaseFormat;
@@ -10,7 +9,7 @@ import com.google.common.base.CaseFormat;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
-public class QbcStringUtils {
+public class StringUtils {
 
 	/**
 	 * 转换包名为路径名
@@ -19,7 +18,7 @@ public class QbcStringUtils {
 	 * @return 路径名
 	 */
 	public String packageNameToPathName(String packageName) {
-		return StringUtils.replace(packageName, ".", "/");
+		return org.apache.commons.lang3.StringUtils.replace(packageName, ".", "/");
 	}
 
 	/**

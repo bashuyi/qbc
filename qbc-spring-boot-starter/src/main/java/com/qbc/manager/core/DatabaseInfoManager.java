@@ -17,7 +17,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.ObjectUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -27,7 +26,7 @@ import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 import com.qbc.manager.core.DatabaseInfoDTO.ColumnInfo;
 import com.qbc.manager.core.DatabaseInfoDTO.TableInfo;
-import com.qbc.utils.core.QbcStringUtils;
+import com.qbc.utils.core.StringUtils;
 
 import lombok.SneakyThrows;
 
@@ -79,7 +78,7 @@ public class DatabaseInfoManager {
 		// PostgreSQL时，默认不查询系统表
 		String databaseProductName = databaseMetaData.getDatabaseProductName();
 		if (DATABASE_POSTGRE_SQL.equalsIgnoreCase(databaseProductName)) {
-			schemaPattern = StringUtils.defaultString("public");
+			schemaPattern = "public";
 		}
 
 		// 获得所有字段信息
@@ -110,7 +109,7 @@ public class DatabaseInfoManager {
 			tableInfo.setTableName(tableResultSet.getString("TABLE_NAME"));
 			tableInfo.setTableType(tableResultSet.getString("TABLE_TYPE"));
 			tableInfo.setRemarks(tableResultSet.getString("REMARKS"));
-			tableInfo.setClassName(QbcStringUtils.caseFormat(tableInfo.getTableName().toLowerCase(),
+			tableInfo.setClassName(StringUtils.caseFormat(tableInfo.getTableName().toLowerCase(),
 					CaseFormat.LOWER_UNDERSCORE, CaseFormat.UPPER_CAMEL));
 
 			// 设置表的字段信息
@@ -149,7 +148,7 @@ public class DatabaseInfoManager {
 			columnInfo.setRemarks(columnResultSet.getString("REMARKS"));
 			columnInfo.setOrdinalPosition(columnResultSet.getInt("ORDINAL_POSITION"));
 			columnInfo.setAutoincrement("YES".equals(columnResultSet.getString("IS_AUTOINCREMENT")));
-			columnInfo.setFieldName(QbcStringUtils.caseFormat(columnInfo.getColumnName().toLowerCase(),
+			columnInfo.setFieldName(StringUtils.caseFormat(columnInfo.getColumnName().toLowerCase(),
 					CaseFormat.LOWER_UNDERSCORE, CaseFormat.LOWER_CAMEL));
 			columnInfo.setFieldType(jdbcTypeMap.get(JDBCType.valueOf(columnInfo.getDataType())));
 

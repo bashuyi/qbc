@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
 import com.qbc.manager.core.DatabaseInfoDTO.TableInfo;
-import com.qbc.utils.core.QbcStringUtils;
+import com.qbc.utils.core.StringUtils;
 
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -62,7 +62,7 @@ public class CodeGeneratorManager {
 	@SneakyThrows
 	public void generate(String templateName, String packageName, TableInfo tableInfo) {
 		Map<String, Object> param = PropertyUtils.describe(tableInfo);
-		File file = Paths.get("src/main/java", QbcStringUtils.packageNameToPathName(packageName),
+		File file = Paths.get("src/main/java", StringUtils.packageNameToPathName(packageName),
 				tableInfo.getClassName() + templateName + ".java").toFile();
 		generate(templateName, param, file);
 	}

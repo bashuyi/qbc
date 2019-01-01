@@ -8,9 +8,9 @@ import lombok.Data;
 @Data
 public class OpenInterfaceRequest {
 
-	private String api;
+	private String beanName;
 
-	private String method;
+	private String methodName;
 
 	private Map<String, Object> args = new HashMap<>();
 

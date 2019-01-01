@@ -4,8 +4,8 @@ import javax.validation.constraints.NotEmpty;
 
 import org.springframework.validation.annotation.Validated;
 
-import com.qbc.service.core.OpenInterface;
-import com.qbc.service.core.OpenInterfaceMethod;
+import com.qbc.openinterface.OpenInterface;
+import com.qbc.openinterface.OpenInterfaceMethod;
 
 @OpenInterface
 @Validated

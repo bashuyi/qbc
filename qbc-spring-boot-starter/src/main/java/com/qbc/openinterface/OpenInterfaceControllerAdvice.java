@@ -1,4 +1,4 @@
-package com.qbc.service.core;
+package com.qbc.openinterface;
 
 import javax.validation.ConstraintViolationException;
 

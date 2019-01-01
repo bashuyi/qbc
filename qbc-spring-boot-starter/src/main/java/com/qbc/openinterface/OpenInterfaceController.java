@@ -1,4 +1,4 @@
-package com.qbc.service.core;
+package com.qbc.openinterface;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
@@ -10,16 +10,15 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.http.MediaType;
+import org.springframework.stereotype.Controller;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
-@RestController("${qbc.open-interface.path}")
+@Controller("${qbc.open-interface.path}")
 public class OpenInterfaceController {
 
 	@Autowired
@@ -29,6 +28,7 @@ public class OpenInterfaceController {
 	private OpenInterfaceContext openInterfaceContext;
 
 	@PostMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ResponseBody
 	@SneakyThrows
 	public Object dispatch(@RequestBody OpenInterfaceRequest requestBean) {
 		String openInterfaceBeanName = requestBean.getBeanName();

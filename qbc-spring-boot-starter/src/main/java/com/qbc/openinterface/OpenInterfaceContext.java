@@ -1,4 +1,4 @@
-package com.qbc.service.core;
+package com.qbc.openinterface;
 
 import java.lang.reflect.Method;
 import java.util.List;

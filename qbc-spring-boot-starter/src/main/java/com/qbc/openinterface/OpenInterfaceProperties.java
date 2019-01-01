@@ -10,7 +10,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Configuration
-@PropertySource(value = "classpath:qbc.properties", encoding = "UTF-8")
+@PropertySource(value = "classpath:qbc-open-interface.properties", encoding = "UTF-8")
 @ConfigurationProperties("qbc.open-interface")
 public class OpenInterfaceProperties {
 

@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.Map;
 
 import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.http.MediaType;
@@ -33,7 +34,7 @@ public class OpenInterfaceController {
 		String openInterfaceBeanName = requestBean.getBeanName();
 		String openInterfaceMethodName = requestBean.getMethodName();
 		Map<String, Object> args = requestBean.getArgs();
-		Object bean = applicationContext.getBean(openInterfaceBeanName);
+		Object bean = applicationContext.getBean(StringUtils.defaultString(openInterfaceBeanName));
 		Method method = openInterfaceContext.getMethod(openInterfaceBeanName, openInterfaceMethodName);
 		Parameter[] parameters = method.getParameters();
 		Object[] parameterValues = Arrays.asList(parameters).stream().map(parameter -> args.get(parameter.getName()))

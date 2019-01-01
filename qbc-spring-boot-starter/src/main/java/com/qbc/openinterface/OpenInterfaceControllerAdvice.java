@@ -15,16 +15,18 @@ import lombok.extern.slf4j.Slf4j;
 @ControllerAdvice(assignableTypes = OpenInterfaceController.class)
 public class OpenInterfaceControllerAdvice {
 
-	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	@ResponseBody
+	@OpenInterfaceLog
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	@ExceptionHandler({ NoSuchBeanDefinitionException.class, IllegalArgumentException.class,
 			ConstraintViolationException.class })
 	public OpenInterfaceResult<?> handleBadRequest(Throwable e) {
 		return new OpenInterfaceResult<>(HttpStatus.BAD_REQUEST.value(), e.getMessage());
 	}
 
-	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 	@ResponseBody
+	@OpenInterfaceLog
+	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 	@ExceptionHandler(Throwable.class)
 	public OpenInterfaceResult<?> handleInternalServerError(Throwable e) {
 		// TODO 发邮件等方式通知开发人员

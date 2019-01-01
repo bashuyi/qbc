@@ -10,6 +10,7 @@
 	<modules>
 		<module>qbc-spring-boot-starter</module>
 		<module>qbc-samples</module>
+		<module>qbc-cloud</module>
 	</modules>
 
 	<properties>

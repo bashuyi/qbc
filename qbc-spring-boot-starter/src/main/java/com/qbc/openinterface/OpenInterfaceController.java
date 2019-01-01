@@ -9,6 +9,7 @@ import java.util.Map;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.ApplicationContext;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -24,6 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Controller("${qbc.open-interface.path}")
+@ConditionalOnProperty("qbc.open-interface.path")
 public class OpenInterfaceController {
 
 	private static final String LOG_PATTEN = String.join(System.lineSeparator(), "", //

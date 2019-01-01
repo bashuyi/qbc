@@ -10,6 +10,7 @@
 	<artifactId>qbc-cloud</artifactId>
 	<packaging>pom</packaging>
 	<modules>
-		<module>qbc-cloud-uaa</module>
+		<module>qbc-cloud-registry</module>
+		<module>qbc-cloud-gateway</module>
 	</modules>
 </project>

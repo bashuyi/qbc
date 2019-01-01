@@ -25,7 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Controller("${qbc.open-interface.path}")
-@ConditionalOnProperty("qbc.open-interface.path")
+@ConditionalOnProperty(value = "qbc.open-interface.enable", havingValue = "true")
 public class OpenInterfaceController {
 
 	private static final String LOG_PATTEN = String.join(System.lineSeparator(), "", //

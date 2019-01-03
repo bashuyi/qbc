@@ -7,13 +7,13 @@
 		<artifactId>qbc-cloud</artifactId>
 		<version>${revision}</version>
 	</parent>
-	<artifactId>qbc-cloud-registry</artifactId>
+	<artifactId>qbc-cloud-config</artifactId>
 
 	<dependencies>
-		<!-- 注册中心 -->
+		<!-- 配置中心 -->
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
+			<artifactId>spring-cloud-config-server</artifactId>
 		</dependency>
 	</dependencies>
 </project>

@@ -12,6 +12,7 @@
 	<modules>
 		<module>qbc-cloud-registry</module>
 		<module>qbc-cloud-gateway</module>
+		<module>qbc-cloud-config</module>
 	</modules>
 
 	<properties>

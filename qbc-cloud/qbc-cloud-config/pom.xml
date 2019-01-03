@@ -10,10 +10,16 @@
 	<artifactId>qbc-cloud-config</artifactId>
 
 	<dependencies>
-		<!-- 配置中心 -->
+		<!-- 服务配置服务端 -->
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-config-server</artifactId>
+		</dependency>
+
+		<!-- 服务注册客户端 -->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
 		</dependency>
 	</dependencies>
 </project>

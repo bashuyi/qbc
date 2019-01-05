@@ -36,10 +36,10 @@ public class OpenInterfaceAspect {
 	@AfterReturning(value = "pointcut()", returning = "returnValue")
 	@SneakyThrows
 	public void afterReturning(JoinPoint joinPoint, Object returnValue) {
-		if (log.isDebugEnabled() && returnValue instanceof OpenInterfaceResult<?>) {
-			OpenInterfaceResult<?> openInterfaceResult = (OpenInterfaceResult<?>) returnValue;
-			log.debug(LOG_PATTEN, openInterfaceResult.getCode(), openInterfaceResult.getMessage(),
-					Optional.ofNullable(openInterfaceResult.getData()).map(this::writeValueAsString).orElse(""));
+		if (log.isDebugEnabled() && returnValue instanceof OpenInterfaceResponse<?>) {
+			OpenInterfaceResponse<?> openInterfaceResponse = (OpenInterfaceResponse<?>) returnValue;
+			log.debug(LOG_PATTEN, openInterfaceResponse.getCode(), openInterfaceResponse.getMessage(),
+					Optional.ofNullable(openInterfaceResponse.getData()).map(this::writeValueAsString).orElse(""));
 		}
 	}
 

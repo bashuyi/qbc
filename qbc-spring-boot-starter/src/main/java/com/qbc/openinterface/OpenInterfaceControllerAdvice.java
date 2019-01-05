@@ -20,18 +20,18 @@ public class OpenInterfaceControllerAdvice {
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	@ExceptionHandler({ NoSuchBeanDefinitionException.class, IllegalArgumentException.class,
 			ConstraintViolationException.class })
-	public OpenInterfaceResult<?> handleBadRequest(Throwable e) {
-		return new OpenInterfaceResult<>(HttpStatus.BAD_REQUEST.value(), e.getMessage());
+	public OpenInterfaceResponse<?> handleBadRequest(Throwable e) {
+		return new OpenInterfaceResponse<>(HttpStatus.BAD_REQUEST.value(), e.getMessage());
 	}
 
 	@ResponseBody
 	@OpenInterfaceLog
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 	@ExceptionHandler(Throwable.class)
-	public OpenInterfaceResult<?> handleInternalServerError(Throwable e) {
+	public OpenInterfaceResponse<?> handleInternalServerError(Throwable e) {
 		// TODO 发邮件等方式通知开发人员
 		log.error("未知异常", e);
-		return new OpenInterfaceResult<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage());
+		return new OpenInterfaceResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage());
 	}
 
 }

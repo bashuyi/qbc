@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
  */
 @Getter
 @NoArgsConstructor
-public class OpenInterfaceResult<T> implements Serializable {
+public class OpenInterfaceResponse<T> implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -25,12 +25,12 @@ public class OpenInterfaceResult<T> implements Serializable {
 
 	private T data;
 
-	public OpenInterfaceResult(T data) {
+	public OpenInterfaceResponse(T data) {
 		super();
 		this.data = data;
 	}
 
-	public OpenInterfaceResult(int code, String message) {
+	public OpenInterfaceResponse(int code, String message) {
 		super();
 		this.code = code;
 		this.message = message;

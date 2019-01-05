@@ -64,10 +64,10 @@ public class OpenInterfaceController {
 		Object[] parameterValues = Arrays.asList(parameters).stream().map(parameter -> args.get(parameter.getName()))
 				.toArray();
 		Object returnValue = ReflectionUtils.invokeMethod(method, bean, parameterValues);
-		if (returnValue instanceof OpenInterfaceResult<?>) {
-			return ObjectUtils.defaultIfNull(returnValue, new OpenInterfaceResult<>());
+		if (returnValue instanceof OpenInterfaceResponse<?>) {
+			return ObjectUtils.defaultIfNull(returnValue, new OpenInterfaceResponse<>());
 		}
-		return new OpenInterfaceResult<>(returnValue);
+		return new OpenInterfaceResponse<>(returnValue);
 	}
 
 }

@@ -7,9 +7,9 @@
 		<artifactId>qbc</artifactId>
 		<version>${revision}</version>
 	</parent>
-	<artifactId>qbc-samples</artifactId>
+	<artifactId>qbc-cloud-samples</artifactId>
 	<packaging>pom</packaging>
 	<modules>
-		<module>qbc-withdrawal</module>
+		<module>qbc-cloud-sample-provider</module>
 	</modules>
 </project>

@@ -17,7 +17,7 @@ import lombok.SneakyThrows;
 @Component
 public class OpenInterfaceClientManage {
 
-	@Autowired
+	@Autowired(required = false)
 	private RestTemplate restTemplate;
 
 	@Autowired

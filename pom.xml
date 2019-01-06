@@ -103,15 +103,21 @@
 			</dependency>
 
 			<dependency>
+				<groupId>org.codehaus.janino</groupId>
+				<artifactId>janino</artifactId>
+				<version>${janino.version}</version>
+			</dependency>
+
+			<dependency>
 				<groupId>com.qbc</groupId>
 				<artifactId>qbc-starter</artifactId>
 				<version>${revision}</version>
 			</dependency>
 
 			<dependency>
-				<groupId>org.codehaus.janino</groupId>
-				<artifactId>janino</artifactId>
-				<version>${janino.version}</version>
+				<groupId>com.qbc</groupId>
+				<artifactId>qbc-cloud-starter</artifactId>
+				<version>${revision}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

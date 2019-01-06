@@ -10,6 +10,11 @@
 	<artifactId>qbc-cloud-sample-provider</artifactId>
 	
 	<dependencies>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+		</dependency>
+	
 		<!-- QBC核心框架 -->
 		<dependency>
 			<groupId>com.qbc</groupId>

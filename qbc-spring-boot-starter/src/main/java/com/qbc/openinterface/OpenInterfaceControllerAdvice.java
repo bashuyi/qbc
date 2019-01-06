@@ -4,6 +4,7 @@ import javax.validation.ConstraintViolationException;
 
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -19,7 +20,7 @@ public class OpenInterfaceControllerAdvice {
 	@OpenInterfaceLog
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	@ExceptionHandler({ NoSuchBeanDefinitionException.class, IllegalArgumentException.class,
-			ConstraintViolationException.class })
+			ConstraintViolationException.class, HttpMediaTypeNotSupportedException.class })
 	public OpenInterfaceResponse<?> handleBadRequest(Throwable e) {
 		return new OpenInterfaceResponse<>(HttpStatus.BAD_REQUEST.value(), e.getMessage());
 	}

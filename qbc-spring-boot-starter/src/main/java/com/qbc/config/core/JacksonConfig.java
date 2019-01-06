@@ -1,5 +1,6 @@
 package com.qbc.config.core;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -13,6 +14,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 public class JacksonConfig {
 
 	@Bean
+	@ConditionalOnMissingBean(ObjectMapper.class)
 	ObjectMapper objectMapper() {
 		ObjectMapper objectMapper = new ObjectMapper();
 		// 反序列化的时候如果多了其他属性,不抛出异常

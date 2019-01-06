@@ -1,6 +1,9 @@
 package com.qbc.manager.core;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
@@ -22,7 +25,10 @@ public class OpenInterfaceClientManage {
 
 	@SneakyThrows
 	public <T> OpenInterfaceResponse<T> post(String url, OpenInterfaceRequest request) {
-		String response = restTemplate.postForObject(url, request, String.class);
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
+		HttpEntity<OpenInterfaceRequest> httpEntity = new HttpEntity<>(request, headers);
+		String response = restTemplate.postForObject(url, httpEntity, String.class);
 		return objectMapper.readValue(response, new TypeReference<OpenInterfaceResponse<T>>() {
 		});
 	}

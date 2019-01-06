@@ -8,7 +8,7 @@
 	<packaging>pom</packaging>
 
 	<modules>
-		<module>qbc-spring-boot-starter</module>
+		<module>qbc-starter</module>
 		<module>qbc-cloud</module>
 		<module>qbc-cloud-samples</module>
 	</modules>
@@ -104,7 +104,7 @@
 
 			<dependency>
 				<groupId>com.qbc</groupId>
-				<artifactId>qbc-spring-boot-starter</artifactId>
+				<artifactId>qbc-starter</artifactId>
 				<version>${revision}</version>
 			</dependency>
 

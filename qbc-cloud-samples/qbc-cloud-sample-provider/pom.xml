@@ -23,7 +23,7 @@
 		<!-- QBC核心框架 -->
 		<dependency>
 			<groupId>com.qbc</groupId>
-			<artifactId>qbc-spring-boot-starter</artifactId>
+			<artifactId>qbc-starter</artifactId>
 		</dependency>
 
 		<!-- PostgreSQL -->

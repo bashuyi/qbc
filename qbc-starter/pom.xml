@@ -7,7 +7,7 @@
 		<artifactId>qbc</artifactId>
 		<version>${revision}</version>
 	</parent>
-	<artifactId>qbc-spring-boot-starter</artifactId>
+	<artifactId>qbc-starter</artifactId>
 
 	<dependencies>
 		<!-- 动态数据源 -->

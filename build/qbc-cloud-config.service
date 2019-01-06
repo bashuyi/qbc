@@ -1,0 +1,10 @@
+[Unit]
+Description=qbc-cloud-config
+After=syslog.target
+
+[Service]
+ExecStart=/usr/java/jdk1.8.0_192/bin/java -jar /var/qbc/qbc-cloud-config-0.0.1-SNAPSHOT.jar --spring.profiles.active=dev
+SuccessExitStatus=143
+
+[Install]
+WantedBy=multi-user.target

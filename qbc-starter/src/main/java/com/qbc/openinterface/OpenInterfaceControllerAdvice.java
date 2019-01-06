@@ -22,7 +22,7 @@ public class OpenInterfaceControllerAdvice {
 	@ExceptionHandler({ NoSuchBeanDefinitionException.class, IllegalArgumentException.class,
 			ConstraintViolationException.class, HttpMediaTypeNotSupportedException.class })
 	public OpenInterfaceResponse<?> handleBadRequest(Throwable e) {
-		return new OpenInterfaceResponse<>(HttpStatus.BAD_REQUEST.value(), e.getMessage());
+		return OpenInterfaceResponse.error(HttpStatus.BAD_REQUEST.value(), e.getMessage());
 	}
 
 	@ResponseBody
@@ -32,7 +32,7 @@ public class OpenInterfaceControllerAdvice {
 	public OpenInterfaceResponse<?> handleInternalServerError(Throwable e) {
 		// TODO 发邮件等方式通知开发人员
 		log.error("未知异常", e);
-		return new OpenInterfaceResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage());
+		return OpenInterfaceResponse.error(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage());
 	}
 
 }

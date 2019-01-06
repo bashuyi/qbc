@@ -17,23 +17,43 @@ public class OpenInterfaceResponse<T> implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	public static final int HYSTRIX = -1;
+
 	public static final int OK = 200;
 
-	private int code = OK;
+	private Integer code;
 
-	private String message = "OK";
+	private String message;
 
 	private T data;
 
-	public OpenInterfaceResponse(T data) {
-		super();
-		this.data = data;
+	public static OpenInterfaceResponse<Void> ok() {
+		OpenInterfaceResponse<Void> openInterfaceResponse = new OpenInterfaceResponse<>();
+		openInterfaceResponse.code = OK;
+		openInterfaceResponse.message = "";
+		return openInterfaceResponse;
 	}
 
-	public OpenInterfaceResponse(int code, String message) {
-		super();
-		this.code = code;
-		this.message = message;
+	public static <T> OpenInterfaceResponse<T> ok(T data) {
+		OpenInterfaceResponse<T> openInterfaceResponse = new OpenInterfaceResponse<>();
+		openInterfaceResponse.code = OK;
+		openInterfaceResponse.message = "";
+		openInterfaceResponse.data = data;
+		return openInterfaceResponse;
+	}
+
+	public static <T> OpenInterfaceResponse<T> error(int code, String message) {
+		OpenInterfaceResponse<T> openInterfaceResponse = new OpenInterfaceResponse<>();
+		openInterfaceResponse.code = code;
+		openInterfaceResponse.message = message;
+		return openInterfaceResponse;
+	}
+
+	public static <T> OpenInterfaceResponse<T> hystrix() {
+		OpenInterfaceResponse<T> openInterfaceResponse = new OpenInterfaceResponse<>();
+		openInterfaceResponse.code = HYSTRIX;
+		openInterfaceResponse.message = "";
+		return openInterfaceResponse;
 	}
 
 }

@@ -6,12 +6,16 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Configuration
 public class RestTemplateConfig {
 
 	@Bean
 	@ConditionalOnMissingBean(RestTemplate.class)
 	RestTemplate restTemplate(RestTemplateBuilder builder) {
+		log.debug("没有自定义RestTemplate，加载默认的Bean。");
 		return builder.build();
 	}
 

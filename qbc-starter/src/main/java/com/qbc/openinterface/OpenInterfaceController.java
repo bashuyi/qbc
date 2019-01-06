@@ -67,7 +67,7 @@ public class OpenInterfaceController {
 		if (returnValue instanceof OpenInterfaceResponse<?>) {
 			return ObjectUtils.defaultIfNull(returnValue, new OpenInterfaceResponse<>());
 		}
-		return new OpenInterfaceResponse<>(returnValue);
+		return OpenInterfaceResponse.ok(returnValue);
 	}
 
 }

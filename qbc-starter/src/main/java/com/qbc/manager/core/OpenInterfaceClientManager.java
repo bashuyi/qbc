@@ -15,7 +15,7 @@ import com.qbc.openinterface.OpenInterfaceResponse;
 import lombok.SneakyThrows;
 
 @Component
-public class OpenInterfaceClientManage {
+public class OpenInterfaceClientManager {
 
 	@Autowired(required = false)
 	private RestTemplate restTemplate;

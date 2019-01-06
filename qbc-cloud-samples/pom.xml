@@ -11,5 +11,6 @@
 	<packaging>pom</packaging>
 	<modules>
 		<module>qbc-cloud-sample-provider</module>
+		<module>qbc-cloud-sample-consumer</module>
 	</modules>
 </project>

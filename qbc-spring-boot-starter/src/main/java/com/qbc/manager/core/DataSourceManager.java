@@ -36,10 +36,10 @@ public class DataSourceManager {
 	/**
 	 * 在指定数据源执行操作
 	 * 
-	 * @param ds 数据源名称
+	 * @param dataSourceName 数据源名称
 	 */
-	@DS("#ds")
-	public void excute(String ds, Runnable runnable) {
+	@DS("#dataSourceName")
+	public void excute(String dataSourceName, Runnable runnable) {
 		runnable.run();
 	}
 

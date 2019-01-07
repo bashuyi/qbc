@@ -40,6 +40,12 @@
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 
+		<!-- JWT -->
+		<dependency>
+			<groupId>com.auth0</groupId>
+			<artifactId>java-jwt</artifactId>
+		</dependency>
+
 		<!-- 模板引擎 -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

@@ -11,7 +11,7 @@ import lombok.Setter;
 @Setter
 @Configuration
 @ConfigurationProperties("qbc.open-interface")
-@PropertySource(value = "classpath:qbc-open-interface.properties", encoding = "UTF-8")
+@PropertySource(value = "classpath:qbc-open-interface.yml", encoding = "UTF-8")
 public class OpenInterfaceProperties {
 
 	/**

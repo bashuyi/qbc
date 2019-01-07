@@ -1,0 +1,22 @@
+server:
+  port: 80
+spring:
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: false
+          lower-case-service-id: true
+      routes:
+      - filters:
+        - StripPrefix=1
+        id: provider
+        predicates:
+        - Path=/provider/**
+        uri: lb://qbc-cloud-sample-provider
+      - filters:
+        - StripPrefix=1
+        id: consumer
+        predicates:
+        - Path=/consumer/**
+        uri: lb://qbc-cloud-sample-consumer

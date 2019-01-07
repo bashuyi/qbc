@@ -1,0 +1,4 @@
+qbc:
+  open-interface:
+    enable: false
+    path: api

@@ -1,0 +1,12 @@
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+spring:
+  application:
+    name: qbc-cloud-sample-consumer
+  cloud:
+    config:
+      discovery:
+        enabled: true
+        serviceId: qbc-cloud-config

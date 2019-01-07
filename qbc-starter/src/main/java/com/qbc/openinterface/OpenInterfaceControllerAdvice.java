@@ -19,10 +19,23 @@ public class OpenInterfaceControllerAdvice {
 	@ResponseBody
 	@OpenInterfaceLog
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	@ExceptionHandler({ NoSuchBeanDefinitionException.class, IllegalArgumentException.class,
-			ConstraintViolationException.class, HttpMediaTypeNotSupportedException.class })
+	@ExceptionHandler({
+			// Bean不存在
+			NoSuchBeanDefinitionException.class,
+			// Bean的方法不匹配
+			IllegalArgumentException.class,
+			// 参数验证错误
+			ConstraintViolationException.class })
 	public OpenInterfaceResponse<?> handleBadRequest(Throwable e) {
 		return OpenInterfaceResponse.error(HttpStatus.BAD_REQUEST.value(), e.getMessage());
+	}
+
+	@ResponseBody
+	@OpenInterfaceLog
+	@ResponseStatus(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
+	@ExceptionHandler({ HttpMediaTypeNotSupportedException.class })
+	public OpenInterfaceResponse<?> handleUnsupportedMediaType(Throwable e) {
+		return OpenInterfaceResponse.error(HttpStatus.UNSUPPORTED_MEDIA_TYPE.value(), e.getMessage());
 	}
 
 	@ResponseBody

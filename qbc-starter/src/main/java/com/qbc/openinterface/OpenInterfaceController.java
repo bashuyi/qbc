@@ -6,16 +6,17 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.validation.constraints.NotNull;
+
 import org.apache.commons.lang3.ObjectUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.ApplicationContext;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.ReflectionUtils;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -24,6 +25,7 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
+@Validated
 @Controller("${qbc.open-interface.path}")
 @ConditionalOnProperty(value = "qbc.open-interface.enable", havingValue = "true")
 public class OpenInterfaceController {
@@ -44,14 +46,14 @@ public class OpenInterfaceController {
 	@Autowired
 	private ObjectMapper objectMapper;
 
-	@PostMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@RequestMapping
 	@ResponseBody
 	@SneakyThrows
 	@OpenInterfaceLog
-	public Object dispatch(@RequestBody OpenInterfaceRequest requestBean) {
-		String openInterfaceBeanName = StringUtils.defaultString(requestBean.getBeanName());
-		String openInterfaceMethodName = StringUtils.defaultString(requestBean.getMethodName());
-		Map<String, Object> args = ObjectUtils.defaultIfNull(requestBean.getArgs(), new HashMap<>());
+	public Object dispatch(@NotNull @RequestBody(required = false) OpenInterfaceRequest openInterfaceRequest) {
+		String openInterfaceBeanName = openInterfaceRequest.getBeanName();
+		String openInterfaceMethodName = openInterfaceRequest.getMethodName();
+		Map<String, Object> args = ObjectUtils.defaultIfNull(openInterfaceRequest.getArgs(), new HashMap<>());
 
 		if (log.isDebugEnabled()) {
 			log.debug(LOG_PATTEN, openInterfaceBeanName, openInterfaceMethodName,

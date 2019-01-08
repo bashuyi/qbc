@@ -5,6 +5,7 @@ import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -26,16 +27,18 @@ public class VerifyTokenGatewayFilterFactory extends AbstractGatewayFilterFactor
 	@Override
 	public GatewayFilter apply(Object config) {
 		return (exchange, chain) -> {
-			OpenInterfaceResponse<Void> openInterfaceResponse = OpenInterfaceResponse
+			OpenInterfaceResponse<String> openInterfaceResponse = OpenInterfaceResponse
 					.error(HttpStatus.BAD_REQUEST.value(), "token: must not be empty");
 
 			String token = exchange.getRequest().getHeaders().getFirst("Authorization");
 			if (StringUtils.isNotEmpty(token)) {
-				OpenInterfaceRequest request = new OpenInterfaceRequest("tokenService", "verifyToken");
-				request.put("token", token);
-				openInterfaceResponse = openInterfaceClientCloudManager.post("qbc-cloud-auth", request);
+				OpenInterfaceRequest openInterfaceRequest = new OpenInterfaceRequest("tokenService", "verifyToken");
+				openInterfaceRequest.put("token", token);
+				openInterfaceResponse = openInterfaceClientCloudManager.post("qbc-cloud-auth", openInterfaceRequest);
 				if (openInterfaceResponse.isOk()) {
-					return chain.filter(exchange);
+					ServerHttpRequest request = exchange.getRequest().mutate()
+							.header("username", openInterfaceResponse.getData()).build();
+					return chain.filter(exchange.mutate().request(request).build());
 				}
 
 			}

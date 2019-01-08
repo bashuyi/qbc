@@ -38,7 +38,7 @@ public class TokenService {
 	}
 
 	@OpenInterfaceMethod
-	public void verifyToken(@NotEmpty String token) {
+	public OpenInterfaceResponse<String> verifyToken(@NotEmpty String token) {
 		// 用户名
 		String username = tokenManager.getAudience(token);
 
@@ -47,6 +47,8 @@ public class TokenService {
 		Assert.notNull(sysUserDO, "createToken.username: unknown");
 
 		tokenManager.verifyToken(token, sysUserDO.getSecret());
+
+		return OpenInterfaceResponse.ok(username);
 	}
 
 	@OpenInterfaceMethod

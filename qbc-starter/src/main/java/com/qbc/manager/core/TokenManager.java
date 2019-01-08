@@ -50,8 +50,4 @@ public class TokenManager {
 		}
 	}
 
-	public void revokeToken() {
-
-	}
-
 }

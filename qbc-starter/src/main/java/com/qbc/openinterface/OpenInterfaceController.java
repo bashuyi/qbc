@@ -63,8 +63,12 @@ public class OpenInterfaceController {
 		Object bean = applicationContext.getBean(openInterfaceBeanName);
 		Method method = openInterfaceContext.getMethod(openInterfaceBeanName, openInterfaceMethodName);
 		Parameter[] parameters = method.getParameters();
-		Object[] parameterValues = Arrays.asList(parameters).stream().map(parameter -> args.get(parameter.getName()))
-				.toArray();
+		Object[] parameterValues = Arrays.asList(parameters).stream().map(parameter -> {
+			if (parameter.getType().equals(OpenInterfaceMapResponse.class)) {
+				return OpenInterfaceMapResponse.instance();
+			}
+			return args.get(parameter.getName());
+		}).toArray();
 		Object returnValue = ReflectionUtils.invokeMethod(method, bean, parameterValues);
 		if (returnValue instanceof OpenInterfaceResponse<?>) {
 			return ObjectUtils.defaultIfNull(returnValue, new OpenInterfaceResponse<>());

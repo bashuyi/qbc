@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * 开放接口层的统一返回结果
@@ -12,6 +13,7 @@ import lombok.NoArgsConstructor;
  * @param <T> 结果数据的类型
  */
 @Getter
+@Setter
 @NoArgsConstructor
 public class OpenInterfaceResponse<T> implements Serializable {
 
@@ -21,23 +23,19 @@ public class OpenInterfaceResponse<T> implements Serializable {
 
 	public static final int OK = 200;
 
-	private Integer code;
+	protected Integer code = OK;
 
-	private String message;
+	protected String message = "";
 
-	private T data;
+	protected T data;
 
 	public static OpenInterfaceResponse<Void> ok() {
 		OpenInterfaceResponse<Void> openInterfaceResponse = new OpenInterfaceResponse<>();
-		openInterfaceResponse.code = OK;
-		openInterfaceResponse.message = "";
 		return openInterfaceResponse;
 	}
 
 	public static <T> OpenInterfaceResponse<T> ok(T data) {
 		OpenInterfaceResponse<T> openInterfaceResponse = new OpenInterfaceResponse<>();
-		openInterfaceResponse.code = OK;
-		openInterfaceResponse.message = "";
 		openInterfaceResponse.data = data;
 		return openInterfaceResponse;
 	}

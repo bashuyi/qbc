@@ -50,25 +50,7 @@ public class TokenService {
 	}
 
 	@OpenInterfaceMethod
-	public OpenInterfaceResponse<String> refreshToken(@NotEmpty String token) {
-		// 用户名
-		String username = tokenManager.getAudience(token);
-
-		SysUserDO sysUserDO = sysUserDAO.findByUsername(username);
-
-		Assert.notNull(sysUserDO, "createToken.username: unknown");
-
-		tokenManager.verifyToken(token, sysUserDO.getSecret());
-
-		// 生成新Token
-		String newToken = tokenManager.createToken(username, sysUserDO.getSecret());
-
-		return OpenInterfaceResponse.ok(newToken);
-	}
-
-	@OpenInterfaceMethod
 	public void revokeToken(@NotEmpty String token) {
-
 	}
 
 }

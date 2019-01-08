@@ -5,6 +5,7 @@ import javax.validation.constraints.NotEmpty;
 import org.springframework.validation.annotation.Validated;
 
 import com.qbc.openinterface.OpenInterface;
+import com.qbc.openinterface.OpenInterfaceMapResponse;
 import com.qbc.openinterface.OpenInterfaceMethod;
 
 @OpenInterface
@@ -12,7 +13,11 @@ import com.qbc.openinterface.OpenInterfaceMethod;
 public class WithdrawalService {
 
 	@OpenInterfaceMethod
-	public void withdrawal(@NotEmpty String id) {
+	public OpenInterfaceMapResponse withdrawal(OpenInterfaceMapResponse openInterfaceMapResponse, @NotEmpty String id) {
+		openInterfaceMapResponse.setCode(1);
+		openInterfaceMapResponse.setMessage("業務エラー");
+		openInterfaceMapResponse.put("id", id);
+		return openInterfaceMapResponse;
 	}
 
 }

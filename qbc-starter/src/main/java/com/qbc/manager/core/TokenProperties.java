@@ -11,7 +11,7 @@ import lombok.Setter;
 @Setter
 @Configuration
 @ConfigurationProperties("qbc.token")
-@PropertySource(value = "classpath:token.yml", encoding = "UTF-8")
+@PropertySource(value = "classpath:qbc-token.yml", encoding = "UTF-8")
 public class TokenProperties {
 
 	/**

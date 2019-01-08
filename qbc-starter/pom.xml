@@ -10,30 +10,12 @@
 	<artifactId>qbc-starter</artifactId>
 
 	<dependencies>
-		<!-- 动态数据源 -->
-		<dependency>
-			<groupId>com.baomidou</groupId>
-			<artifactId>dynamic-datasource-spring-boot-starter</artifactId>
-		</dependency>
-
-		<!-- JPA扩展 -->
-		<dependency>
-			<groupId>com.slyak</groupId>
-			<artifactId>spring-data-jpa-extra</artifactId>
-		</dependency>
-
-		<!-- Redis -->
+		<!-- AOP -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-redis</artifactId>
+			<artifactId>spring-boot-starter-aop</artifactId>
 		</dependency>
-
-		<!-- Redis连接池 -->
-		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-pool2</artifactId>
-		</dependency>
-
+	
 		<!-- Web -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

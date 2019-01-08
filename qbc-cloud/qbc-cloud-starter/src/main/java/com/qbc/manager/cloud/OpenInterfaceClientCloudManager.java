@@ -13,14 +13,15 @@ public class OpenInterfaceClientCloudManager {
 
 	@Autowired
 	private OpenInterfaceClientManager openInterfaceClientManager;
-	
+
 	@HystrixCommand(fallbackMethod = "postFallback")
-	public <T> OpenInterfaceResponse<T> post(String url, OpenInterfaceRequest request) {
+	public <T> OpenInterfaceResponse<T> post(String serviceName, OpenInterfaceRequest request) {
+		String url = String.format("http://%s/api", serviceName);
 		return openInterfaceClientManager.post(url, request);
 	}
-	
-	public <T> OpenInterfaceResponse<T> postFallback(String url, OpenInterfaceRequest request) {
+
+	public <T> OpenInterfaceResponse<T> postFallback(String serviceName, OpenInterfaceRequest request) {
 		return OpenInterfaceResponse.hystrix();
 	}
-	
+
 }

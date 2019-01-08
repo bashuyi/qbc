@@ -11,6 +11,7 @@
 		<module>qbc-starter</module>
 		<module>qbc-cloud</module>
 		<module>qbc-cloud-samples</module>
+		<module>qbc-starter-data</module>
 	</modules>
 
 	<properties>
@@ -118,6 +119,12 @@
 			<dependency>
 				<groupId>com.qbc</groupId>
 				<artifactId>qbc-starter</artifactId>
+				<version>${revision}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.qbc</groupId>
+				<artifactId>qbc-starter-data</artifactId>
 				<version>${revision}</version>
 			</dependency>
 

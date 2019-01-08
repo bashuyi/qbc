@@ -2,6 +2,8 @@ package com.qbc.openinterface;
 
 import java.io.Serializable;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -23,7 +25,7 @@ public class OpenInterfaceResponse<T> implements Serializable {
 
 	public static final int OK = 200;
 
-	protected Integer code = OK;
+	protected int code = OK;
 
 	protected String message = "";
 
@@ -52,6 +54,11 @@ public class OpenInterfaceResponse<T> implements Serializable {
 		openInterfaceResponse.code = HYSTRIX;
 		openInterfaceResponse.message = "";
 		return openInterfaceResponse;
+	}
+
+	@JsonIgnore
+	public boolean isOk() {
+		return code == OK;
 	}
 
 }

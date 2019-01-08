@@ -5,12 +5,14 @@ import java.util.Date;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.qbc.constant.CacheName;
 import com.qbc.exception.UnauthorizedException;
 
 @Component
@@ -19,6 +21,7 @@ public class TokenManager {
 	@Autowired
 	private TokenProperties tokenProperties;
 
+	@Cacheable(value = CacheName.TOKEN, key = "#audience")
 	public String createToken(String audience, String secret, Integer expiresAfterHours) {
 		// 过期时间
 		Date expiresAt = DateUtils.addHours(new Date(),
@@ -30,6 +33,7 @@ public class TokenManager {
 				.sign(algorithm);
 	}
 
+	@Cacheable(value = CacheName.TOKEN, key = "#audience")
 	public String createToken(String audience, String secret) {
 		return createToken(audience, secret, null);
 	}

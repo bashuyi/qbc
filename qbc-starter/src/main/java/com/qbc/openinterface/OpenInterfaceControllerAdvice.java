@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import com.qbc.exception.UnauthorizedException;
+
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -36,6 +38,14 @@ public class OpenInterfaceControllerAdvice {
 	@ExceptionHandler({ HttpMediaTypeNotSupportedException.class })
 	public OpenInterfaceResponse<?> handleUnsupportedMediaType(Throwable e) {
 		return OpenInterfaceResponse.error(HttpStatus.UNSUPPORTED_MEDIA_TYPE.value(), e.getMessage());
+	}
+
+	@ResponseBody
+	@OpenInterfaceLog
+	@ResponseStatus(HttpStatus.UNAUTHORIZED)
+	@ExceptionHandler({ UnauthorizedException.class })
+	public OpenInterfaceResponse<?> handleUnauthorized(Throwable e) {
+		return OpenInterfaceResponse.error(HttpStatus.UNAUTHORIZED.value(), e.getMessage());
 	}
 
 	@ResponseBody

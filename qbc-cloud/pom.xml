@@ -14,5 +14,6 @@
 		<module>qbc-cloud-gateway</module>
 		<module>qbc-cloud-config</module>
 		<module>qbc-cloud-starter</module>
+		<module>qbc-cloud-auth</module>
 	</modules>
 </project>

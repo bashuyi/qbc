@@ -1,0 +1,31 @@
+jasypt:
+  encryptor:
+    password: qbc
+logging:
+  config: classpath:logback-qbc.xml
+  path: C:/Logs/
+qbc:
+  open-interface:
+    enable: true
+server:
+  port: 8080
+spring:
+  datasource:
+    dynamic:
+      datasource:
+        master:
+          driver-class-name: org.postgresql.Driver
+          password: ENC(uJxB0DorJ6dxT3IXggUKNGqYCgrejPTW)
+          url: jdbc:postgresql://localhost:5432/postgres
+          username: postgres
+      primary: master
+  jpa:
+    properties:
+      hibernate:
+        jdbc:
+          lob:
+            non_contextual_creation: true
+  redis:
+    database: 0
+    host: localhost
+    password: ''

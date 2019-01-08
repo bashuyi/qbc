@@ -18,9 +18,6 @@ public class TokenService {
 	@Autowired
 	private TokenManager tokenManager;
 
-	@Autowired
-	private TokenProperties tokenProperties;
-
 	@OpenInterfaceMethod
 	public OpenInterfaceResponse<String> createToken(@NotEmpty String username, @NotEmpty String password) {
 		// TODO 签名密钥，根据用户名从数据库获得

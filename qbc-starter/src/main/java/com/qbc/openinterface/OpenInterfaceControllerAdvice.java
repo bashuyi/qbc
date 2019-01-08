@@ -4,7 +4,6 @@ import javax.validation.ConstraintViolationException;
 
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -32,13 +31,13 @@ public class OpenInterfaceControllerAdvice {
 		return OpenInterfaceResponse.error(HttpStatus.BAD_REQUEST.value(), e.getMessage());
 	}
 
-	@ResponseBody
-	@OpenInterfaceLog
-	@ResponseStatus(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
-	@ExceptionHandler({ HttpMediaTypeNotSupportedException.class })
-	public OpenInterfaceResponse<?> handleUnsupportedMediaType(Throwable e) {
-		return OpenInterfaceResponse.error(HttpStatus.UNSUPPORTED_MEDIA_TYPE.value(), e.getMessage());
-	}
+//	@ResponseBody
+//	@OpenInterfaceLog
+//	@ResponseStatus(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
+//	@ExceptionHandler({ HttpMediaTypeNotSupportedException.class })
+//	public OpenInterfaceResponse<?> handleUnsupportedMediaType(Throwable e) {
+//		return OpenInterfaceResponse.error(HttpStatus.UNSUPPORTED_MEDIA_TYPE.value(), e.getMessage());
+//	}
 
 	@ResponseBody
 	@OpenInterfaceLog

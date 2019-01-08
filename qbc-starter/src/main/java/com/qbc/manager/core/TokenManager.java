@@ -11,6 +11,7 @@ import org.springframework.util.CollectionUtils;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.qbc.exception.UnauthorizedException;
 
 @Component
 public class TokenManager {
@@ -39,10 +40,14 @@ public class TokenManager {
 	}
 
 	public DecodedJWT verifyToken(String token, String secret) {
-		// 签名算法
-		Algorithm algorithm = Algorithm.HMAC256(secret);
-		// 验证签名
-		return JWT.require(algorithm).withIssuer(tokenProperties.getIssuer()).build().verify(token);
+		try {
+			// 签名算法
+			Algorithm algorithm = Algorithm.HMAC256(secret);
+			// 验证签名
+			return JWT.require(algorithm).withIssuer(tokenProperties.getIssuer()).build().verify(token);
+		} catch (Exception e) {
+			throw new UnauthorizedException(e);
+		}
 	}
 
 }

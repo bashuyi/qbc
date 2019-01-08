@@ -24,7 +24,7 @@ public class OpenInterfaceControllerAdvice {
 	@ExceptionHandler({
 			// Bean不存在
 			NoSuchBeanDefinitionException.class,
-			// Bean的方法不匹配
+			// Bean的方法不匹配或者断言异常
 			IllegalArgumentException.class,
 			// 参数验证错误
 			ConstraintViolationException.class })

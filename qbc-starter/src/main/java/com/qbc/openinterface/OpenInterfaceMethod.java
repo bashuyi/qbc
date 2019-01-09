@@ -12,5 +12,7 @@ import java.lang.annotation.Target;
 public @interface OpenInterfaceMethod {
 
 	String value() default "";
+	
+	String description() default "";
 
 }

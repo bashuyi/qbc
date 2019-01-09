@@ -6,23 +6,13 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.springframework.core.annotation.AliasFor;
-import org.springframework.stereotype.Component;
-
-/**
- * 开放接口：直接封装 Service 方法暴露成 RPC 接口。
- *
- * @author Ma
- */
-@Target(ElementType.TYPE)
+@Target(ElementType.PARAMETER)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-@Component
-public @interface OpenInterface {
+public @interface OpenInterfaceArgument {
 
-	@AliasFor(annotation = Component.class)
 	String value() default "";
-	
+
 	String description() default "";
 
 }

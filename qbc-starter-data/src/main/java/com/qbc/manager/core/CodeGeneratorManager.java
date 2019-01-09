@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
-import com.qbc.manager.core.DatabaseInfoDTO.TableInfo;
+import com.qbc.manager.core.DatabaseInfoDTO.TableInfoDTO;
 import com.qbc.utils.core.StringUtils;
 
 import freemarker.template.Configuration;
@@ -60,10 +60,10 @@ public class CodeGeneratorManager {
 	 * @param tableInfo    表信息
 	 */
 	@SneakyThrows
-	public void generate(String templateName, String packageName, TableInfo tableInfo) {
-		Map<String, Object> param = PropertyUtils.describe(tableInfo);
+	public void generate(String templateName, String packageName, TableInfoDTO tableInfoDTO) {
+		Map<String, Object> param = PropertyUtils.describe(tableInfoDTO);
 		File file = Paths.get("src/main/java", StringUtils.packageNameToPathName(packageName),
-				tableInfo.getClassName() + templateName + ".java").toFile();
+				tableInfoDTO.getClassName() + templateName + ".java").toFile();
 		generate(templateName, param, file);
 	}
 
@@ -76,7 +76,7 @@ public class CodeGeneratorManager {
 	 */
 	@SneakyThrows
 	public void generateAll(String templateName, String packageName, DatabaseInfoDTO databaseInfoDTO) {
-		databaseInfoDTO.getTableInfos().forEach(tableInfo -> generate(templateName, packageName, tableInfo));
+		databaseInfoDTO.getTableInfos().forEach(tableInfoDTO -> generate(templateName, packageName, tableInfoDTO));
 	}
 
 }

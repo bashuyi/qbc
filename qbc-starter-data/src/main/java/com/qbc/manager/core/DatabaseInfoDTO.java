@@ -20,13 +20,13 @@ public class DatabaseInfoDTO {
 	/**
 	 * 表信息实体的集合
 	 */
-	private List<TableInfo> tableInfos;
+	private List<TableInfoDTO> tableInfos;
 
 	/**
 	 * 表信息实体
 	 */
 	@Data
-	public static class TableInfo {
+	public static class TableInfoDTO {
 
 		/**
 		 * 表类别（可为 null）
@@ -58,7 +58,7 @@ public class DatabaseInfoDTO {
 		/**
 		 * 列信息实体的集合
 		 */
-		private List<ColumnInfo> columnInfos;
+		private List<ColumnInfoDTO> columnInfos;
 
 		/**
 		 * 类名
@@ -71,7 +71,7 @@ public class DatabaseInfoDTO {
 	 * 列信息实体
 	 */
 	@Data
-	public static class ColumnInfo {
+	public static class ColumnInfoDTO {
 
 		/**
 		 * 列名称

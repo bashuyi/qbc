@@ -29,6 +29,7 @@ import org.springframework.web.server.UnsupportedMediaTypeStatusException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.qbc.exception.UnauthorizedException;
+import com.qbc.manager.core.ResourceManager;
 import com.qbc.utils.core.UserUtils;
 
 import lombok.SneakyThrows;
@@ -51,7 +52,7 @@ public class OpenInterfaceController {
 	private ApplicationContext applicationContext;
 
 	@Autowired
-	private OpenInterfaceContext openInterfaceContext;
+	private ResourceManager resourceManager;
 
 	@Autowired
 	private ObjectMapper objectMapper;
@@ -74,7 +75,7 @@ public class OpenInterfaceController {
 		}
 
 		Object bean = applicationContext.getBean(openInterfaceServiceName);
-		Method method = openInterfaceContext.getMethod(openInterfaceServiceName, openInterfaceMethodName);
+		Method method = resourceManager.getMethod(openInterfaceServiceName, openInterfaceMethodName);
 		Parameter[] parameters = method.getParameters();
 		Object[] parameterValues = Arrays.asList(parameters).stream().map(parameter -> {
 			if (parameter.getType().equals(OpenInterfaceMapResponse.class)) {

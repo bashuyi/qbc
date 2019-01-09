@@ -24,8 +24,8 @@ import com.baomidou.dynamic.datasource.DynamicRoutingDataSource;
 import com.google.common.base.CaseFormat;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
-import com.qbc.manager.core.DatabaseInfoDTO.ColumnInfo;
-import com.qbc.manager.core.DatabaseInfoDTO.TableInfo;
+import com.qbc.manager.core.DatabaseInfoDTO.ColumnInfoDTO;
+import com.qbc.manager.core.DatabaseInfoDTO.TableInfoDTO;
 import com.qbc.utils.core.StringUtils;
 
 import lombok.SneakyThrows;
@@ -82,7 +82,7 @@ public class DatabaseInfoManager {
 		}
 
 		// 获得所有字段信息
-		Table<String, String, ColumnInfo> columnInfoTable = getColumnInfoTable(catalog, schemaPattern,
+		Table<String, String, ColumnInfoDTO> columnInfoTable = getColumnInfoTable(catalog, schemaPattern,
 				defaultJdbcTypeMap, databaseMetaData);
 
 		// 设置主键
@@ -91,33 +91,33 @@ public class DatabaseInfoManager {
 			String tableName = primaryKeyResultSet.getString("TABLE_NAME");
 			String columnName = primaryKeyResultSet.getString("COLUMN_NAME");
 
-			ColumnInfo columnInfo = columnInfoTable.get(tableName, columnName);
-			if (columnInfo != null) {
-				columnInfo.setKeySeq(primaryKeyResultSet.getShort("KEY_SEQ"));
+			ColumnInfoDTO columnInfoDTO = columnInfoTable.get(tableName, columnName);
+			if (columnInfoDTO != null) {
+				columnInfoDTO.setKeySeq(primaryKeyResultSet.getShort("KEY_SEQ"));
 			}
 		}
 
 		// 获得表信息
-		List<TableInfo> tableInfos = new ArrayList<>();
+		List<TableInfoDTO> tableInfos = new ArrayList<>();
 		ResultSet tableResultSet = databaseMetaData.getTables(catalog, schemaPattern, tableNamePattern, types);
 		while (tableResultSet.next()) {
 			String tableName = tableResultSet.getString("TABLE_NAME");
 
-			TableInfo tableInfo = new TableInfo();
-			tableInfo.setTableCat(tableResultSet.getString("TABLE_CAT"));
-			tableInfo.setTableSchem(tableResultSet.getString("TABLE_SCHEM"));
-			tableInfo.setTableName(tableResultSet.getString("TABLE_NAME"));
-			tableInfo.setTableType(tableResultSet.getString("TABLE_TYPE"));
-			tableInfo.setRemarks(tableResultSet.getString("REMARKS"));
-			tableInfo.setClassName(StringUtils.caseFormat(tableInfo.getTableName().toLowerCase(),
+			TableInfoDTO tableInfoDTO = new TableInfoDTO();
+			tableInfoDTO.setTableCat(tableResultSet.getString("TABLE_CAT"));
+			tableInfoDTO.setTableSchem(tableResultSet.getString("TABLE_SCHEM"));
+			tableInfoDTO.setTableName(tableResultSet.getString("TABLE_NAME"));
+			tableInfoDTO.setTableType(tableResultSet.getString("TABLE_TYPE"));
+			tableInfoDTO.setRemarks(tableResultSet.getString("REMARKS"));
+			tableInfoDTO.setClassName(StringUtils.caseFormat(tableInfoDTO.getTableName().toLowerCase(),
 					CaseFormat.LOWER_UNDERSCORE, CaseFormat.UPPER_CAMEL));
 
 			// 设置表的字段信息
-			List<ColumnInfo> columnInfos = columnInfoTable.row(tableName).values().stream()
+			List<ColumnInfoDTO> columnInfos = columnInfoTable.row(tableName).values().stream()
 					.collect(Collectors.toList());
-			tableInfo.setColumnInfos(columnInfos);
+			tableInfoDTO.setColumnInfos(columnInfos);
 
-			tableInfos.add(tableInfo);
+			tableInfos.add(tableInfoDTO);
 		}
 
 		// 实例化数据库信息实体，并设置数据库信息到实体中。
@@ -130,29 +130,29 @@ public class DatabaseInfoManager {
 	}
 
 	@SneakyThrows
-	private Table<String, String, ColumnInfo> getColumnInfoTable(String catalog, String schemaPattern,
+	private Table<String, String, ColumnInfoDTO> getColumnInfoTable(String catalog, String schemaPattern,
 			Map<JDBCType, String> jdbcTypeMap, DatabaseMetaData databaseMetaData) {
-		Table<String, String, ColumnInfo> columnInfoTable = HashBasedTable.create();
+		Table<String, String, ColumnInfoDTO> columnInfoTable = HashBasedTable.create();
 		ResultSet columnResultSet = databaseMetaData.getColumns(catalog, schemaPattern, null, null);
 		while (columnResultSet.next()) {
 			String tableName = columnResultSet.getString("TABLE_NAME");
 			String columnName = columnResultSet.getString("COLUMN_NAME");
 
-			ColumnInfo columnInfo = new ColumnInfo();
-			columnInfo.setColumnName(columnName);
-			columnInfo.setDataType(columnResultSet.getInt("DATA_TYPE"));
-			columnInfo.setTypeName(columnResultSet.getString("TYPE_NAME"));
-			columnInfo.setColumnSize(columnResultSet.getInt("COLUMN_SIZE"));
-			columnInfo.setDecimalDigits(columnResultSet.getInt("DECIMAL_DIGITS"));
-			columnInfo.setNullable(columnResultSet.getInt("NULLABLE") == 1);
-			columnInfo.setRemarks(columnResultSet.getString("REMARKS"));
-			columnInfo.setOrdinalPosition(columnResultSet.getInt("ORDINAL_POSITION"));
-			columnInfo.setAutoincrement("YES".equals(columnResultSet.getString("IS_AUTOINCREMENT")));
-			columnInfo.setFieldName(StringUtils.caseFormat(columnInfo.getColumnName().toLowerCase(),
+			ColumnInfoDTO columnInfoDTO = new ColumnInfoDTO();
+			columnInfoDTO.setColumnName(columnName);
+			columnInfoDTO.setDataType(columnResultSet.getInt("DATA_TYPE"));
+			columnInfoDTO.setTypeName(columnResultSet.getString("TYPE_NAME"));
+			columnInfoDTO.setColumnSize(columnResultSet.getInt("COLUMN_SIZE"));
+			columnInfoDTO.setDecimalDigits(columnResultSet.getInt("DECIMAL_DIGITS"));
+			columnInfoDTO.setNullable(columnResultSet.getInt("NULLABLE") == 1);
+			columnInfoDTO.setRemarks(columnResultSet.getString("REMARKS"));
+			columnInfoDTO.setOrdinalPosition(columnResultSet.getInt("ORDINAL_POSITION"));
+			columnInfoDTO.setAutoincrement("YES".equals(columnResultSet.getString("IS_AUTOINCREMENT")));
+			columnInfoDTO.setFieldName(StringUtils.caseFormat(columnInfoDTO.getColumnName().toLowerCase(),
 					CaseFormat.LOWER_UNDERSCORE, CaseFormat.LOWER_CAMEL));
-			columnInfo.setFieldType(jdbcTypeMap.get(JDBCType.valueOf(columnInfo.getDataType())));
+			columnInfoDTO.setFieldType(jdbcTypeMap.get(JDBCType.valueOf(columnInfoDTO.getDataType())));
 
-			columnInfoTable.put(tableName, columnName, columnInfo);
+			columnInfoTable.put(tableName, columnName, columnInfoDTO);
 		}
 		return columnInfoTable;
 	}

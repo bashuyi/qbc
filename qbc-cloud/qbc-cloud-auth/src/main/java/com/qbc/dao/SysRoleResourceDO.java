@@ -9,25 +9,22 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * 系统服务表实体类
+ * 系统角色资源表实体类
  *
  * @author Ma
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Entity
-@Table(name = "sys_service")
-public class SysServiceDO extends AbstractDO {
+@Table(name = "sys_role_resource")
+public class SysRoleResourceDO extends AbstractDO {
 
 	private static final long serialVersionUID = 1L;
 
-	/** 服务名 */
-	private String serviceName;
+	/** 角色ID */
+	private Long roleId;
 
-	/** Bean名 */
-	private String beanName;
-
-	/** 方法名 */
-	private String methodName;
+	/** 资源ID */
+	private Long resourceId;
 
 }

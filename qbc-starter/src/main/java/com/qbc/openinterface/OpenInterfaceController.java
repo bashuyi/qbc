@@ -61,7 +61,7 @@ public class OpenInterfaceController {
 	@SneakyThrows
 	public Object dispatch(@NotNull @RequestBody(required = false) OpenInterfaceRequest openInterfaceRequest,
 			@RequestHeader(required = false) String userId, @RequestHeader(required = false) String username) {
-		String openInterfaceBeanName = openInterfaceRequest.getBeanName();
+		String openInterfaceServiceName = openInterfaceRequest.getServiceName();
 		String openInterfaceMethodName = openInterfaceRequest.getMethodName();
 		Map<String, Object> args = ObjectUtils.defaultIfNull(openInterfaceRequest.getArgs(), new HashMap<>());
 
@@ -69,12 +69,12 @@ public class OpenInterfaceController {
 		UserUtils.setUsername(username);
 
 		if (log.isDebugEnabled()) {
-			log.debug(LOG_PATTEN, openInterfaceBeanName, openInterfaceMethodName,
+			log.debug(LOG_PATTEN, openInterfaceServiceName, openInterfaceMethodName,
 					objectMapper.writeValueAsString(args));
 		}
 
-		Object bean = applicationContext.getBean(openInterfaceBeanName);
-		Method method = openInterfaceContext.getMethod(openInterfaceBeanName, openInterfaceMethodName);
+		Object bean = applicationContext.getBean(openInterfaceServiceName);
+		Method method = openInterfaceContext.getMethod(openInterfaceServiceName, openInterfaceMethodName);
 		Parameter[] parameters = method.getParameters();
 		Object[] parameterValues = Arrays.asList(parameters).stream().map(parameter -> {
 			if (parameter.getType().equals(OpenInterfaceMapResponse.class)) {

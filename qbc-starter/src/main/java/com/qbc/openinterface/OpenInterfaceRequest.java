@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 public class OpenInterfaceRequest {
 
 	@NotEmpty
-	private String beanName;
+	private String serviceName;
 
 	@NotEmpty
 	private String methodName;
@@ -24,8 +24,8 @@ public class OpenInterfaceRequest {
 		this.args.put(key, value);
 	}
 
-	public OpenInterfaceRequest(@NotEmpty String beanName, @NotEmpty String methodName) {
-		this.beanName = beanName;
+	public OpenInterfaceRequest(String serviceName, String methodName) {
+		this.serviceName = serviceName;
 		this.methodName = methodName;
 	}
 

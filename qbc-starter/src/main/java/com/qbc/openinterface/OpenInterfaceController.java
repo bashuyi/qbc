@@ -6,9 +6,10 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.ApplicationContext;
@@ -52,39 +53,40 @@ public class OpenInterfaceController {
 	@ResponseBody
 	@SneakyThrows
 	@OpenInterfaceLog
-	public Object dispatch(@NotEmpty @RequestBody(required = false) OpenInterfaceRequest openInterfaceRequest,
-			@NotEmpty @RequestHeader(required = false) String userId,
-			@NotEmpty @RequestHeader(required = false) String username) {
-		String openInterfaceBeanName = openInterfaceRequest.getBeanName();
-		String openInterfaceMethodName = openInterfaceRequest.getMethodName();
-		Map<String, Object> args = ObjectUtils.defaultIfNull(openInterfaceRequest.getArgs(), new HashMap<>());
+	public Object dispatch(@NotNull @RequestBody(required = false) OpenInterfaceRequest openInterfaceRequest,
+			@RequestHeader(required = false) String userId, @RequestHeader(required = false) String username) {
+		try {
+			String openInterfaceBeanName = openInterfaceRequest.getBeanName();
+			String openInterfaceMethodName = openInterfaceRequest.getMethodName();
+			Map<String, Object> args = ObjectUtils.defaultIfNull(openInterfaceRequest.getArgs(), new HashMap<>());
 
-		if (log.isDebugEnabled()) {
-			log.debug(LOG_PATTEN, openInterfaceBeanName, openInterfaceMethodName,
-					objectMapper.writeValueAsString(args));
-		}
+			UserUtils.setUserId(NumberUtils.toLong(userId));
+			UserUtils.setUsername(username);
 
-		Object bean = applicationContext.getBean(openInterfaceBeanName);
-		Method method = openInterfaceContext.getMethod(openInterfaceBeanName, openInterfaceMethodName);
-		Parameter[] parameters = method.getParameters();
-		Object[] parameterValues = Arrays.asList(parameters).stream().map(parameter -> {
-			if (parameter.getType().equals(OpenInterfaceMapResponse.class)) {
-				return OpenInterfaceMapResponse.instance();
+			if (log.isDebugEnabled()) {
+				log.debug(LOG_PATTEN, openInterfaceBeanName, openInterfaceMethodName,
+						objectMapper.writeValueAsString(args));
 			}
-			return args.get(parameter.getName());
-		}).toArray();
 
-		UserUtils.setUserId(Long.valueOf(userId));
-		UserUtils.setUsername(username);
+			Object bean = applicationContext.getBean(openInterfaceBeanName);
+			Method method = openInterfaceContext.getMethod(openInterfaceBeanName, openInterfaceMethodName);
+			Parameter[] parameters = method.getParameters();
+			Object[] parameterValues = Arrays.asList(parameters).stream().map(parameter -> {
+				if (parameter.getType().equals(OpenInterfaceMapResponse.class)) {
+					return OpenInterfaceMapResponse.instance();
+				}
+				return args.get(parameter.getName());
+			}).toArray();
 
-		Object returnValue = ReflectionUtils.invokeMethod(method, bean, parameterValues);
+			Object returnValue = ReflectionUtils.invokeMethod(method, bean, parameterValues);
 
-		UserUtils.removeAll();
-
-		if (returnValue instanceof OpenInterfaceResponse<?>) {
-			return ObjectUtils.defaultIfNull(returnValue, new OpenInterfaceResponse<>());
+			if (returnValue instanceof OpenInterfaceResponse<?>) {
+				return ObjectUtils.defaultIfNull(returnValue, new OpenInterfaceResponse<>());
+			}
+			return OpenInterfaceResponse.ok(returnValue);
+		} finally {
+			UserUtils.removeAll();
 		}
-		return OpenInterfaceResponse.ok(returnValue);
 	}
 
 }

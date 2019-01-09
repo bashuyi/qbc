@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.qbc.utils.core.UserUtils;
 
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -29,7 +30,7 @@ public class OpenInterfaceAspect {
 	@Autowired
 	private ObjectMapper objectMapper;
 
-	@Pointcut("@annotation(com.qbc.openinterface.OpenInterfaceLog)")
+	@Pointcut("execution(public * com.qbc.openinterface.OpenInterfaceController.*(..))")
 	public void pointcut() {
 	}
 
@@ -41,6 +42,7 @@ public class OpenInterfaceAspect {
 			log.debug(LOG_PATTEN, openInterfaceResponse.getCode(), openInterfaceResponse.getMessage(),
 					Optional.ofNullable(openInterfaceResponse.getData()).map(this::writeValueAsString).orElse(""));
 		}
+		UserUtils.removeAll();
 	}
 
 	@SneakyThrows

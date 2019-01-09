@@ -13,7 +13,7 @@ public class OpenInterfaceMapResponse extends OpenInterfaceResponse<Map<String, 
 		return openInterfaceMapResponse;
 	}
 
-	public void put(String key, String value) {
+	public void put(String key, Object value) {
 		this.data.put(key, value);
 	}
 

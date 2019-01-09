@@ -1,5 +1,7 @@
 package com.qbc.filter;
 
+import java.util.Map;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
@@ -27,7 +29,7 @@ public class VerifyTokenGatewayFilterFactory extends AbstractGatewayFilterFactor
 	@Override
 	public GatewayFilter apply(Object config) {
 		return (exchange, chain) -> {
-			OpenInterfaceResponse<String> openInterfaceResponse = OpenInterfaceResponse
+			OpenInterfaceResponse<Map<String, String>> openInterfaceResponse = OpenInterfaceResponse
 					.error(HttpStatus.BAD_REQUEST.value(), "token: must not be empty");
 
 			String token = exchange.getRequest().getHeaders().getFirst("Authorization");
@@ -36,8 +38,9 @@ public class VerifyTokenGatewayFilterFactory extends AbstractGatewayFilterFactor
 				openInterfaceRequest.put("token", token);
 				openInterfaceResponse = openInterfaceClientCloudManager.post("qbc-cloud-auth", openInterfaceRequest);
 				if (openInterfaceResponse.isOk()) {
-					ServerHttpRequest request = exchange.getRequest().mutate()
-							.header("username", openInterfaceResponse.getData()).build();
+					final Map<String, String> args = openInterfaceResponse.getData();
+					ServerHttpRequest request = exchange.getRequest().mutate().headers(header -> header.setAll(args))
+							.build();
 					return chain.filter(exchange.mutate().request(request).build());
 				}
 

@@ -24,7 +24,7 @@
 	<property name="LOG_HOME" value="${logPath}" />
 	<property name="LOG_KEEP_TIME" value="15" />
 	<property name="LOG_PATTERN"
-		value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] [%X{userId}] [%X{requestId}] [%-5level] [%logger{36}:%line] - [%msg]%n" />
+		value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] [%X{userId}] [%X{username}] [%-5level] [%logger{36}:%line] - [%msg]%n" />
 
 	<!-- appender用来格式化日志输出节点，有俩个属性name和class，class用来指定哪种输出策略，常用就是控制台输出策略和文件输出策略。 -->
 	<appender name="STDOUT"

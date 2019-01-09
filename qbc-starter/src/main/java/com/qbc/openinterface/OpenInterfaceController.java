@@ -6,7 +6,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotEmpty;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +16,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.qbc.utils.core.UserUtils;
 
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -50,7 +52,9 @@ public class OpenInterfaceController {
 	@ResponseBody
 	@SneakyThrows
 	@OpenInterfaceLog
-	public Object dispatch(@NotNull @RequestBody(required = false) OpenInterfaceRequest openInterfaceRequest) {
+	public Object dispatch(@NotEmpty @RequestBody(required = false) OpenInterfaceRequest openInterfaceRequest,
+			@NotEmpty @RequestHeader(required = false) String userId,
+			@NotEmpty @RequestHeader(required = false) String username) {
 		String openInterfaceBeanName = openInterfaceRequest.getBeanName();
 		String openInterfaceMethodName = openInterfaceRequest.getMethodName();
 		Map<String, Object> args = ObjectUtils.defaultIfNull(openInterfaceRequest.getArgs(), new HashMap<>());
@@ -69,7 +73,14 @@ public class OpenInterfaceController {
 			}
 			return args.get(parameter.getName());
 		}).toArray();
+
+		UserUtils.setUserId(Long.valueOf(userId));
+		UserUtils.setUsername(username);
+
 		Object returnValue = ReflectionUtils.invokeMethod(method, bean, parameterValues);
+
+		UserUtils.removeAll();
+
 		if (returnValue instanceof OpenInterfaceResponse<?>) {
 			return ObjectUtils.defaultIfNull(returnValue, new OpenInterfaceResponse<>());
 		}

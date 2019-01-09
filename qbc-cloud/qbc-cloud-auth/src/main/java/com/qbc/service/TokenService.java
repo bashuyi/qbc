@@ -11,6 +11,7 @@ import com.qbc.dao.SysUserDAO;
 import com.qbc.dao.SysUserDO;
 import com.qbc.manager.core.TokenManager;
 import com.qbc.openinterface.OpenInterface;
+import com.qbc.openinterface.OpenInterfaceMapResponse;
 import com.qbc.openinterface.OpenInterfaceMethod;
 import com.qbc.openinterface.OpenInterfaceResponse;
 
@@ -38,7 +39,8 @@ public class TokenService {
 	}
 
 	@OpenInterfaceMethod
-	public OpenInterfaceResponse<String> verifyToken(@NotEmpty String token) {
+	public OpenInterfaceMapResponse verifyToken(OpenInterfaceMapResponse openInterfaceMapResponse,
+			@NotEmpty String token) {
 		// 用户名
 		String username = tokenManager.getAudience(token);
 
@@ -48,7 +50,10 @@ public class TokenService {
 
 		tokenManager.verifyToken(token, sysUserDO.getSecret());
 
-		return OpenInterfaceResponse.ok(username);
+		openInterfaceMapResponse.put("userId", String.valueOf(sysUserDO.getId()));
+		openInterfaceMapResponse.put("username", username);
+
+		return openInterfaceMapResponse;
 	}
 
 	@OpenInterfaceMethod

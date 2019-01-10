@@ -4,16 +4,16 @@ import javax.validation.constraints.NotEmpty;
 
 import org.springframework.validation.annotation.Validated;
 
-import com.qbc.openinterface.OpenInterface;
-import com.qbc.openinterface.OpenInterfaceMapResponse;
-import com.qbc.openinterface.OpenInterfaceMethod;
+import com.qbc.api.Api;
+import com.qbc.api.ApiMapResponse;
+import com.qbc.api.ApiOperation;
 
-@OpenInterface
+@Api
 @Validated
 public class WithdrawalService {
 
-	@OpenInterfaceMethod
-	public OpenInterfaceMapResponse withdrawal(OpenInterfaceMapResponse openInterfaceMapResponse, @NotEmpty String id) {
+	@ApiOperation
+	public ApiMapResponse withdrawal(ApiMapResponse openInterfaceMapResponse, @NotEmpty String id) {
 		openInterfaceMapResponse.setCode(1);
 		openInterfaceMapResponse.setMessage("業務エラー");
 		openInterfaceMapResponse.put("id", id);

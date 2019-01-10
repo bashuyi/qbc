@@ -4,14 +4,14 @@ import javax.validation.constraints.NotEmpty;
 
 import org.springframework.validation.annotation.Validated;
 
-import com.qbc.openinterface.OpenInterface;
-import com.qbc.openinterface.OpenInterfaceMethod;
+import com.qbc.api.Api;
+import com.qbc.api.ApiOperation;
 
-@OpenInterface
+@Api
 @Validated
 public class WithdrawalService {
 
-	@OpenInterfaceMethod
+	@ApiOperation
 	public void withdrawal(@NotEmpty String id) {
 	}
 

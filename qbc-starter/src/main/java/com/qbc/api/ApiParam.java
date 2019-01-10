@@ -1,4 +1,4 @@
-package com.qbc.openinterface;
+package com.qbc.api;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -6,13 +6,24 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Target(ElementType.METHOD)
+/**
+ * API参数
+ *
+ * @author Ma
+ */
+@Target(ElementType.PARAMETER)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface OpenInterfaceMethod {
+public @interface ApiParam {
 
-	String value() default "";
-	
+	/**
+	 * API参数名，默认为变量名。
+	 */
+	String name() default "";
+
+	/**
+	 * API参数描述
+	 */
 	String description() default "";
 
 }

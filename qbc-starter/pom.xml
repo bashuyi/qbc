@@ -15,7 +15,7 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-aop</artifactId>
 		</dependency>
-	
+
 		<!-- WebFlux -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -44,6 +44,12 @@
 		<dependency>
 			<groupId>cn.izern</groupId>
 			<artifactId>sequence</artifactId>
+		</dependency>
+
+		<!-- 反射工具 -->
+		<dependency>
+			<groupId>com.esotericsoftware</groupId>
+			<artifactId>reflectasm</artifactId>
 		</dependency>
 
 		<!-- Apache工具库 -->

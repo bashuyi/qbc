@@ -5,7 +5,7 @@ logging:
   config: classpath:logback-qbc.xml
   path: C:/Logs/
 qbc:
-  open-interface:
+  api:
     enable: true
 server:
   port: 9999

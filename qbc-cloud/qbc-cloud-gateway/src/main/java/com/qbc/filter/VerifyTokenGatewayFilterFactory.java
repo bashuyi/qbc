@@ -12,9 +12,9 @@ import org.springframework.http.server.reactive.ServerHttpResponse;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.qbc.api.ApiRequest;
+import com.qbc.api.ApiResponse;
 import com.qbc.manager.cloud.OpenInterfaceClientCloudManager;
-import com.qbc.openinterface.OpenInterfaceRequest;
-import com.qbc.openinterface.OpenInterfaceResponse;
 
 import lombok.Setter;
 import reactor.core.publisher.Mono;
@@ -29,12 +29,12 @@ public class VerifyTokenGatewayFilterFactory extends AbstractGatewayFilterFactor
 	@Override
 	public GatewayFilter apply(Object config) {
 		return (exchange, chain) -> {
-			OpenInterfaceResponse<Map<String, String>> openInterfaceResponse = OpenInterfaceResponse
+			ApiResponse<Map<String, String>> openInterfaceResponse = ApiResponse
 					.error(HttpStatus.BAD_REQUEST.value(), "token: must not be empty");
 
 			String token = exchange.getRequest().getHeaders().getFirst("Authorization");
 			if (StringUtils.isNotEmpty(token)) {
-				OpenInterfaceRequest openInterfaceRequest = new OpenInterfaceRequest("tokenService", "verifyToken");
+				ApiRequest openInterfaceRequest = new ApiRequest("tokenService", "verifyToken");
 				openInterfaceRequest.put("token", token);
 				openInterfaceResponse = openInterfaceClientCloudManager.post("qbc-cloud-auth", openInterfaceRequest);
 				if (openInterfaceResponse.isOk()) {

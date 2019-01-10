@@ -9,8 +9,8 @@ import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.qbc.openinterface.OpenInterfaceRequest;
-import com.qbc.openinterface.OpenInterfaceResponse;
+import com.qbc.api.ApiRequest;
+import com.qbc.api.ApiResponse;
 
 import lombok.SneakyThrows;
 
@@ -24,12 +24,12 @@ public class OpenInterfaceClientManager {
 	private ObjectMapper objectMapper;
 
 	@SneakyThrows
-	public <T> OpenInterfaceResponse<T> post(String url, OpenInterfaceRequest request) {
+	public <T> ApiResponse<T> post(String url, ApiRequest request) {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
-		HttpEntity<OpenInterfaceRequest> httpEntity = new HttpEntity<>(request, headers);
+		HttpEntity<ApiRequest> httpEntity = new HttpEntity<>(request, headers);
 		String response = restTemplate.postForObject(url, httpEntity, String.class);
-		return objectMapper.readValue(response, new TypeReference<OpenInterfaceResponse<T>>() {
+		return objectMapper.readValue(response, new TypeReference<ApiResponse<T>>() {
 		});
 	}
 

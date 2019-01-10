@@ -1,4 +1,4 @@
-package com.qbc.openinterface;
+package com.qbc.api;
 
 import java.util.Optional;
 
@@ -15,33 +15,40 @@ import com.qbc.utils.core.UserUtils;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * API的AOP，用于打印日志和移除每次请求上下文的用户信息。
+ *
+ * @author Ma
+ */
 @Slf4j
 @Aspect
 @Component
-public class OpenInterfaceAspect {
+public class ApiAspect {
 
 	private static final String LOG_PATTEN = String.join(System.lineSeparator(), "", //
-			"┏━━━━━开放接口调用结束━━━━━", //
-			"┣ 结果代码：{}", //
-			"┣ 结果消息：{}", //
-			"┣ 结果内容：{}", //
-			"┗━━━━━开放接口调用结束━━━━━", "");
+			"┏━━━━━API调用结束━━━━━", //
+			"┣ 响应代码：{}", //
+			"┣ 响应信息：{}", //
+			"┣ 响应内容：{}", //
+			"┗━━━━━API调用结束━━━━━", "");
 
 	@Autowired
 	private ObjectMapper objectMapper;
 
-	@Pointcut("execution(public * com.qbc.openinterface.OpenInterfaceController.*(..))")
+	@Pointcut("execution(public * com.qbc.api.ApiController.*(..))")
 	public void pointcut() {
 	}
 
 	@AfterReturning(value = "pointcut()", returning = "returnValue")
 	@SneakyThrows
 	public void afterReturning(JoinPoint joinPoint, Object returnValue) {
-		if (log.isDebugEnabled() && returnValue instanceof OpenInterfaceResponse<?>) {
-			OpenInterfaceResponse<?> openInterfaceResponse = (OpenInterfaceResponse<?>) returnValue;
+		// 打印响应内容
+		if (log.isDebugEnabled() && returnValue instanceof ApiResponse<?>) {
+			ApiResponse<?> openInterfaceResponse = (ApiResponse<?>) returnValue;
 			log.debug(LOG_PATTEN, openInterfaceResponse.getCode(), openInterfaceResponse.getMessage(),
 					Optional.ofNullable(openInterfaceResponse.getData()).map(this::writeValueAsString).orElse(""));
 		}
+		// 上下文的用户信息通过ThreadLocal实现，由于线程池重用的关系，必须每次请求结束清除。
 		UserUtils.removeAll();
 	}
 

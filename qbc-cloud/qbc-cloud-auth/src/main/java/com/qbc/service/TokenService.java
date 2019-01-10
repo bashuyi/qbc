@@ -7,16 +7,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 import org.springframework.validation.annotation.Validated;
 
+import com.qbc.api.Api;
+import com.qbc.api.ApiMapResponse;
+import com.qbc.api.ApiOperation;
+import com.qbc.api.ApiResponse;
 import com.qbc.dao.SysUserDAO;
 import com.qbc.dao.SysUserDO;
 import com.qbc.manager.core.TokenManager;
-import com.qbc.openinterface.OpenInterface;
-import com.qbc.openinterface.OpenInterfaceMapResponse;
-import com.qbc.openinterface.OpenInterfaceMethod;
-import com.qbc.openinterface.OpenInterfaceResponse;
 
 @Validated
-@OpenInterface
+@Api
 public class TokenService {
 
 	@Autowired
@@ -25,8 +25,8 @@ public class TokenService {
 	@Autowired
 	private SysUserDAO sysUserDAO;
 
-	@OpenInterfaceMethod
-	public OpenInterfaceResponse<String> createToken(@NotEmpty String username, @NotEmpty String password) {
+	@ApiOperation
+	public ApiResponse<String> createToken(@NotEmpty String username, @NotEmpty String password) {
 		SysUserDO sysUserDO = sysUserDAO.findByUsername(username);
 
 		Assert.notNull(sysUserDO, "createToken.username: unknown");
@@ -35,11 +35,11 @@ public class TokenService {
 		// 生成Token
 		String token = tokenManager.createToken(username, sysUserDO.getSecret());
 
-		return OpenInterfaceResponse.ok(token);
+		return ApiResponse.ok(token);
 	}
 
-	@OpenInterfaceMethod
-	public OpenInterfaceMapResponse verifyToken(OpenInterfaceMapResponse openInterfaceMapResponse,
+	@ApiOperation
+	public ApiMapResponse verifyToken(ApiMapResponse openInterfaceMapResponse,
 			@NotEmpty String token) {
 		// 用户名
 		String username = tokenManager.getAudience(token);
@@ -56,7 +56,7 @@ public class TokenService {
 		return openInterfaceMapResponse;
 	}
 
-	@OpenInterfaceMethod
+	@ApiOperation
 	public void revokeToken(@NotEmpty String token) {
 	}
 

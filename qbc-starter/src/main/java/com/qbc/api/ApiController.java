@@ -1,9 +1,8 @@
-package com.qbc.openinterface;
+package com.qbc.api;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.validation.ConstraintViolationException;
@@ -34,24 +33,29 @@ import com.qbc.utils.core.UserUtils;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * API层的统一外部访问入口。记录了请求的内容，并统一处理了异常。
+ *
+ * @author Ma
+ */
 @Slf4j
 @Validated
-@Controller("${qbc.open-interface.path}")
-@ConditionalOnProperty(value = "qbc.open-interface.enable", havingValue = "true")
-public class OpenInterfaceController {
+@Controller("${qbc.api.path}")
+@ConditionalOnProperty(value = "qbc.api.enable", havingValue = "true")
+public class ApiController {
 
 	private static final String LOG_PATTEN = String.join(System.lineSeparator(), "", //
-			"┏━━━━━开放接口调用开始━━━━━", //
+			"┏━━━━━API调用开始━━━━━", //
 			"┣ 接口名称：{}", //
 			"┣ 接口方法：{}", //
 			"┣ 接口参数：{}", //
-			"┗━━━━━开放接口调用开始━━━━━", "");
+			"┗━━━━━API调用开始━━━━━", "");
 
 	@Autowired
 	private ApplicationContext applicationContext;
 
 	@Autowired
-	private OpenInterfaceContext openInterfaceContext;
+	private ApiContext apiContext;
 
 	@Autowired
 	private ObjectMapper objectMapper;
@@ -59,36 +63,45 @@ public class OpenInterfaceController {
 	@RequestMapping
 	@ResponseBody
 	@SneakyThrows
-	public Object dispatch(@NotNull @RequestBody(required = false) OpenInterfaceRequest openInterfaceRequest,
+	public Object dispatch(@NotNull @RequestBody(required = false) ApiRequest apiRequest,
 			@RequestHeader(required = false) String userId, @RequestHeader(required = false) String username) {
-		String openInterfaceServiceName = openInterfaceRequest.getServiceName();
-		String openInterfaceMethodName = openInterfaceRequest.getMethodName();
-		Map<String, Object> args = ObjectUtils.defaultIfNull(openInterfaceRequest.getArgs(), new HashMap<>());
+		String apiName = apiRequest.getApiName();
+		String apiOperationName = apiRequest.getApiOperationName();
+		Map<String, Object> apiParams = apiRequest.getApiParams();
 
+		// 设置用户信息到请求的上下文，用于日志和数据库等
 		UserUtils.setUserId(NumberUtils.toLong(userId));
 		UserUtils.setUsername(username);
 
+		// 记录了请求的内容
 		if (log.isDebugEnabled()) {
-			log.debug(LOG_PATTEN, openInterfaceServiceName, openInterfaceMethodName,
-					objectMapper.writeValueAsString(args));
+			log.debug(LOG_PATTEN, apiName, apiOperationName,
+					objectMapper.writeValueAsString(apiParams));
 		}
+		
+		// 获得Bean
+		Object bean = applicationContext.getBean(apiName);
 
-		Object bean = applicationContext.getBean(openInterfaceServiceName);
-		Method method = openInterfaceContext.getMethod(openInterfaceServiceName, openInterfaceMethodName);
+		// 从上下文缓存中获得服务方法
+		Method method = apiContext.getMethod(apiName, apiOperationName);
+		
+		// 获得方法参数
 		Parameter[] parameters = method.getParameters();
 		Object[] parameterValues = Arrays.asList(parameters).stream().map(parameter -> {
-			if (parameter.getType().equals(OpenInterfaceMapResponse.class)) {
-				return OpenInterfaceMapResponse.instance();
+			if (parameter.getType().equals(ApiMapResponse.class)) {
+				return ApiMapResponse.instance();
 			}
-			return args.get(parameter.getName());
+			return apiParams.get(parameter.getName());
 		}).toArray();
-
+		
+		// 反射执行服务的方法
 		Object returnValue = ReflectionUtils.invokeMethod(method, bean, parameterValues);
 
-		if (returnValue instanceof OpenInterfaceResponse<?>) {
-			return ObjectUtils.defaultIfNull(returnValue, new OpenInterfaceResponse<>());
+		// 将返回值封装到响应中
+		if (returnValue instanceof ApiResponse<?>) {
+			return ObjectUtils.defaultIfNull(returnValue, new ApiResponse<>());
 		}
-		return OpenInterfaceResponse.ok(returnValue);
+		return ApiResponse.ok(returnValue);
 	}
 
 	@ResponseBody
@@ -100,31 +113,31 @@ public class OpenInterfaceController {
 			IllegalArgumentException.class,
 			// 参数验证错误
 			ConstraintViolationException.class })
-	public OpenInterfaceResponse<?> handleBadRequest(Throwable e) {
-		return OpenInterfaceResponse.error(HttpStatus.BAD_REQUEST.value(), e.getMessage());
+	public ApiResponse<?> handleBadRequest(Throwable e) {
+		return ApiResponse.error(HttpStatus.BAD_REQUEST.value(), e.getMessage());
 	}
 
 	@ResponseBody
 	@ResponseStatus(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
 	@ExceptionHandler({ UnsupportedMediaTypeStatusException.class })
-	public OpenInterfaceResponse<?> handleUnsupportedMediaType(Throwable e) {
-		return OpenInterfaceResponse.error(HttpStatus.UNSUPPORTED_MEDIA_TYPE.value(), e.getMessage());
+	public ApiResponse<?> handleUnsupportedMediaType(Throwable e) {
+		return ApiResponse.error(HttpStatus.UNSUPPORTED_MEDIA_TYPE.value(), e.getMessage());
 	}
 
 	@ResponseBody
 	@ResponseStatus(HttpStatus.UNAUTHORIZED)
 	@ExceptionHandler({ UnauthorizedException.class })
-	public OpenInterfaceResponse<?> handleUnauthorized(Throwable e) {
-		return OpenInterfaceResponse.error(HttpStatus.UNAUTHORIZED.value(), e.getMessage());
+	public ApiResponse<?> handleUnauthorized(Throwable e) {
+		return ApiResponse.error(HttpStatus.UNAUTHORIZED.value(), e.getMessage());
 	}
 
 	@ResponseBody
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 	@ExceptionHandler(Throwable.class)
-	public OpenInterfaceResponse<?> handleInternalServerError(Throwable e) {
+	public ApiResponse<?> handleInternalServerError(Throwable e) {
 		// TODO 发邮件等方式通知开发人员
 		log.error("未知异常", e);
-		return OpenInterfaceResponse.error(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage());
+		return ApiResponse.error(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage());
 	}
 
 }

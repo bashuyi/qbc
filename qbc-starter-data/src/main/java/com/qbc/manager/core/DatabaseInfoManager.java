@@ -121,12 +121,12 @@ public class DatabaseInfoManager {
 		}
 
 		// 实例化数据库信息实体，并设置数据库信息到实体中。
-		DatabaseInfoDTO databaseInfoBVO = new DatabaseInfoDTO();
-		databaseInfoBVO.setDatabaseProductName(databaseMetaData.getDatabaseProductName());
-		databaseInfoBVO.setDatabaseProductVersion(databaseMetaData.getDatabaseProductVersion());
-		databaseInfoBVO.setTableInfos(tableInfos);
+		DatabaseInfoDTO databaseInfoDTO = new DatabaseInfoDTO();
+		databaseInfoDTO.setDatabaseProductName(databaseMetaData.getDatabaseProductName());
+		databaseInfoDTO.setDatabaseProductVersion(databaseMetaData.getDatabaseProductVersion());
+		databaseInfoDTO.setTableInfos(tableInfos);
 
-		return databaseInfoBVO;
+		return databaseInfoDTO;
 	}
 
 	@SneakyThrows

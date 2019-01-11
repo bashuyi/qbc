@@ -14,8 +14,13 @@ import com.qbc.api.ApiResponse;
 
 import lombok.SneakyThrows;
 
+/**
+ * API客户端
+ *
+ * @author Ma
+ */
 @Component
-public class OpenInterfaceClientManager {
+public class ApiClientManager {
 
 	@Autowired(required = false)
 	private RestTemplate restTemplate;
@@ -24,10 +29,10 @@ public class OpenInterfaceClientManager {
 	private ObjectMapper objectMapper;
 
 	@SneakyThrows
-	public <T> ApiResponse<T> post(String url, ApiRequest request) {
+	public <T> ApiResponse<T> post(String url, ApiRequest apiRequest) {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
-		HttpEntity<ApiRequest> httpEntity = new HttpEntity<>(request, headers);
+		HttpEntity<ApiRequest> httpEntity = new HttpEntity<>(apiRequest, headers);
 		String response = restTemplate.postForObject(url, httpEntity, String.class);
 		return objectMapper.readValue(response, new TypeReference<ApiResponse<T>>() {
 		});

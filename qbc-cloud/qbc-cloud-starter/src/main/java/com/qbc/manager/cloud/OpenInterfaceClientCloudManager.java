@@ -6,13 +6,13 @@ import org.springframework.stereotype.Component;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.qbc.api.ApiRequest;
 import com.qbc.api.ApiResponse;
-import com.qbc.manager.core.OpenInterfaceClientManager;
+import com.qbc.manager.core.ApiClientManager;
 
 @Component
 public class OpenInterfaceClientCloudManager {
 
 	@Autowired
-	private OpenInterfaceClientManager openInterfaceClientManager;
+	private ApiClientManager openInterfaceClientManager;
 
 	@HystrixCommand(fallbackMethod = "postFallback")
 	public <T> ApiResponse<T> post(String serviceName, ApiRequest request) {

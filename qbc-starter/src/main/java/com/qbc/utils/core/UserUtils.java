@@ -7,6 +7,11 @@ import org.slf4j.MDC;
 
 import lombok.experimental.UtilityClass;
 
+/**
+ * 用户上下文
+ *
+ * @author Ma
+ */
 @UtilityClass
 public class UserUtils {
 

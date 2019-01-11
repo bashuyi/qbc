@@ -14,7 +14,8 @@ public class ApiMapResponse extends ApiResponse<Map<String, Object>> {
 
 	public static ApiMapResponse instance() {
 		ApiMapResponse openInterfaceMapResponse = new ApiMapResponse();
-		openInterfaceMapResponse.data = new HashMap<>();
+		// 集合初始化时，指定集合初始值大小。如果暂时无法确定初始值大小，请设置为 16（即默认值）。
+		openInterfaceMapResponse.data = new HashMap<>(16);
 		return openInterfaceMapResponse;
 	}
 

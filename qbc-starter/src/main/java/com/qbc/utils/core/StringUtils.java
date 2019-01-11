@@ -8,6 +8,11 @@ import com.google.common.base.CaseFormat;
 
 import lombok.experimental.UtilityClass;
 
+/**
+ * 字符串工具类
+ *
+ * @author Ma
+ */
 @UtilityClass
 public class StringUtils {
 

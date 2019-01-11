@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.server.UnsupportedMediaTypeStatusException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.qbc.constant.LogPatten;
 import com.qbc.exception.UnauthorizedException;
 import com.qbc.utils.core.UserUtils;
 
@@ -34,7 +35,7 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * API层的统一外部访问入口。记录了请求的内容，并统一处理了异常。
+ * 开放接口层API的统一外部访问入口。记录了请求的内容，并统一处理了异常。
  *
  * @author Ma
  */
@@ -43,13 +44,6 @@ import lombok.extern.slf4j.Slf4j;
 @Controller("${qbc.api.path}")
 @ConditionalOnProperty(value = "qbc.api.enable", havingValue = "true")
 public class ApiController {
-
-	private static final String LOG_PATTEN = String.join(System.lineSeparator(), "", //
-			"┏━━━━━API调用开始━━━━━", //
-			"┣ 接口名称：{}", //
-			"┣ 接口方法：{}", //
-			"┣ 接口参数：{}", //
-			"┗━━━━━API调用开始━━━━━", "");
 
 	@Autowired
 	private ApplicationContext applicationContext;
@@ -75,16 +69,15 @@ public class ApiController {
 
 		// 记录了请求的内容
 		if (log.isDebugEnabled()) {
-			log.debug(LOG_PATTEN, apiName, apiOperationName,
-					objectMapper.writeValueAsString(apiParams));
+			log.debug(LogPatten.API_START, apiName, apiOperationName, objectMapper.writeValueAsString(apiParams));
 		}
-		
+
 		// 获得Bean
 		Object bean = applicationContext.getBean(apiName);
 
 		// 从上下文缓存中获得服务方法
 		Method method = apiContext.getMethod(apiName, apiOperationName);
-		
+
 		// 获得方法参数
 		Parameter[] parameters = method.getParameters();
 		Object[] parameterValues = Arrays.asList(parameters).stream().map(parameter -> {
@@ -93,7 +86,7 @@ public class ApiController {
 			}
 			return apiParams.get(parameter.getName());
 		}).toArray();
-		
+
 		// 反射执行服务的方法
 		Object returnValue = ReflectionUtils.invokeMethod(method, bean, parameterValues);
 

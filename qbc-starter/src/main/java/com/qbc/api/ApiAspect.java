@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.qbc.constant.LogPatten;
 import com.qbc.utils.core.UserUtils;
 
 import lombok.SneakyThrows;
@@ -25,13 +26,6 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 public class ApiAspect {
 
-	private static final String LOG_PATTEN = String.join(System.lineSeparator(), "", //
-			"┏━━━━━API调用结束━━━━━", //
-			"┣ 响应代码：{}", //
-			"┣ 响应信息：{}", //
-			"┣ 响应内容：{}", //
-			"┗━━━━━API调用结束━━━━━", "");
-
 	@Autowired
 	private ObjectMapper objectMapper;
 
@@ -45,7 +39,7 @@ public class ApiAspect {
 		// 打印响应内容
 		if (log.isDebugEnabled() && returnValue instanceof ApiResponse<?>) {
 			ApiResponse<?> openInterfaceResponse = (ApiResponse<?>) returnValue;
-			log.debug(LOG_PATTEN, openInterfaceResponse.getCode(), openInterfaceResponse.getMessage(),
+			log.debug(LogPatten.API_END, openInterfaceResponse.getCode(), openInterfaceResponse.getMessage(),
 					Optional.ofNullable(openInterfaceResponse.getData()).map(this::writeValueAsString).orElse(""));
 		}
 		// 上下文的用户信息通过ThreadLocal实现，由于线程池重用的关系，必须每次请求结束清除。

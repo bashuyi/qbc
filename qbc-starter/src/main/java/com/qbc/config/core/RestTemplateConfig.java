@@ -8,6 +8,11 @@ import org.springframework.web.client.RestTemplate;
 
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * RestTemplate配置
+ *
+ * @author Ma
+ */
 @Slf4j
 @Configuration
 public class RestTemplateConfig {

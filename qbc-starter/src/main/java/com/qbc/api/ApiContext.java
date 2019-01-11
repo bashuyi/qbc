@@ -38,11 +38,11 @@ public class ApiContext implements ApplicationRunner {
 		beans.forEach((beanName, bean) -> {
 			// 获得API真实的服务类，而不是代理类
 			Class<?> classType = AopUtils.getTargetClass(bean);
-			
+
 			// 获得API名，如果没有指定就使用Bean名称
 			Api api = classType.getAnnotation(Api.class);
 			String apiName = StringUtils.defaultIfEmpty(api.name(), beanName);
-			
+
 			// 扫描所以API操作的方法
 			List<Method> methods = MethodUtils.getMethodsListWithAnnotation(classType, ApiOperation.class);
 			methods.stream().forEach(method -> {
@@ -50,7 +50,7 @@ public class ApiContext implements ApplicationRunner {
 				ApiOperation apiOperation = method.getAnnotation(ApiOperation.class);
 				String apiOperationName = StringUtils.defaultIfEmpty(apiOperation.name(), method.getName());
 				methodTable.put(apiName, apiOperationName, method);
-				
+
 				// TODO 获得方法的索引，用于提高反射效率
 				MethodAccess access = MethodAccess.get(classType);
 				int index = access.getIndex(method.getName());

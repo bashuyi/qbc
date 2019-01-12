@@ -5,4 +5,4 @@
  * 
  * @author Ma
  */
-package com.qbc.dto.core;
+package com.qbc.dto;

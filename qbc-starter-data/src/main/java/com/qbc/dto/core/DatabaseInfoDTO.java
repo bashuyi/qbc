@@ -1,4 +1,4 @@
-package com.qbc.manager.core;
+package com.qbc.dto.core;
 
 import java.util.List;
 

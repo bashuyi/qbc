@@ -11,7 +11,13 @@ import com.slyak.spring.jpa.GenericJpaRepository;
  */
 @Repository
 public interface SysUserDAO extends GenericJpaRepository<SysUserDO, Long> {
-	
+
+	/**
+	 * 根据用户名查询
+	 * 
+	 * @param username 用户名
+	 * @return 用户实体
+	 */
 	SysUserDO findByUsername(String username);
-	
+
 }

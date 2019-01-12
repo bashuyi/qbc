@@ -32,4 +32,7 @@ public class SysUserDO extends AbstractDO {
 	/** 签名密钥 */
 	private String secret;
 
+	/** 用户表示名 */
+	private String displayName;
+
 }

@@ -24,9 +24,12 @@ public class SysRoleDO extends AbstractDO {
 	private static final long serialVersionUID = 1L;
 
 	/** 角色名 */
-	private String roleName;
+	private String name;
+
+	/** 角色表示名 */
+	private String displayName;
 
 	/** 角色描述 */
-	private String roleDescription;
+	private String description;
 
 }

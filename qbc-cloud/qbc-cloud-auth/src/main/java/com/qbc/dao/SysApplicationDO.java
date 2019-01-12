@@ -24,9 +24,12 @@ public class SysApplicationDO extends AbstractDO {
 	private static final long serialVersionUID = 1L;
 
 	/** 应用名 */
-	private String applicationName;
+	private String name;
+
+	/** 应用表示名 */
+	private String displayName;
 
 	/** 应用描述 */
-	private String applicationDescription;
+	private String description;
 
 }

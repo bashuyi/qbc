@@ -13,10 +13,13 @@ import lombok.Data;
 public class ApiDTO {
 
 	/** API名 */
-	private String apiName;
+	private String name;
+
+	/** API表示名 */
+	private String displayName;
 
 	/** API描述 */
-	private String apiDescription;
+	private String description;
 
 	/** API操作列表 */
 	private List<ApiOperationDTO> apiOperationList;

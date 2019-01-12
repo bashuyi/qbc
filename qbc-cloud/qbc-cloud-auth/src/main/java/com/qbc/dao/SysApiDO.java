@@ -24,10 +24,13 @@ public class SysApiDO extends AbstractDO {
 	private static final long serialVersionUID = 1L;
 
 	/** API名 */
-	private String apiName;
+	private String name;
+
+	/** API表示名 */
+	private String displayName;
 
 	/** API描述 */
-	private String apiDescription;
+	private String description;
 
 	/** 应用ID */
 	private Long applicationId;

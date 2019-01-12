@@ -24,13 +24,16 @@ public class SysApiParamDO extends AbstractDO {
 	private static final long serialVersionUID = 1L;
 
 	/** API参数名 */
-	private String paramName;
+	private String name;
+
+	/** API参数表示名 */
+	private String displayName;
 
 	/** API参数描述 */
-	private String paramDescription;
+	private String description;
 
 	/** API参数类型名 */
-	private String paramTypeName;
+	private String typeName;
 
 	/** 必须 */
 	private Boolean required;

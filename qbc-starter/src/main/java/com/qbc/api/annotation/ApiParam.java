@@ -16,14 +16,13 @@ import java.lang.annotation.Target;
 @Documented
 public @interface ApiParam {
 
-	/**
-	 * API参数名，默认为变量名。
-	 */
+	/** API参数名，默认为变量名。 */
 	String name() default "";
+	
+	/** API参数表示名 */
+	String displayName() default "";
 
-	/**
-	 * API参数描述
-	 */
+	/** API参数描述 */
 	String description() default "";
 
 }

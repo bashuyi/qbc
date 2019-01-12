@@ -13,10 +13,13 @@ import lombok.Data;
 public class ApplicationDTO {
 
 	/** 应用名 */
-	private String applicationName;
+	private String name;
+
+	/** 应用表示名 */
+	private String displayName;
 
 	/** 应用描述 */
-	private String applicationDescription;
+	private String description;
 
 	/** 应用的API列表 */
 	private List<ApiDTO> apiList;

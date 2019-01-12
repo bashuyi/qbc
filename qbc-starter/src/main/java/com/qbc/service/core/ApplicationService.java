@@ -12,13 +12,13 @@ import com.qbc.manager.core.ApiManageer;
  *
  * @author Ma
  */
-@Api(description = "应用服务")
+@Api(displayName = "应用服务")
 public class ApplicationService {
 
 	@Autowired
 	private ApiManageer apiManageer;
 
-	@ApiOperation(description = "获得应用信息")
+	@ApiOperation(displayName = "获得应用信息")
 	public ApplicationDTO info() {
 		return apiManageer.getApplicationDTO();
 	}

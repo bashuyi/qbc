@@ -21,7 +21,7 @@ import com.qbc.manager.core.TokenManager;
  *
  * @author Ma
  */
-@Api(description = "Token服务")
+@Api(displayName = "Token服务")
 @Validated
 public class TokenService {
 
@@ -31,9 +31,9 @@ public class TokenService {
 	@Autowired
 	private SysUserDAO sysUserDAO;
 
-	@ApiOperation(description = "创建Token")
-	public ApiResponse<String> createToken(@ApiParam(description = "用户名") @NotEmpty String username,
-			@ApiParam(description = "密码") @NotEmpty String password) {
+	@ApiOperation(displayName = "创建Token")
+	public ApiResponse<String> createToken(@ApiParam(displayName = "用户名") @NotEmpty String username,
+			@ApiParam(displayName = "密码") @NotEmpty String password) {
 		SysUserDO sysUserDO = sysUserDAO.findByUsername(username);
 
 		Assert.notNull(sysUserDO, "createToken.username: unknown");
@@ -45,9 +45,9 @@ public class TokenService {
 		return ApiResponse.ok(token);
 	}
 
-	@ApiOperation(description = "验证Token")
+	@ApiOperation(displayName = "验证Token")
 	public ApiMapResponse verifyToken(ApiMapResponse openInterfaceMapResponse,
-			@ApiParam(description = "Token") @NotEmpty String token) {
+			@ApiParam(displayName = "Token") @NotEmpty String token) {
 		// 用户名
 		String username = tokenManager.getAudience(token);
 
@@ -63,7 +63,7 @@ public class TokenService {
 		return openInterfaceMapResponse;
 	}
 
-	@ApiOperation(description = "失效Token")
+	@ApiOperation(displayName = "失效Token")
 	public void revokeToken() {
 	}
 

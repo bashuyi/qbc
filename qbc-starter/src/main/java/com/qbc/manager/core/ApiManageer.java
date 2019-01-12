@@ -91,33 +91,37 @@ public class ApiManageer implements ApplicationRunner {
 
 							// 获得API参数信息
 							ApiParamDTO apiParamDTO = new ApiParamDTO();
-							apiParamDTO.setParamName(paramName);
-							apiParamDTO.setParamDescription(apiParam.map(ApiParam::description).orElse(""));
-							apiParamDTO.setParamTypeName(parameter.getType().getName());
+							apiParamDTO.setName(paramName);
+							apiParamDTO.setDisplayName(apiParam.map(ApiParam::displayName).orElse(""));
+							apiParamDTO.setDescription(apiParam.map(ApiParam::description).orElse(""));
+							apiParamDTO.setTypeName(parameter.getType().getName());
 							apiParamDTO.setRequired(required);
 							return apiParamDTO;
 						}).collect(Collectors.toList());
 
 				// 获得API操作信息
 				ApiOperationDTO apiOperationDTO = new ApiOperationDTO();
-				apiOperationDTO.setOperationName(operationName);
-				apiOperationDTO.setOperationDescription(apiOperation.description());
+				apiOperationDTO.setName(operationName);
+				apiOperationDTO.setDisplayName(apiOperation.displayName());
+				apiOperationDTO.setDescription(apiOperation.description());
 				apiOperationDTO.setApiParamList(apiParamList);
 				apiOperationList.add(apiOperationDTO);
 			});
 
 			// 获得API信息
 			ApiDTO apiDTO = new ApiDTO();
-			apiDTO.setApiName(apiName);
-			apiDTO.setApiDescription(api.description());
+			apiDTO.setName(apiName);
+			apiDTO.setDisplayName(api.displayName());
+			apiDTO.setDescription(api.description());
 			apiDTO.setApiOperationList(apiOperationList);
 			apiList.add(apiDTO);
 		});
 
 		// 获得应用信息
 		applicationDTO = new ApplicationDTO();
-		applicationDTO.setApplicationName(StringUtils.defaultString(applicationProperties.getName()));
-		applicationDTO.setApplicationDescription(StringUtils.defaultString(applicationProperties.getDescription()));
+		applicationDTO.setName(StringUtils.defaultString(applicationProperties.getName()));
+		applicationDTO.setDisplayName(StringUtils.defaultString(applicationProperties.getDisplayName()));
+		applicationDTO.setDescription(StringUtils.defaultString(applicationProperties.getDescription()));
 		applicationDTO.setApiList(apiList);
 	}
 

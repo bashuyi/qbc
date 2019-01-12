@@ -10,7 +10,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * 系统API参数表实体类
+ * 系统API参数表数据访问实体类
  *
  * @author Ma
  */

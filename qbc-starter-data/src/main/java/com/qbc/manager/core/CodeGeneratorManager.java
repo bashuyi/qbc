@@ -69,7 +69,7 @@ public class CodeGeneratorManager {
 	public void generate(String templateName, String packageName, TableInfoDTO tableInfoDTO) {
 		Map<String, Object> param = PropertyUtils.describe(tableInfoDTO);
 		File file = Paths.get("src/main/java", StringUtils.packageNameToPathName(packageName),
-				tableInfoDTO.getClassName() + templateName + ".java").toFile();
+				tableInfoDTO.getUpperCamelTableName() + templateName + ".java").toFile();
 		generate(templateName, param, file);
 	}
 

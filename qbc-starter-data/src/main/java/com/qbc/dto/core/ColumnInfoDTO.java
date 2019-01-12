@@ -56,14 +56,14 @@ public class ColumnInfoDTO {
 	private Boolean autoincrement;
 
 	/**
-	 * 字段名
+	 * 首字母小写驼峰形式列名
 	 */
-	private String fieldName;
+	private String lowerCamelColumnName;
 
 	/**
 	 * 字段类型
 	 */
-	private String fieldType;
+	private String javaType;
 
 	/**
 	 * 主键序号

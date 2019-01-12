@@ -115,7 +115,7 @@ public class DatabaseInfoManager {
 			tableInfoDTO.setTableName(tableResultSet.getString("TABLE_NAME"));
 			tableInfoDTO.setTableType(tableResultSet.getString("TABLE_TYPE"));
 			tableInfoDTO.setRemarks(tableResultSet.getString("REMARKS"));
-			tableInfoDTO.setClassName(StringUtils.caseFormat(tableInfoDTO.getTableName().toLowerCase(),
+			tableInfoDTO.setUpperCamelTableName(StringUtils.caseFormat(tableInfoDTO.getTableName().toLowerCase(),
 					CaseFormat.LOWER_UNDERSCORE, CaseFormat.UPPER_CAMEL));
 
 			// 设置表的字段信息
@@ -154,9 +154,9 @@ public class DatabaseInfoManager {
 			columnInfoDTO.setRemarks(columnResultSet.getString("REMARKS"));
 			columnInfoDTO.setOrdinalPosition(columnResultSet.getInt("ORDINAL_POSITION"));
 			columnInfoDTO.setAutoincrement("YES".equals(columnResultSet.getString("IS_AUTOINCREMENT")));
-			columnInfoDTO.setFieldName(StringUtils.caseFormat(columnInfoDTO.getColumnName().toLowerCase(),
+			columnInfoDTO.setLowerCamelColumnName(StringUtils.caseFormat(columnInfoDTO.getColumnName().toLowerCase(),
 					CaseFormat.LOWER_UNDERSCORE, CaseFormat.LOWER_CAMEL));
-			columnInfoDTO.setFieldType(jdbcTypeMap.get(JDBCType.valueOf(columnInfoDTO.getDataType())));
+			columnInfoDTO.setJavaType(jdbcTypeMap.get(JDBCType.valueOf(columnInfoDTO.getDataType())));
 
 			columnInfoTable.put(tableName, columnName, columnInfoDTO);
 		}

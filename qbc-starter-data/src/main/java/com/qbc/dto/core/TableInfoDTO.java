@@ -23,7 +23,7 @@ public class TableInfoDTO {
 	private String tableSchem;
 
 	/**
-	 * 表名称
+	 * 表名
 	 */
 	private String tableName;
 
@@ -45,8 +45,8 @@ public class TableInfoDTO {
 	private List<ColumnInfoDTO> columnInfos;
 
 	/**
-	 * 类名
+	 * 首字母大写驼峰形式表名
 	 */
-	private String className;
+	private String upperCamelTableName;
 
 }

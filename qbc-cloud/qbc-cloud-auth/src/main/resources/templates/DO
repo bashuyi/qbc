@@ -10,7 +10,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * ${remarks}实体类
+ * ${remarks}数据访问实体类
  *
  * @author Ma
  */
@@ -19,14 +19,14 @@ import lombok.ToString;
 @ToString
 @Entity
 @Table(name = "${tableName}")
-public class ${className}DO extends AbstractDO {
+public class ${upperCamelTableName}DO extends AbstractDO {
 
 	private static final long serialVersionUID = 1L;
 
 	<#list columnInfos as columnInfo>
 	<#if columnInfo_index gt 5>
 	/** ${columnInfo.remarks} */
-	private ${columnInfo.fieldType} ${columnInfo.fieldName};
+	private ${columnInfo.javaType} ${columnInfo.lowerCamelColumnName};
 
 	</#if>
 	</#list>

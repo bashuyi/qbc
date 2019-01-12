@@ -13,6 +13,11 @@ import com.qbc.utils.core.UserUtils;
 
 import lombok.Data;
 
+/**
+ * 通用数据访问实体，定义共通字段并在持久化前自动设置
+ *
+ * @author Ma
+ */
 @Data
 @MappedSuperclass
 public abstract class AbstractDO implements Serializable {

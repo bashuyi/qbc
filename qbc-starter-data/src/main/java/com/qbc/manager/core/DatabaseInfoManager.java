@@ -30,6 +30,11 @@ import com.qbc.utils.core.StringUtils;
 
 import lombok.SneakyThrows;
 
+/**
+ * 数据库信息处理，用于获取数据库元信息
+ *
+ * @author Ma
+ */
 @Component
 public class DatabaseInfoManager {
 

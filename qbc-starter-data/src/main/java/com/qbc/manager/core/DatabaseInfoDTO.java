@@ -4,6 +4,11 @@ import java.util.List;
 
 import lombok.Data;
 
+/**
+ * 数据库信息的传输对象，用于封装数据库元信息
+ *
+ * @author Ma
+ */
 @Data
 public class DatabaseInfoDTO {
 
@@ -81,7 +86,7 @@ public class DatabaseInfoDTO {
 		/**
 		 * 来自 java.sql.Types 的 SQL 类型
 		 */
-		private int dataType;
+		private Integer dataType;
 
 		/**
 		 * 数据源依赖的类型名称，对于 UDT，该类型名称是完全限定的
@@ -91,17 +96,17 @@ public class DatabaseInfoDTO {
 		/**
 		 * 列的大小。
 		 */
-		private int columnSize;
+		private Integer columnSize;
 
 		/**
 		 * 小数部分的位数。对于 DECIMAL_DIGITS 不适用的数据类型，则返回 Null。
 		 */
-		private int decimalDigits;
+		private Integer decimalDigits;
 
 		/**
 		 * 是否允许使用 NULL。
 		 */
-		private boolean nullable;
+		private Boolean nullable;
 
 		/**
 		 * 描述列的注释（可为 null）
@@ -111,12 +116,12 @@ public class DatabaseInfoDTO {
 		/**
 		 * 表中的列的索引（从 1 开始）
 		 */
-		private int ordinalPosition;
+		private Integer ordinalPosition;
 
 		/**
 		 * 指示此列是否自动增加
 		 */
-		private boolean autoincrement;
+		private Boolean autoincrement;
 
 		/**
 		 * 字段名

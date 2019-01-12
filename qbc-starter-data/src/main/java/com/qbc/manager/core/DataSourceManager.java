@@ -12,6 +12,11 @@ import com.baomidou.dynamic.datasource.DynamicRoutingDataSource;
 import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DataSourceProperty;
 
+/**
+ * 数据源处理，可以在指定数据源进行操作，动态添加、移除数据源
+ *
+ * @author Ma
+ */
 @Component
 public class DataSourceManager {
 

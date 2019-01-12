@@ -11,6 +11,11 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
+/**
+ * Redis配置，使用JSON格式序列化和反序列化
+ *
+ * @author Ma
+ */
 @Configuration
 @EnableCaching
 @AutoConfigureAfter(RedisAutoConfiguration.class)

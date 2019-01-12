@@ -2,6 +2,8 @@ package com.qbc.api;
 
 import java.io.Serializable;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Getter;
@@ -66,7 +68,7 @@ public class ApiResponse<T> implements Serializable {
 	public static <T> ApiResponse<T> error(int code, String message) {
 		ApiResponse<T> apiResponse = new ApiResponse<>();
 		apiResponse.code = code;
-		apiResponse.message = message;
+		apiResponse.message = StringUtils.defaultString(message);
 		return apiResponse;
 	}
 

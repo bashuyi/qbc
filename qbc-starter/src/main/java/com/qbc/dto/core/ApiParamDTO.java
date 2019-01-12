@@ -22,7 +22,4 @@ public class ApiParamDTO {
 	/** 必须 */
 	private Boolean required;
 
-	/** API操作ID */
-	private Long operationId;
-
 }

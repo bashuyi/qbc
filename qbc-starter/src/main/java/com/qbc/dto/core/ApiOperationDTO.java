@@ -18,9 +18,6 @@ public class ApiOperationDTO {
 	/** API操作描述 */
 	private String operationDescription;
 
-	/** API ID */
-	private Long apiId;
-
 	/** API参数列表 */
 	private List<ApiParamDTO> apiParamList;
 

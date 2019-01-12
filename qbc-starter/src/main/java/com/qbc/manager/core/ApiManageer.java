@@ -2,9 +2,15 @@ package com.qbc.manager.core;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.MethodUtils;
@@ -22,7 +28,13 @@ import com.google.common.collect.Table;
 import com.qbc.api.ApiMapResponse;
 import com.qbc.api.annotation.Api;
 import com.qbc.api.annotation.ApiOperation;
+import com.qbc.api.annotation.ApiParam;
+import com.qbc.dto.core.ApiDTO;
+import com.qbc.dto.core.ApiOperationDTO;
+import com.qbc.dto.core.ApiParamDTO;
+import com.qbc.dto.core.ApplicationDTO;
 
+import lombok.Getter;
 import lombok.SneakyThrows;
 
 /**
@@ -36,10 +48,18 @@ public class ApiManageer implements ApplicationRunner {
 	@Autowired
 	private ApplicationContext applicationContext;
 
+	@Autowired
+	private ApplicationProperties applicationProperties;
+
 	private Table<String, String, Method> methodTable = HashBasedTable.create();
+
+	@Getter
+	private ApplicationDTO applicationDTO;
 
 	@Override
 	public void run(ApplicationArguments args) throws Exception {
+		List<ApiDTO> apiList = new ArrayList<>();
+
 		// 扫描所有API
 		Map<String, Object> beans = applicationContext.getBeansWithAnnotation(Api.class);
 		beans.forEach((beanName, bean) -> {
@@ -51,14 +71,54 @@ public class ApiManageer implements ApplicationRunner {
 			String apiName = StringUtils.defaultIfEmpty(api.name(), beanName);
 
 			// 扫描所以API操作的方法
+			List<ApiOperationDTO> apiOperationList = new ArrayList<>();
 			List<Method> methods = MethodUtils.getMethodsListWithAnnotation(classType, ApiOperation.class);
 			methods.stream().forEach(method -> {
 				// 获得API方法名，如果没有指定就使用方法名
 				ApiOperation apiOperation = method.getAnnotation(ApiOperation.class);
 				String operationName = StringUtils.defaultIfEmpty(apiOperation.name(), method.getName());
 				methodTable.put(apiName, operationName, method);
+
+				// 获得API的所有参数信息
+				Parameter[] parameters = method.getParameters();
+				List<ApiParamDTO> apiParamList = Arrays.asList(parameters).stream().filter(this::isNotApiMapResponse)
+						.map(parameter -> {
+							Optional<ApiParam> apiParam = Optional.ofNullable(parameter.getAnnotation(ApiParam.class));
+							String paramName = StringUtils.defaultIfEmpty(apiParam.map(ApiParam::name).orElse(""),
+									parameter.getName());
+							boolean required = parameter.isAnnotationPresent(NotNull.class)
+									|| parameter.isAnnotationPresent(NotEmpty.class);
+
+							// 获得API参数信息
+							ApiParamDTO apiParamDTO = new ApiParamDTO();
+							apiParamDTO.setParamName(paramName);
+							apiParamDTO.setParamDescription(apiParam.map(ApiParam::description).orElse(""));
+							apiParamDTO.setParamTypeName(parameter.getType().getName());
+							apiParamDTO.setRequired(required);
+							return apiParamDTO;
+						}).collect(Collectors.toList());
+
+				// 获得API操作信息
+				ApiOperationDTO apiOperationDTO = new ApiOperationDTO();
+				apiOperationDTO.setOperationName(operationName);
+				apiOperationDTO.setOperationDescription(apiOperation.description());
+				apiOperationDTO.setApiParamList(apiParamList);
+				apiOperationList.add(apiOperationDTO);
 			});
+
+			// 获得API信息
+			ApiDTO apiDTO = new ApiDTO();
+			apiDTO.setApiName(apiName);
+			apiDTO.setApiDescription(api.description());
+			apiDTO.setApiOperationList(apiOperationList);
+			apiList.add(apiDTO);
 		});
+
+		// 获得应用信息
+		applicationDTO = new ApplicationDTO();
+		applicationDTO.setApplicationName(StringUtils.defaultString(applicationProperties.getName()));
+		applicationDTO.setApplicationDescription(StringUtils.defaultString(applicationProperties.getDescription()));
+		applicationDTO.setApiList(apiList);
 	}
 
 	@SneakyThrows
@@ -76,10 +136,16 @@ public class ApiManageer implements ApplicationRunner {
 			if (parameter.getType().equals(ApiMapResponse.class)) {
 				return ApiMapResponse.instance();
 			}
-			return params.get(parameter.getName());
+			Optional<ApiParam> apiParam = Optional.ofNullable(parameter.getAnnotation(ApiParam.class));
+			String paramName = StringUtils.defaultIfEmpty(apiParam.map(ApiParam::name).orElse(""), parameter.getName());
+			return params.get(paramName);
 		}).toArray();
 
 		return ReflectionUtils.invokeMethod(method, bean, args);
+	}
+
+	private boolean isNotApiMapResponse(Parameter parameter) {
+		return parameter.getType().equals(ApiMapResponse.class) == false;
 	}
 
 }

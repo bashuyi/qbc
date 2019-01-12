@@ -9,25 +9,25 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * 系统资源表实体类
+ * 系统应用API表实体类
  *
  * @author Ma
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Entity
-@Table(name = "sys_resource")
-public class SysResourceDO extends AbstractDO {
+@Table(name = "sys_api")
+public class SysApiDO extends AbstractDO {
 
 	private static final long serialVersionUID = 1L;
 
+	/** API名 */
+	private String apiName;
+
+	/** API描述 */
+	private String apiDescription;
+
 	/** 应用ID */
-	private String applicationId;
-
-	/** API ID */
-	private String apiId;
-
-	/** API操作ID */
-	private String operationId;
+	private Long applicationId;
 
 }

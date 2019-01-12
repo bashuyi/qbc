@@ -60,7 +60,7 @@ public class ApiController {
 	public Object dispatch(@NotNull @RequestBody(required = false) ApiRequest apiRequest,
 			@RequestHeader(required = false) String userId, @RequestHeader(required = false) String username) {
 		String apiName = apiRequest.getApiName();
-		String apiOperationName = apiRequest.getApiOperationName();
+		String operationName = apiRequest.getApiOperationName();
 		Map<String, Object> apiParams = apiRequest.getApiParams();
 
 		// 设置用户信息到请求的上下文，用于日志和数据库等
@@ -69,14 +69,14 @@ public class ApiController {
 
 		// 记录了请求的内容
 		if (log.isDebugEnabled()) {
-			log.debug(LogPatten.API_START, apiName, apiOperationName, objectMapper.writeValueAsString(apiParams));
+			log.debug(LogPatten.API_START, apiName, operationName, objectMapper.writeValueAsString(apiParams));
 		}
 
 		// 获得Bean
 		Object bean = applicationContext.getBean(apiName);
 
 		// 从上下文缓存中获得服务方法
-		Method method = apiContext.getMethod(apiName, apiOperationName);
+		Method method = apiContext.getMethod(apiName, operationName);
 
 		// 获得方法参数
 		Parameter[] parameters = method.getParameters();

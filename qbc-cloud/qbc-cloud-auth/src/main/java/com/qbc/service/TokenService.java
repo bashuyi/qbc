@@ -11,16 +11,17 @@ import com.qbc.api.ApiMapResponse;
 import com.qbc.api.ApiResponse;
 import com.qbc.api.annotation.Api;
 import com.qbc.api.annotation.ApiOperation;
+import com.qbc.api.annotation.ApiParam;
 import com.qbc.dao.SysUserDAO;
 import com.qbc.dao.SysUserDO;
 import com.qbc.manager.core.TokenManager;
 
 /**
- * Token服务，用户创建Token、验证Token、失效Token
+ * Token服务
  *
  * @author Ma
  */
-@Api
+@Api(description = "Token服务")
 @Validated
 public class TokenService {
 
@@ -30,8 +31,9 @@ public class TokenService {
 	@Autowired
 	private SysUserDAO sysUserDAO;
 
-	@ApiOperation
-	public ApiResponse<String> createToken(@NotEmpty String username, @NotEmpty String password) {
+	@ApiOperation(description = "创建Token")
+	public ApiResponse<String> createToken(@ApiParam(description = "用户名") @NotEmpty String username,
+			@ApiParam(description = "密码") @NotEmpty String password) {
 		SysUserDO sysUserDO = sysUserDAO.findByUsername(username);
 
 		Assert.notNull(sysUserDO, "createToken.username: unknown");
@@ -43,9 +45,9 @@ public class TokenService {
 		return ApiResponse.ok(token);
 	}
 
-	@ApiOperation
+	@ApiOperation(description = "验证Token")
 	public ApiMapResponse verifyToken(ApiMapResponse openInterfaceMapResponse,
-			@NotEmpty String token) {
+			@ApiParam(description = "Token") @NotEmpty String token) {
 		// 用户名
 		String username = tokenManager.getAudience(token);
 
@@ -61,8 +63,8 @@ public class TokenService {
 		return openInterfaceMapResponse;
 	}
 
-	@ApiOperation
-	public void revokeToken(@NotEmpty String token) {
+	@ApiOperation(description = "失效Token")
+	public void revokeToken() {
 	}
 
 }

@@ -8,17 +8,17 @@ import com.qbc.dto.core.ApplicationDTO;
 import com.qbc.manager.core.ApiManageer;
 
 /**
- * 应用信息服务
+ * 应用服务
  *
  * @author Ma
  */
-@Api
+@Api(description = "应用服务")
 public class ApplicationService {
 
 	@Autowired
 	private ApiManageer apiManageer;
 
-	@ApiOperation
+	@ApiOperation(description = "获得应用信息")
 	public ApplicationDTO info() {
 		return apiManageer.getApplicationDTO();
 	}

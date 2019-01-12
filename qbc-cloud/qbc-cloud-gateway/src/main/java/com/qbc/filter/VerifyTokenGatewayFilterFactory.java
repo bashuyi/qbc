@@ -14,15 +14,20 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.qbc.api.ApiRequest;
 import com.qbc.api.ApiResponse;
-import com.qbc.manager.cloud.OpenInterfaceClientCloudManager;
+import com.qbc.manager.cloud.ApiClientCloudManager;
 
 import lombok.Setter;
 import reactor.core.publisher.Mono;
 
+/**
+ * Token校验网关过滤器工厂，统一从认证中心验证Token的有效性，并将用户信息设置到请求头部
+ *
+ * @author Ma
+ */
 @Setter
 public class VerifyTokenGatewayFilterFactory extends AbstractGatewayFilterFactory<Object> {
 
-	private OpenInterfaceClientCloudManager openInterfaceClientCloudManager;
+	private ApiClientCloudManager apiClientCloudManager;
 
 	private ObjectMapper objectMapper;
 
@@ -36,7 +41,7 @@ public class VerifyTokenGatewayFilterFactory extends AbstractGatewayFilterFactor
 			if (StringUtils.isNotEmpty(token)) {
 				ApiRequest openInterfaceRequest = new ApiRequest("tokenService", "verifyToken");
 				openInterfaceRequest.put("token", token);
-				openInterfaceResponse = openInterfaceClientCloudManager.post("qbc-cloud-auth", openInterfaceRequest);
+				openInterfaceResponse = apiClientCloudManager.post("qbc-cloud-auth", openInterfaceRequest);
 				if (openInterfaceResponse.isOk()) {
 					final Map<String, String> args = openInterfaceResponse.getData();
 					ServerHttpRequest request = exchange.getRequest().mutate().headers(header -> header.setAll(args))

@@ -5,16 +5,18 @@ import javax.persistence.Table;
 
 import com.qbc.dao.core.AbstractDO;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 /**
  * 系统API参数表实体类
  *
  * @author Ma
  */
-@Data
-@EqualsAndHashCode(callSuper = true)
+@Getter
+@Setter
+@ToString
 @Entity
 @Table(name = "sys_api_param")
 public class SysApiParamDO extends AbstractDO {

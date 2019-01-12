@@ -7,6 +7,11 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import com.slyak.spring.jpa.GenericJpaRepositoryFactoryBean;
 import com.slyak.spring.jpa.GenericJpaRepositoryImpl;
 
+/**
+ * 启动类
+ *
+ * @author Ma
+ */
 @SpringCloudApplication
 @EnableJpaRepositories(basePackages = "com.qbc", repositoryBaseClass = GenericJpaRepositoryImpl.class, repositoryFactoryBeanClass = GenericJpaRepositoryFactoryBean.class)
 public class Application {

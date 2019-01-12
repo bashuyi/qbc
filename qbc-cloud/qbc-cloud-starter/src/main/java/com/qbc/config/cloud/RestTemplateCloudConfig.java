@@ -9,6 +9,11 @@ import org.springframework.web.client.RestTemplate;
 
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * RestTemplate负载均衡配置
+ *
+ * @author Ma
+ */
 @Slf4j
 @Configuration
 public class RestTemplateCloudConfig {

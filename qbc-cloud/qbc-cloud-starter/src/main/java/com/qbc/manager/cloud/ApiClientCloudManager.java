@@ -8,8 +8,13 @@ import com.qbc.api.ApiRequest;
 import com.qbc.api.ApiResponse;
 import com.qbc.manager.core.ApiClientManager;
 
+/**
+ * API客户端处理，支持负载均衡和熔断
+ *
+ * @author Ma
+ */
 @Component
-public class OpenInterfaceClientCloudManager {
+public class ApiClientCloudManager {
 
 	@Autowired
 	private ApiClientManager openInterfaceClientManager;

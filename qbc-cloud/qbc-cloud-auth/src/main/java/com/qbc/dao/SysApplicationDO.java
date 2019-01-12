@@ -5,16 +5,18 @@ import javax.persistence.Table;
 
 import com.qbc.dao.core.AbstractDO;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 /**
  * 系统应用表实体类
  *
  * @author Ma
  */
-@Data
-@EqualsAndHashCode(callSuper = true)
+@Getter
+@Setter
+@ToString
 @Entity
 @Table(name = "sys_application")
 public class SysApplicationDO extends AbstractDO {

@@ -15,8 +15,13 @@ import com.qbc.dao.SysUserDAO;
 import com.qbc.dao.SysUserDO;
 import com.qbc.manager.core.TokenManager;
 
-@Validated
+/**
+ * Token服务，用户创建Token、验证Token、失效Token
+ *
+ * @author Ma
+ */
 @Api
+@Validated
 public class TokenService {
 
 	@Autowired

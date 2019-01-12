@@ -24,9 +24,9 @@ import com.baomidou.dynamic.datasource.DynamicRoutingDataSource;
 import com.google.common.base.CaseFormat;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
+import com.qbc.dto.core.ColumnInfoDTO;
 import com.qbc.dto.core.DatabaseInfoDTO;
-import com.qbc.dto.core.DatabaseInfoDTO.ColumnInfoDTO;
-import com.qbc.dto.core.DatabaseInfoDTO.TableInfoDTO;
+import com.qbc.dto.core.TableInfoDTO;
 import com.qbc.utils.core.StringUtils;
 
 import lombok.SneakyThrows;

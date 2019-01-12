@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
 import com.qbc.dto.core.DatabaseInfoDTO;
-import com.qbc.dto.core.DatabaseInfoDTO.TableInfoDTO;
+import com.qbc.dto.core.TableInfoDTO;
 import com.qbc.utils.core.StringUtils;
 
 import freemarker.template.Configuration;

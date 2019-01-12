@@ -37,6 +37,7 @@
 		<service-validator.version>1.1.0</service-validator.version>
 		<java-jwt.version>3.4.0</java-jwt.version>
 		<reflectasm.version>1.11.8</reflectasm.version>
+		<dozer.version>5.5.1</dozer.version>
 	</properties>
 
 	<dependencyManagement>
@@ -121,6 +122,12 @@
 				<groupId>com.esotericsoftware</groupId>
 				<artifactId>reflectasm</artifactId>
 				<version>${reflectasm.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>net.sf.dozer</groupId>
+				<artifactId>dozer</artifactId>
+				<version>${dozer.version}</version>
 			</dependency>
 
 			<dependency>

@@ -34,8 +34,8 @@ public class VerifyTokenGatewayFilterFactory extends AbstractGatewayFilterFactor
 	@Override
 	public GatewayFilter apply(Object config) {
 		return (exchange, chain) -> {
-			ApiResponse<Map<String, String>> openInterfaceResponse = ApiResponse
-					.error(HttpStatus.BAD_REQUEST.value(), "token: must not be empty");
+			ApiResponse<Map<String, String>> openInterfaceResponse = ApiResponse.error(HttpStatus.BAD_REQUEST.value(),
+					"token: must not be empty");
 
 			String token = exchange.getRequest().getHeaders().getFirst("Authorization");
 			if (StringUtils.isNotEmpty(token)) {

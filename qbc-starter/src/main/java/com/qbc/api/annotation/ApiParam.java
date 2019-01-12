@@ -18,7 +18,7 @@ public @interface ApiParam {
 
 	/** API参数名，默认为变量名。 */
 	String name() default "";
-	
+
 	/** API参数表示名 */
 	String displayName() default "";
 

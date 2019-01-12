@@ -23,7 +23,7 @@ public @interface Api {
 	/** API名称，也是Bean名称 */
 	@AliasFor(value = "value", annotation = Service.class)
 	String name() default "";
-	
+
 	/** API表示名 */
 	String displayName() default "";
 

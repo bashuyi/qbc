@@ -18,7 +18,7 @@ public @interface ApiOperation {
 
 	/** API操作名，默认为方法名 */
 	String name() default "";
-	
+
 	/** API操作表示名 */
 	String displayName() default "";
 

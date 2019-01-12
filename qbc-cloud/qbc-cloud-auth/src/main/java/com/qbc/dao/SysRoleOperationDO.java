@@ -10,7 +10,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * 系统角色资源表数据访问实体类
+ * 系统角色操作表数据访问实体类
  *
  * @author Ma
  */
@@ -18,15 +18,15 @@ import lombok.ToString;
 @Setter
 @ToString
 @Entity
-@Table(name = "sys_role_resource")
-public class SysRoleResourceDO extends AbstractDO {
+@Table(name = "sys_role_operation")
+public class SysRoleOperationDO extends AbstractDO {
 
 	private static final long serialVersionUID = 1L;
 
 	/** 角色ID */
 	private Long roleId;
 
-	/** 资源ID */
-	private Long resourceId;
+	/** API操作ID */
+	private String operationId;
 
 }

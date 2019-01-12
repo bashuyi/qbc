@@ -5,7 +5,7 @@ eureka:
 spring:
   application:
     name: qbc-cloud-auth
-    description: 认证服务
+    display-name: 认证服务
   cloud:
     config:
       discovery:

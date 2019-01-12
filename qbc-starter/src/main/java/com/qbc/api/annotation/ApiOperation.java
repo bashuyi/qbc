@@ -1,4 +1,4 @@
-package com.qbc.api;
+package com.qbc.api.annotation;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;

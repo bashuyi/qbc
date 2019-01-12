@@ -1,8 +1,5 @@
 package com.qbc.api;
 
-import java.lang.reflect.Method;
-import java.lang.reflect.Parameter;
-import java.util.Arrays;
 import java.util.Map;
 
 import javax.validation.ConstraintViolationException;
@@ -13,10 +10,8 @@ import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.ReflectionUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,6 +24,7 @@ import org.springframework.web.server.UnsupportedMediaTypeStatusException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.qbc.constant.LogPatten;
 import com.qbc.exception.UnauthorizedException;
+import com.qbc.manager.core.ApiManageer;
 import com.qbc.utils.core.UserUtils;
 
 import lombok.SneakyThrows;
@@ -46,10 +42,7 @@ import lombok.extern.slf4j.Slf4j;
 public class ApiController {
 
 	@Autowired
-	private ApplicationContext applicationContext;
-
-	@Autowired
-	private ApiContext apiContext;
+	private ApiManageer apiManageer;
 
 	@Autowired
 	private ObjectMapper objectMapper;
@@ -60,8 +53,8 @@ public class ApiController {
 	public Object dispatch(@NotNull @RequestBody(required = false) ApiRequest apiRequest,
 			@RequestHeader(required = false) String userId, @RequestHeader(required = false) String username) {
 		String apiName = apiRequest.getApiName();
-		String operationName = apiRequest.getApiOperationName();
-		Map<String, Object> apiParams = apiRequest.getApiParams();
+		String operationName = apiRequest.getOperationName();
+		Map<String, Object> params = apiRequest.getParams();
 
 		// 设置用户信息到请求的上下文，用于日志和数据库等
 		UserUtils.setUserId(NumberUtils.toLong(userId));
@@ -69,26 +62,11 @@ public class ApiController {
 
 		// 记录了请求的内容
 		if (log.isDebugEnabled()) {
-			log.debug(LogPatten.API_START, apiName, operationName, objectMapper.writeValueAsString(apiParams));
+			log.debug(LogPatten.API_START, apiName, operationName, objectMapper.writeValueAsString(params));
 		}
 
-		// 获得Bean
-		Object bean = applicationContext.getBean(apiName);
-
-		// 从上下文缓存中获得服务方法
-		Method method = apiContext.getMethod(apiName, operationName);
-
-		// 获得方法参数
-		Parameter[] parameters = method.getParameters();
-		Object[] parameterValues = Arrays.asList(parameters).stream().map(parameter -> {
-			if (parameter.getType().equals(ApiMapResponse.class)) {
-				return ApiMapResponse.instance();
-			}
-			return apiParams.get(parameter.getName());
-		}).toArray();
-
 		// 反射执行服务的方法
-		Object returnValue = ReflectionUtils.invokeMethod(method, bean, parameterValues);
+		Object returnValue = apiManageer.invoke(apiName, operationName, params);
 
 		// 将返回值封装到响应中
 		if (returnValue instanceof ApiResponse<?>) {

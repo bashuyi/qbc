@@ -20,12 +20,12 @@ public class ApiClientCloudManager {
 	private ApiClientManager openInterfaceClientManager;
 
 	@HystrixCommand(fallbackMethod = "postFallback")
-	public <T> ApiResponse<T> post(String serviceName, ApiRequest request) {
-		String url = String.format("http://%s/api", serviceName);
+	public <T> ApiResponse<T> post(String applicationName, ApiRequest request) {
+		String url = String.format("http://%s/api", applicationName);
 		return openInterfaceClientManager.post(url, request);
 	}
 
-	public <T> ApiResponse<T> postFallback(String serviceName, ApiRequest request) {
+	public <T> ApiResponse<T> postFallback(String applicationName, ApiRequest request) {
 		return ApiResponse.hystrix();
 	}
 

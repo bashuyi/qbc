@@ -1,9 +1,10 @@
-package com.qbc.api;
+package com.qbc.manager.core;
 
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.MethodUtils;
@@ -13,18 +14,24 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
+import org.springframework.util.Assert;
+import org.springframework.util.ReflectionUtils;
 
-import com.esotericsoftware.reflectasm.MethodAccess;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
+import com.qbc.api.ApiMapResponse;
+import com.qbc.api.annotation.Api;
+import com.qbc.api.annotation.ApiOperation;
+
+import lombok.SneakyThrows;
 
 /**
- * API上下文，应用启动时缓存API，提高反射效率。
+ * API处理，启动应用时获取所有API信息，提供执行API的方法
  *
  * @author Ma
  */
 @Component
-public class ApiContext implements ApplicationRunner {
+public class ApiManageer implements ApplicationRunner {
 
 	@Autowired
 	private ApplicationContext applicationContext;
@@ -48,20 +55,31 @@ public class ApiContext implements ApplicationRunner {
 			methods.stream().forEach(method -> {
 				// 获得API方法名，如果没有指定就使用方法名
 				ApiOperation apiOperation = method.getAnnotation(ApiOperation.class);
-				String apiOperationName = StringUtils.defaultIfEmpty(apiOperation.name(), method.getName());
-				methodTable.put(apiName, apiOperationName, method);
-
-				// TODO 获得方法的索引，用于提高反射效率
-				MethodAccess access = MethodAccess.get(classType);
-				int index = access.getIndex(method.getName());
+				String operationName = StringUtils.defaultIfEmpty(apiOperation.name(), method.getName());
+				methodTable.put(apiName, operationName, method);
 			});
 		});
 	}
 
-	public Method getMethod(String openInterfaceBeanName, String openInterfaceMethodName) {
-		return Optional.ofNullable(methodTable.get(openInterfaceBeanName, openInterfaceMethodName))
-				.orElseThrow(() -> new IllegalArgumentException(
-						String.format("No method named '%s' available", openInterfaceMethodName)));
+	@SneakyThrows
+	public Object invoke(String apiName, String operationName, Map<String, Object> params) {
+		// 获得方法
+		Method method = methodTable.get(apiName, operationName);
+		Assert.notNull(method, String.format("No method named '%s' available", operationName));
+
+		// 获得Bean
+		Object bean = applicationContext.getBean(apiName);
+
+		// 获得方法参数
+		Parameter[] parameters = method.getParameters();
+		Object[] args = Arrays.asList(parameters).stream().map(parameter -> {
+			if (parameter.getType().equals(ApiMapResponse.class)) {
+				return ApiMapResponse.instance();
+			}
+			return params.get(parameter.getName());
+		}).toArray();
+
+		return ReflectionUtils.invokeMethod(method, bean, args);
 	}
 
 }

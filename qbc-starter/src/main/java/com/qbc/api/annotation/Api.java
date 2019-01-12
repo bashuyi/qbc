@@ -1,4 +1,4 @@
-package com.qbc.api;
+package com.qbc.api.annotation;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -20,15 +20,11 @@ import org.springframework.stereotype.Service;
 @Service
 public @interface Api {
 
-	/**
-	 * API名称，也是Bean名称
-	 */
+	/** API名称，也是Bean名称 */
 	@AliasFor(value = "value", annotation = Service.class)
 	String name() default "";
 
-	/**
-	 * API描述
-	 */
+	/** API描述 */
 	String description() default "";
 
 }

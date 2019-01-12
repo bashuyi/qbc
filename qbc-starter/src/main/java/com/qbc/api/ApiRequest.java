@@ -30,12 +30,12 @@ public class ApiRequest implements Serializable {
 	 * API操作名
 	 */
 	@NotEmpty
-	private String apiOperationName;
+	private String operationName;
 
 	/**
 	 * API参数
 	 */
-	private Map<String, Object> apiParams = new HashMap<>();
+	private Map<String, Object> params = new HashMap<>();
 
 	/**
 	 * 设置API参数
@@ -44,18 +44,18 @@ public class ApiRequest implements Serializable {
 	 * @param value 参数值
 	 */
 	public void put(String key, String value) {
-		this.apiParams.put(key, value);
+		this.params.put(key, value);
 	}
 
 	/**
 	 * API请求
 	 * 
-	 * @param apiName          API名
-	 * @param apiOperationName API操作名
+	 * @param apiName       API名
+	 * @param operationName API操作名
 	 */
-	public ApiRequest(@NotEmpty String apiName, @NotEmpty String apiOperationName) {
+	public ApiRequest(@NotEmpty String apiName, @NotEmpty String operationName) {
 		this.apiName = apiName;
-		this.apiOperationName = apiOperationName;
+		this.operationName = operationName;
 	}
 
 }

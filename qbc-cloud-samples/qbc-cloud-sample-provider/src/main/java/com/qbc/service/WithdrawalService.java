@@ -4,9 +4,9 @@ import javax.validation.constraints.NotEmpty;
 
 import org.springframework.validation.annotation.Validated;
 
-import com.qbc.api.Api;
 import com.qbc.api.ApiMapResponse;
-import com.qbc.api.ApiOperation;
+import com.qbc.api.annotation.Api;
+import com.qbc.api.annotation.ApiOperation;
 
 @Api
 @Validated

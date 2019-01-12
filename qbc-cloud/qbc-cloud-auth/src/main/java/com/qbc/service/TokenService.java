@@ -7,10 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 import org.springframework.validation.annotation.Validated;
 
-import com.qbc.api.Api;
 import com.qbc.api.ApiMapResponse;
-import com.qbc.api.ApiOperation;
 import com.qbc.api.ApiResponse;
+import com.qbc.api.annotation.Api;
+import com.qbc.api.annotation.ApiOperation;
 import com.qbc.dao.SysUserDAO;
 import com.qbc.dao.SysUserDO;
 import com.qbc.manager.core.TokenManager;

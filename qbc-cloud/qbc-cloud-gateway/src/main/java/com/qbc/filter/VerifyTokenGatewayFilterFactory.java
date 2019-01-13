@@ -14,8 +14,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.qbc.api.ApiRequest;
 import com.qbc.api.ApiResponse;
+import com.qbc.filter.VerifyTokenGatewayFilterFactory.Config;
 import com.qbc.manager.cloud.ApiClientCloudManager;
 
+import lombok.Getter;
 import lombok.Setter;
 import reactor.core.publisher.Mono;
 
@@ -25,22 +27,29 @@ import reactor.core.publisher.Mono;
  * @author Ma
  */
 @Setter
-public class VerifyTokenGatewayFilterFactory extends AbstractGatewayFilterFactory<Object> {
+public class VerifyTokenGatewayFilterFactory extends AbstractGatewayFilterFactory<Config> {
 
 	private ApiClientCloudManager apiClientCloudManager;
 
 	private ObjectMapper objectMapper;
 
+	public VerifyTokenGatewayFilterFactory() {
+		super(Config.class);
+	}
+
 	@Override
-	public GatewayFilter apply(Object config) {
+	public GatewayFilter apply(Config config) {
 		return (exchange, chain) -> {
 			ApiResponse<Map<String, String>> openInterfaceResponse = ApiResponse.error(HttpStatus.BAD_REQUEST.value(),
 					"token: must not be empty");
-
 			String token = exchange.getRequest().getHeaders().getFirst("Authorization");
 			if (StringUtils.isNotEmpty(token)) {
 				ApiRequest openInterfaceRequest = new ApiRequest("tokenService", "verifyToken");
 				openInterfaceRequest.put("token", token);
+				openInterfaceRequest.put("applicationName", config.getApplicationName());
+				// TODO
+				openInterfaceRequest.put("apiName", "");
+				openInterfaceRequest.put("operationName", "");
 				openInterfaceResponse = apiClientCloudManager.post("qbc-cloud-auth", openInterfaceRequest);
 				if (openInterfaceResponse.isOk()) {
 					final Map<String, String> args = openInterfaceResponse.getData();
@@ -61,6 +70,17 @@ public class VerifyTokenGatewayFilterFactory extends AbstractGatewayFilterFactor
 			DataBuffer bodyDataBuffer = response.bufferFactory().wrap(bytes);
 			return response.writeWith(Mono.just(bodyDataBuffer));
 		};
+	}
+
+	@Getter
+	@Setter
+	public static class Config {
+
+		/**
+		 * 应用名，用于鉴权
+		 */
+		private String applicationName;
+
 	}
 
 }

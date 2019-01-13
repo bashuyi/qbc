@@ -1,7 +1,5 @@
 package com.qbc.dao;
 
-import org.springframework.stereotype.Repository;
-
 import com.slyak.spring.jpa.GenericJpaRepository;
 
 /**
@@ -9,7 +7,6 @@ import com.slyak.spring.jpa.GenericJpaRepository;
  *
  * @author Ma
  */
-@Repository
 public interface SysApiOperationDAO extends GenericJpaRepository<SysApiOperationDO, Long> {
-	
+
 }

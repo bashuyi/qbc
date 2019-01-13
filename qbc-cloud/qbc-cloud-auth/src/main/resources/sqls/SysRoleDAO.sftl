@@ -1,0 +1,22 @@
+--findByUsername
+select
+	sys_role.id,
+	sys_role.created_by,
+	sys_role.created_date_time,
+	sys_role.last_modified_by,
+	sys_role.last_modified_date_time,
+	sys_role.deleted,
+	sys_role."name",
+	sys_role.display_name,
+	sys_role.description
+from
+	sys_role
+join sys_user_role on
+	sys_user_role.role_id = sys_role.id
+	and sys_user_role.deleted = false
+	and sys_role.deleted = false
+join sys_user on
+	sys_user.id = sys_user_role.user_id
+	and sys_user.deleted = false
+where
+	sys_user.username = :username

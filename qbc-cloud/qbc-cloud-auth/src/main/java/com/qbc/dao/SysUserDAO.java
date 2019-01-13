@@ -1,7 +1,5 @@
 package com.qbc.dao;
 
-import org.springframework.stereotype.Repository;
-
 import com.slyak.spring.jpa.GenericJpaRepository;
 
 /**
@@ -9,7 +7,6 @@ import com.slyak.spring.jpa.GenericJpaRepository;
  *
  * @author Ma
  */
-@Repository
 public interface SysUserDAO extends GenericJpaRepository<SysUserDO, Long> {
 
 	/**
@@ -19,5 +16,5 @@ public interface SysUserDAO extends GenericJpaRepository<SysUserDO, Long> {
 	 * @return 用户实体
 	 */
 	SysUserDO findByUsernameAndDeletedFalse(String username);
-	
+
 }

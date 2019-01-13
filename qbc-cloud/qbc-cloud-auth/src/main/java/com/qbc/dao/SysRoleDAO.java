@@ -1,15 +1,18 @@
 package com.qbc.dao;
 
-import org.springframework.stereotype.Repository;
+import java.util.List;
 
 import com.slyak.spring.jpa.GenericJpaRepository;
+import com.slyak.spring.jpa.TemplateQuery;
 
 /**
  * 系统角色表数据访问类
  *
  * @author Ma
  */
-@Repository
 public interface SysRoleDAO extends GenericJpaRepository<SysRoleDO, Long> {
+
+	@TemplateQuery
+	List<SysRoleDO> searchByUsername(String username);
 
 }

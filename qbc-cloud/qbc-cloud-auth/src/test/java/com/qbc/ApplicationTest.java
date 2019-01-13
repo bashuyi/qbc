@@ -66,7 +66,7 @@ public class ApplicationTest {
 	public void generateCode() {
 		DatabaseInfoDTO databaseInfoDTO = databaseInfoManager.getDatabaseInfoDTO();
 		codeGeneratorManager.generateAll("DAO", "com.qbc.dao", databaseInfoDTO);
-		codeGeneratorManager.generateAll("DO", "com.qbc.dao", databaseInfoDTO);
+//		codeGeneratorManager.generateAll("DO", "com.qbc.dao", databaseInfoDTO);
 	}
 
 	@Test

@@ -2,8 +2,6 @@ package com.qbc.dao;
 
 import java.util.List;
 
-import org.springframework.stereotype.Repository;
-
 import com.slyak.spring.jpa.GenericJpaRepository;
 
 /**
@@ -11,7 +9,6 @@ import com.slyak.spring.jpa.GenericJpaRepository;
  *
  * @author Ma
  */
-@Repository
 public interface SysRoleResourceDAO extends GenericJpaRepository<SysRoleResourceDO, Long> {
 
 	/**
@@ -21,5 +18,5 @@ public interface SysRoleResourceDAO extends GenericJpaRepository<SysRoleResource
 	 * @return 角色资源列表
 	 */
 	List<SysRoleResourceDO> findByRoleName(String roleName);
-	
+
 }

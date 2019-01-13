@@ -14,6 +14,7 @@ import com.qbc.api.annotation.ApiOperation;
 import com.qbc.api.annotation.ApiParam;
 import com.qbc.dao.SysUserDAO;
 import com.qbc.dao.SysUserDO;
+import com.qbc.manager.AuthManager;
 import com.qbc.manager.core.TokenManager;
 
 /**
@@ -27,6 +28,9 @@ public class TokenService {
 
 	@Autowired
 	private TokenManager tokenManager;
+
+	@Autowired
+	private AuthManager authManager;
 
 	@Autowired
 	private SysUserDAO sysUserDAO;
@@ -47,7 +51,10 @@ public class TokenService {
 
 	@ApiOperation(displayName = "验证Token")
 	public ApiMapResponse verifyToken(ApiMapResponse openInterfaceMapResponse,
-			@ApiParam(displayName = "Token") @NotEmpty String token) {
+			@ApiParam(displayName = "Token") @NotEmpty String token,
+			@ApiParam(displayName = "应用名") @NotEmpty String applicationName,
+			@ApiParam(displayName = "API名") @NotEmpty String apiName,
+			@ApiParam(displayName = "API操作名") @NotEmpty String operationName) {
 		// 用户名
 		String username = tokenManager.getAudience(token);
 
@@ -56,6 +63,10 @@ public class TokenService {
 		Assert.notNull(sysUserDO, "createToken.username: unknown");
 
 		tokenManager.verifyToken(token, sysUserDO.getSecret());
+
+		boolean hasPermission = authManager.hasPermission(username, applicationName, apiName, operationName);
+
+		Assert.isTrue(hasPermission, "createToken.username: no permission");
 
 		openInterfaceMapResponse.put("userId", String.valueOf(sysUserDO.getId()));
 		openInterfaceMapResponse.put("username", username);

@@ -29,6 +29,7 @@ import com.qbc.dto.core.DatabaseInfoDTO;
 import com.qbc.dto.core.TableInfoDTO;
 import com.qbc.utils.core.StringUtils;
 
+import lombok.Cleanup;
 import lombok.SneakyThrows;
 
 /**
@@ -78,6 +79,7 @@ public class DatabaseInfoManager {
 		jdbcTypeMap = ObjectUtils.defaultIfNull(jdbcTypeMap, new HashMap<>(0));
 		defaultJdbcTypeMap.putAll(jdbcTypeMap);
 
+		@Cleanup
 		Connection connection = dynamicRoutingDataSource.getDataSource(dataSourceName).getConnection();
 		DatabaseMetaData databaseMetaData = connection.getMetaData();
 
@@ -187,6 +189,17 @@ public class DatabaseInfoManager {
 		defaultJdbcTypeMap.put(JDBCType.TIMESTAMP, LocalDateTime.class.getName());
 		defaultJdbcTypeMap.put(JDBCType.TIMESTAMP_WITH_TIMEZONE, OffsetDateTime.class.getName());
 		return defaultJdbcTypeMap;
+	}
+
+	/**
+	 * 获得数据库所有表和试图信息
+	 * 
+	 * @param dataSourceName   数据源名称
+	 * @param tableNamePattern 表名称模式； 它必须与存储在数据库中的表名称匹配
+	 * @return 数据库所有表和试图信息
+	 */
+	public DatabaseInfoDTO getDatabaseInfoDTO(String dataSourceName, String tableNamePattern) {
+		return getDatabaseInfoDTO(dataSourceName, null, null, tableNamePattern, null, null);
 	}
 
 	/**

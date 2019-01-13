@@ -1,28 +1,30 @@
 package com.qbc;
 
-import org.dozer.DozerBeanMapper;
+import java.util.List;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.qbc.dao.SysApiDAO;
-import com.qbc.dao.SysApiDO;
 import com.qbc.dao.SysApiOperationDAO;
 import com.qbc.dao.SysApiOperationDO;
-import com.qbc.dao.SysApiParamDAO;
-import com.qbc.dao.SysApiParamDO;
-import com.qbc.dao.SysApplicationDAO;
-import com.qbc.dao.SysApplicationDO;
-import com.qbc.dto.core.ApiDTO;
-import com.qbc.dto.core.ApiOperationDTO;
-import com.qbc.dto.core.ApiParamDTO;
+import com.qbc.dao.SysRoleDAO;
+import com.qbc.dao.SysRoleDO;
+import com.qbc.dao.SysRoleOperationDAO;
+import com.qbc.dao.SysRoleOperationDO;
+import com.qbc.dao.SysUserDAO;
+import com.qbc.dao.SysUserDO;
+import com.qbc.dao.SysUserRoleDAO;
+import com.qbc.dao.SysUserRoleDO;
 import com.qbc.dto.core.ApplicationDTO;
 import com.qbc.dto.core.DatabaseInfoDTO;
+import com.qbc.manager.ApiDataManager;
 import com.qbc.manager.core.ApiManageer;
 import com.qbc.manager.core.CodeGeneratorManager;
 import com.qbc.manager.core.DatabaseInfoManager;
+import com.qbc.utils.core.SnowflakeUtils;
 
 /**
  * 应用测试类，用于代码和数据生成
@@ -43,19 +45,22 @@ public class ApplicationTest {
 	private ApiManageer apiManageer;
 
 	@Autowired
-	private DozerBeanMapper dozerBeanMapper;
-
-	@Autowired
-	private SysApplicationDAO sysApplicationDAO;
-
-	@Autowired
-	private SysApiDAO sysApiDAO;
+	private ApiDataManager apiDataManager;
 
 	@Autowired
 	private SysApiOperationDAO sysApiOperationDAO;
 
 	@Autowired
-	private SysApiParamDAO sysApiParamDAO;
+	private SysRoleDAO sysRoleDAO;
+
+	@Autowired
+	private SysRoleOperationDAO sysRoleOperationDAO;
+
+	@Autowired
+	private SysUserDAO sysUserDAO;
+
+	@Autowired
+	private SysUserRoleDAO sysUserRoleDAO;
 
 	@Test
 	public void generateCode() {
@@ -65,30 +70,49 @@ public class ApplicationTest {
 	}
 
 	@Test
+	public void generateOneCode() {
+		DatabaseInfoDTO databaseInfoDTO = databaseInfoManager.getDatabaseInfoDTO(null, "sys_role_resource");
+		codeGeneratorManager.generateAll("DAO", "com.qbc.dao", databaseInfoDTO);
+		codeGeneratorManager.generateAll("DO_VIEW", "com.qbc.dao", databaseInfoDTO);
+	}
+
+	@Test
 	public void generateApplicationData() {
 		ApplicationDTO applicationDTO = apiManageer.getApplicationDTO();
+		apiDataManager.save(applicationDTO);
+	}
 
-		SysApplicationDO SysApplicationDO = dozerBeanMapper.map(applicationDTO, SysApplicationDO.class);
-		SysApplicationDO = sysApplicationDAO.save(SysApplicationDO);
+	@Test
+	public void generateRoleData() {
+		SysRoleDO sysRoleDO = new SysRoleDO();
+		sysRoleDO.setName("admin");
+		sysRoleDO.setDisplayName("超级管理员");
+		sysRoleDO = sysRoleDAO.save(sysRoleDO);
 
-		for (ApiDTO apiDTO : applicationDTO.getApiList()) {
-			SysApiDO sysApiDO = dozerBeanMapper.map(apiDTO, SysApiDO.class);
-			sysApiDO.setApplicationId(SysApplicationDO.getId());
-			sysApiDO = sysApiDAO.save(sysApiDO);
-
-			for (ApiOperationDTO apiOperationDTO : apiDTO.getApiOperationList()) {
-				SysApiOperationDO sysApiOperationDO = dozerBeanMapper.map(apiOperationDTO, SysApiOperationDO.class);
-				sysApiOperationDO.setApiId(sysApiDO.getId());
-				sysApiOperationDO = sysApiOperationDAO.save(sysApiOperationDO);
-
-				for (ApiParamDTO apiParamDTO : apiOperationDTO.getApiParamList()) {
-					SysApiParamDO sysApiParamDO = dozerBeanMapper.map(apiParamDTO, SysApiParamDO.class);
-					sysApiParamDO.setOperationId(sysApiOperationDO.getId());
-					sysApiParamDAO.save(sysApiParamDO);
-				}
-			}
+		List<SysApiOperationDO> sysApiOperationDOs = sysApiOperationDAO.findAll();
+		for (SysApiOperationDO sysApiOperationDO : sysApiOperationDOs) {
+			SysRoleOperationDO sysRoleOperationDO = new SysRoleOperationDO();
+			sysRoleOperationDO.setRoleId(sysRoleDO.getId());
+			sysRoleOperationDO.setOperationId(sysApiOperationDO.getId());
+			sysRoleOperationDAO.save(sysRoleOperationDO);
 		}
+	}
 
+	@Test
+	public void generateUserData() {
+		SysUserDO sysUserDO = new SysUserDO();
+		sysUserDO.setUsername("qbc");
+		sysUserDO.setPassword("123456");
+		sysUserDO.setSecret(SnowflakeUtils.nextString());
+		sysUserDO = sysUserDAO.save(sysUserDO);
+
+		List<SysRoleDO> sysRoleDOs = sysRoleDAO.findAll();
+		for (SysRoleDO sysRoleDO : sysRoleDOs) {
+			SysUserRoleDO sysUserRoleDO = new SysUserRoleDO();
+			sysUserRoleDO.setUserId(sysUserDO.getId());
+			sysUserRoleDO.setRoleId(sysRoleDO.getId());
+			sysUserRoleDAO.save(sysUserRoleDO);
+		}
 	}
 
 }

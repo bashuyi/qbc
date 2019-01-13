@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
 public class DozerConfig {
 
 	@Bean
-	DozerBeanMapper DozerBeanMapper() {
+	DozerBeanMapper dozerBeanMapper() {
 		return new DozerBeanMapper();
 	}
 

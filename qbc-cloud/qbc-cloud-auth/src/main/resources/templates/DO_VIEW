@@ -1,0 +1,35 @@
+package ${packageName};
+
+import java.io.Serializable;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+/**
+ * ${remarks}数据访问实体类
+ *
+ * @author Ma
+ */
+@Getter
+@Setter
+@ToString
+@Entity
+@Table(name = "${tableName}")
+public class ${upperCamelTableName}DO implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+
+	<#list columnInfos as columnInfo>
+	/** ${columnInfo.remarks} */
+	<#if columnInfo_index = 0>
+	@Id
+	</#if>
+	private ${columnInfo.javaType} ${columnInfo.lowerCamelColumnName};
+
+	</#list>
+}

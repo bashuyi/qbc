@@ -22,4 +22,8 @@ public class SnowflakeUtils {
 		return sequence.nextId();
 	}
 
+	public String nextString() {
+		return Long.toString(sequence.nextId(), Character.MAX_RADIX);
+	}
+
 }

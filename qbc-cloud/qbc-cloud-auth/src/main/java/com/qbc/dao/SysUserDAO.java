@@ -18,6 +18,6 @@ public interface SysUserDAO extends GenericJpaRepository<SysUserDO, Long> {
 	 * @param username 用户名
 	 * @return 用户实体
 	 */
-	SysUserDO findByUsername(String username);
+	SysUserDO findByUsernameAndDeletedFalse(String username);
 	
 }

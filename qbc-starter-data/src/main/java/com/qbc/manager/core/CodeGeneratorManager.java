@@ -68,8 +68,10 @@ public class CodeGeneratorManager {
 	@SneakyThrows
 	public void generate(String templateName, String packageName, TableInfoDTO tableInfoDTO) {
 		Map<String, Object> param = PropertyUtils.describe(tableInfoDTO);
+		param.put("packageName", packageName);
+		String fileName = org.apache.commons.lang3.StringUtils.substringBefore(templateName, "_");
 		File file = Paths.get("src/main/java", StringUtils.packageNameToPathName(packageName),
-				tableInfoDTO.getUpperCamelTableName() + templateName + ".java").toFile();
+				tableInfoDTO.getUpperCamelTableName() + fileName + ".java").toFile();
 		generate(templateName, param, file);
 	}
 

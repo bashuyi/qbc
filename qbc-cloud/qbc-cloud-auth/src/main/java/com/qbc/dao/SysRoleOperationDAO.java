@@ -1,5 +1,7 @@
 package com.qbc.dao;
 
+import java.util.List;
+
 import org.springframework.stereotype.Repository;
 
 import com.slyak.spring.jpa.GenericJpaRepository;
@@ -11,5 +13,13 @@ import com.slyak.spring.jpa.GenericJpaRepository;
  */
 @Repository
 public interface SysRoleOperationDAO extends GenericJpaRepository<SysRoleOperationDO, Long> {
-	
+
+	/**
+	 * 根据角色ID查询
+	 * 
+	 * @param roleId 角色ID
+	 * @return 角色操作
+	 */
+	List<SysRoleOperationDO> findByRoleIdAndDeletedFalse(Long roleId);
+
 }

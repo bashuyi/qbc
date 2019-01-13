@@ -1,0 +1,25 @@
+package com.qbc.dao;
+
+import java.util.List;
+
+import org.springframework.stereotype.Repository;
+
+import com.slyak.spring.jpa.GenericJpaRepository;
+
+/**
+ * 系统角色资源视图数据访问类
+ *
+ * @author Ma
+ */
+@Repository
+public interface SysRoleResourceDAO extends GenericJpaRepository<SysRoleResourceDO, Long> {
+
+	/**
+	 * 根据角色名查询
+	 * 
+	 * @param roleName 角色名
+	 * @return 角色资源列表
+	 */
+	List<SysRoleResourceDO> findByRoleName(String roleName);
+	
+}

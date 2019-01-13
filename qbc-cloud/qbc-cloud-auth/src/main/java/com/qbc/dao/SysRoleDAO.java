@@ -11,5 +11,5 @@ import com.slyak.spring.jpa.GenericJpaRepository;
  */
 @Repository
 public interface SysRoleDAO extends GenericJpaRepository<SysRoleDO, Long> {
-	
+
 }

@@ -34,7 +34,7 @@ public class TokenService {
 	@ApiOperation(displayName = "创建Token")
 	public ApiResponse<String> createToken(@ApiParam(displayName = "用户名") @NotEmpty String username,
 			@ApiParam(displayName = "密码") @NotEmpty String password) {
-		SysUserDO sysUserDO = sysUserDAO.findByUsername(username);
+		SysUserDO sysUserDO = sysUserDAO.findByUsernameAndDeletedFalse(username);
 
 		Assert.notNull(sysUserDO, "createToken.username: unknown");
 		Assert.isTrue(StringUtils.equals(password, sysUserDO.getPassword()), "createToken.password: bad");
@@ -51,7 +51,7 @@ public class TokenService {
 		// 用户名
 		String username = tokenManager.getAudience(token);
 
-		SysUserDO sysUserDO = sysUserDAO.findByUsername(username);
+		SysUserDO sysUserDO = sysUserDAO.findByUsernameAndDeletedFalse(username);
 
 		Assert.notNull(sysUserDO, "createToken.username: unknown");
 

@@ -27,6 +27,6 @@ public class SysRoleOperationDO extends AbstractDO {
 	private Long roleId;
 
 	/** API操作ID */
-	private String operationId;
+	private Long operationId;
 
 }

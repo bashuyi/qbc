@@ -12,6 +12,11 @@ import com.qbc.dao.SysRoleDO;
 import com.qbc.dao.SysRoleResourceDAO;
 import com.qbc.dao.SysRoleResourceDO;
 
+/**
+ * 认证处理
+ *
+ * @author Ma
+ */
 @Component
 public class AuthManager {
 

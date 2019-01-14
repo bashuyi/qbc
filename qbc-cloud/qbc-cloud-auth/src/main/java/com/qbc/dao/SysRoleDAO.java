@@ -12,6 +12,12 @@ import com.slyak.spring.jpa.TemplateQuery;
  */
 public interface SysRoleDAO extends GenericJpaRepository<SysRoleDO, Long> {
 
+	/**
+	 * 根据用户名查询角色列表
+	 * 
+	 * @param username 用户名
+	 * @return 角色列表
+	 */
 	@TemplateQuery
 	List<SysRoleDO> searchByUsername(String username);
 

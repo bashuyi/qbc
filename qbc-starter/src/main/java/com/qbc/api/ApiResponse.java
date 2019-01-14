@@ -3,6 +3,7 @@ package com.qbc.api;
 import java.io.Serializable;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.http.HttpStatus;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -73,13 +74,39 @@ public class ApiResponse<T> implements Serializable {
 	}
 
 	/**
+	 * 异常响应
+	 * 
+	 * @param httpStatus HTTP状态码
+	 * @param message    错误信息
+	 */
+	public static <T> ApiResponse<T> error(HttpStatus httpStatus, String message) {
+		return error(httpStatus.value(), message);
+	}
+
+	/**
+	 * 异常响应
+	 * 
+	 * @param httpStatus HTTP状态码
+	 * @param e          异常信息
+	 */
+	public static <T> ApiResponse<T> error(HttpStatus httpStatus, Throwable e) {
+		return error(httpStatus.value(), e.getMessage());
+	}
+
+	/**
+	 * 异常响应
+	 * 
+	 * @param httpStatus HTTP状态码
+	 */
+	public static <T> ApiResponse<T> error(HttpStatus httpStatus) {
+		return error(httpStatus.value(), httpStatus.getReasonPhrase());
+	}
+
+	/**
 	 * 熔断异常响应，微服务熔断时发生。
 	 */
 	public static <T> ApiResponse<T> hystrix() {
-		ApiResponse<T> apiResponse = new ApiResponse<>();
-		apiResponse.code = HYSTRIX;
-		apiResponse.message = "";
-		return apiResponse;
+		return error(HYSTRIX, "");
 	}
 
 	/**

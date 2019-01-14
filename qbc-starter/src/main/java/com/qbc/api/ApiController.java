@@ -85,21 +85,21 @@ public class ApiController {
 			// 参数验证错误
 			ConstraintViolationException.class })
 	public ApiResponse<?> handleBadRequest(Throwable e) {
-		return ApiResponse.error(HttpStatus.BAD_REQUEST.value(), e.getMessage());
+		return ApiResponse.error(HttpStatus.BAD_REQUEST, e);
 	}
 
 	@ResponseBody
 	@ResponseStatus(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
 	@ExceptionHandler({ UnsupportedMediaTypeStatusException.class })
 	public ApiResponse<?> handleUnsupportedMediaType(Throwable e) {
-		return ApiResponse.error(HttpStatus.UNSUPPORTED_MEDIA_TYPE.value(), e.getMessage());
+		return ApiResponse.error(HttpStatus.UNSUPPORTED_MEDIA_TYPE, e);
 	}
 
 	@ResponseBody
 	@ResponseStatus(HttpStatus.UNAUTHORIZED)
 	@ExceptionHandler({ UnauthorizedException.class })
 	public ApiResponse<?> handleUnauthorized(Throwable e) {
-		return ApiResponse.error(HttpStatus.UNAUTHORIZED.value(), e.getMessage());
+		return ApiResponse.error(HttpStatus.UNAUTHORIZED, e);
 	}
 
 	@ResponseBody
@@ -108,7 +108,7 @@ public class ApiController {
 	public ApiResponse<?> handleInternalServerError(Throwable e) {
 		// TODO 发邮件等方式通知开发人员
 		log.error("未知异常", e);
-		return ApiResponse.error(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage());
+		return ApiResponse.error(HttpStatus.INTERNAL_SERVER_ERROR, e);
 	}
 
 }

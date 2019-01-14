@@ -31,16 +31,17 @@ public class RedisConfig {
 
 	@Bean
 	@ConditionalOnMissingBean(KeyGenerator.class)
-	KeyGenerator keyGenerator() {
+	KeyGenerator reflectKey() {
 		return (target, method, params) -> {
 			String className = target.getClass().getName();
 			String methodName = method.getName();
-			String paramsValue = StringUtils.join(params, "#");
-			return String.join("-", className, methodName, paramsValue);
+			String paramsValue = StringUtils.join(params, "_");
+			return String.join("#", String.join(".", className, methodName), paramsValue);
 		};
 	}
 
 	@Bean
+	@ConditionalOnMissingBean(CacheManager.class)
 	CacheManager cacheManager(RedisConnectionFactory factory) {
 		// 序列化生成的JSON必须带上class类型，否则反序列化时会发生类型转换异常
 		ObjectMapper objectMapper = new ObjectMapper();

@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.server.UnsupportedMediaTypeStatusException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.qbc.constant.LogPatten;
+import com.qbc.constant.LogPattens;
 import com.qbc.exception.UnauthorizedException;
 import com.qbc.manager.core.ApiManageer;
 import com.qbc.utils.core.UserUtils;
@@ -62,7 +62,7 @@ public class ApiController {
 
 		// 记录了请求的内容
 		if (log.isDebugEnabled()) {
-			log.debug(LogPatten.API_START, apiName, operationName, objectMapper.writeValueAsString(params));
+			log.debug(LogPattens.API_START, apiName, operationName, objectMapper.writeValueAsString(params));
 		}
 
 		// 反射执行服务的方法

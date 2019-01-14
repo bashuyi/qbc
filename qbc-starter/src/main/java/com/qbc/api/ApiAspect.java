@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.qbc.constant.LogPatten;
+import com.qbc.constant.LogPattens;
 import com.qbc.utils.core.UserUtils;
 
 import lombok.SneakyThrows;
@@ -39,7 +39,7 @@ public class ApiAspect {
 		// 打印响应内容
 		if (log.isDebugEnabled() && returnValue instanceof ApiResponse<?>) {
 			ApiResponse<?> openInterfaceResponse = (ApiResponse<?>) returnValue;
-			log.debug(LogPatten.API_END, openInterfaceResponse.getCode(), openInterfaceResponse.getMessage(),
+			log.debug(LogPattens.API_END, openInterfaceResponse.getCode(), openInterfaceResponse.getMessage(),
 					Optional.ofNullable(openInterfaceResponse.getData()).map(this::writeValueAsString).orElse(""));
 		}
 		// 上下文的用户信息通过ThreadLocal实现，由于线程池重用的关系，必须每次请求结束清除。

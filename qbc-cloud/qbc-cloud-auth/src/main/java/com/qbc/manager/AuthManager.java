@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 
+import com.qbc.constant.KeyGenerators;
 import com.qbc.dao.SysRoleDAO;
 import com.qbc.dao.SysRoleDO;
 import com.qbc.dao.SysRoleResourceDAO;
@@ -29,7 +30,7 @@ public class AuthManager {
 	@Autowired(required = false)
 	private AuthManager authManager;
 
-	@Cacheable(value = "ROLE_RESOURCE")
+	@Cacheable(value = "ROLE_RESOURCE", keyGenerator = KeyGenerators.REFLECT_KEY)
 	public List<SysRoleResourceDO> findByRoleName(String roleName) {
 		return sysRoleResourceDAO.findByRoleName(roleName);
 	}

@@ -5,7 +5,7 @@ package com.qbc.constant;
  *
  * @author Ma
  */
-public interface LogPatten {
+public interface LogPattens {
 
 	String API_START = String.join(System.lineSeparator(), "",
 			//

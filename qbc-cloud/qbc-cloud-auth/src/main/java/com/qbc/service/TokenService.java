@@ -38,14 +38,13 @@ public class TokenService {
 	@ApiOperation(displayName = "创建Token")
 	public ApiResponse<String> createToken(@ApiParam(displayName = "用户名") @NotEmpty String username,
 			@ApiParam(displayName = "密码") @NotEmpty String password) {
+		// 认证用户名和密码
 		SysUserDO sysUserDO = sysUserDAO.findByUsernameAndDeletedFalse(username);
-
 		Assert.notNull(sysUserDO, "createToken.username: unknown");
 		Assert.isTrue(StringUtils.equals(password, sysUserDO.getPassword()), "createToken.password: bad");
 
 		// 生成Token
 		String token = tokenManager.createToken(username, sysUserDO.getSecret());
-
 		return ApiResponse.ok(token);
 	}
 
@@ -55,22 +54,20 @@ public class TokenService {
 			@ApiParam(displayName = "应用名") @NotEmpty String applicationName,
 			@ApiParam(displayName = "API名") @NotEmpty String apiName,
 			@ApiParam(displayName = "API操作名") @NotEmpty String operationName) {
-		// 用户名
+		// 获得用户信息
 		String username = tokenManager.getAudience(token);
-
 		SysUserDO sysUserDO = sysUserDAO.findByUsernameAndDeletedFalse(username);
-
 		Assert.notNull(sysUserDO, "createToken.username: unknown");
 
+		// 验证Token
 		tokenManager.verifyToken(token, sysUserDO.getSecret());
 
+		// 鉴权
 		boolean hasPermission = authManager.hasPermission(username, applicationName, apiName, operationName);
-
 		Assert.isTrue(hasPermission, "createToken.username: no permission");
 
 		openInterfaceMapResponse.put("userId", String.valueOf(sysUserDO.getId()));
 		openInterfaceMapResponse.put("username", username);
-
 		return openInterfaceMapResponse;
 	}
 

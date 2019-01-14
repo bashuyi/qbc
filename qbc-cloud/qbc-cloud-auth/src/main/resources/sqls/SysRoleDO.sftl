@@ -1,4 +1,4 @@
---findByUsername
+--searchByUsername
 select
 	sys_role.id,
 	sys_role.created_by,

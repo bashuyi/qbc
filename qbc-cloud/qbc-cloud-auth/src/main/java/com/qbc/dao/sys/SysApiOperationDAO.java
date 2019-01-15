@@ -1,4 +1,4 @@
-package com.qbc.dao;
+package com.qbc.dao.sys;
 
 import com.slyak.spring.jpa.GenericJpaRepository;
 

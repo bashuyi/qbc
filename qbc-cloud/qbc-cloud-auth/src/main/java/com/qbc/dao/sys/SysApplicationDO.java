@@ -1,4 +1,4 @@
-package com.qbc.dao;
+package com.qbc.dao.sys;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -10,7 +10,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * 系统API操作表数据访问实体类
+ * 系统应用表数据访问实体类
  *
  * @author Ma
  */
@@ -18,21 +18,18 @@ import lombok.ToString;
 @Setter
 @ToString
 @Entity
-@Table(name = "sys_api_operation")
-public class SysApiOperationDO extends AbstractDO {
+@Table(name = "sys_application")
+public class SysApplicationDO extends AbstractDO {
 
 	private static final long serialVersionUID = 1L;
 
-	/** API操作名 */
+	/** 应用名 */
 	private String name;
 
-	/** API操作表示名 */
+	/** 应用表示名 */
 	private String displayName;
 
-	/** API操作描述 */
+	/** 应用描述 */
 	private String description;
-
-	/** API ID */
-	private Long apiId;
 
 }

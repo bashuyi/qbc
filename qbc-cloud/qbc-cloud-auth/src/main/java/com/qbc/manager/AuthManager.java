@@ -8,10 +8,10 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 
 import com.qbc.constant.KeyGenerators;
-import com.qbc.dao.SysRoleDAO;
-import com.qbc.dao.SysRoleDO;
-import com.qbc.dao.SysRoleResourceDAO;
-import com.qbc.dao.SysRoleResourceDO;
+import com.qbc.dao.sys.SysRoleDAO;
+import com.qbc.dao.sys.SysRoleDO;
+import com.qbc.dao.sys.SysRoleResourceDAO;
+import com.qbc.dao.sys.SysRoleResourceDO;
 
 /**
  * 认证处理

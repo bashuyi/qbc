@@ -12,8 +12,8 @@ import com.qbc.api.ApiResponse;
 import com.qbc.api.annotation.Api;
 import com.qbc.api.annotation.ApiOperation;
 import com.qbc.api.annotation.ApiParam;
-import com.qbc.dao.SysUserDAO;
-import com.qbc.dao.SysUserDO;
+import com.qbc.dao.sys.SysUserDAO;
+import com.qbc.dao.sys.SysUserDO;
 import com.qbc.manager.AuthManager;
 import com.qbc.manager.core.TokenManager;
 
@@ -40,8 +40,8 @@ public class TokenService {
 			@ApiParam(displayName = "密码") @NotEmpty String password) {
 		// 认证用户名和密码
 		SysUserDO sysUserDO = sysUserDAO.findByUsernameAndDeletedFalse(username);
-		Assert.notNull(sysUserDO, "createToken.username: unknown");
-		Assert.isTrue(StringUtils.equals(password, sysUserDO.getPassword()), "createToken.password: bad");
+		Assert.notNull(sysUserDO, "unknown username");
+		Assert.isTrue(StringUtils.equals(password, sysUserDO.getPassword()), "bad password");
 
 		// 生成Token
 		String token = tokenManager.createToken(username, sysUserDO.getSecret());
@@ -57,14 +57,14 @@ public class TokenService {
 		// 获得用户信息
 		String username = tokenManager.getAudience(token);
 		SysUserDO sysUserDO = sysUserDAO.findByUsernameAndDeletedFalse(username);
-		Assert.notNull(sysUserDO, "createToken.username: unknown");
+		Assert.notNull(sysUserDO, "unknown username");
 
 		// 验证Token
 		tokenManager.verifyToken(token, sysUserDO.getSecret());
 
 		// 鉴权
 		boolean hasPermission = authManager.hasPermission(username, applicationName, apiName, operationName);
-		Assert.isTrue(hasPermission, "createToken.username: no permission");
+		Assert.isTrue(hasPermission, "no permission");
 
 		openInterfaceMapResponse.put("userId", String.valueOf(sysUserDO.getId()));
 		openInterfaceMapResponse.put("username", username);

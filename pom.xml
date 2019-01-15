@@ -26,7 +26,7 @@
 
 		<spring-boot.version>2.0.7.RELEASE</spring-boot.version>
 		<spring-cloud.version>Finchley.SR2</spring-cloud.version>
-		<jpa-extra.version>3.0.0-RELEASE</jpa-extra.version>
+		<jpa-extra.version>3.0.0.RELEASE</jpa-extra.version>
 		<dynamic-datasource.version>2.4.2</dynamic-datasource.version>
 		<jasypt.version>2.1.0</jasypt.version>
 		<commons-io.version>2.6</commons-io.version>
@@ -65,7 +65,7 @@
 			</dependency>
 
 			<dependency>
-				<groupId>com.github.bashuyi</groupId>
+				<groupId>com.slyak</groupId>
 				<artifactId>spring-data-jpa-extra</artifactId>
 				<version>${jpa-extra.version}</version>
 			</dependency>

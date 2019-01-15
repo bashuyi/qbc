@@ -18,7 +18,7 @@
 
 		<!-- JPA扩展 -->
 		<dependency>
-			<groupId>com.github.bashuyi</groupId>
+			<groupId>com.slyak</groupId>
 			<artifactId>spring-data-jpa-extra</artifactId>
 		</dependency>
 

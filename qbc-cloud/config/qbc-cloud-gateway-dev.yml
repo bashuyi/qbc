@@ -16,7 +16,7 @@ spring:
         uri: lb://qbc-cloud-auth
       - filters:
         - StripPrefix=1
-        - VerifyToken
+        - VerifyToken=qbc-cloud-sample-provider
         id: provider
         predicates:
         - Path=/provider/**

@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.server.UnsupportedMediaTypeStatusException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -76,7 +75,6 @@ public class ApiController {
 	}
 
 	@ResponseBody
-	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	@ExceptionHandler({
 			// Bean不存在
 			NoSuchBeanDefinitionException.class,
@@ -89,21 +87,18 @@ public class ApiController {
 	}
 
 	@ResponseBody
-	@ResponseStatus(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
 	@ExceptionHandler({ UnsupportedMediaTypeStatusException.class })
 	public ApiResponse<?> handleUnsupportedMediaType(Throwable e) {
 		return ApiResponse.error(HttpStatus.UNSUPPORTED_MEDIA_TYPE, e);
 	}
 
 	@ResponseBody
-	@ResponseStatus(HttpStatus.UNAUTHORIZED)
 	@ExceptionHandler({ UnauthorizedException.class })
 	public ApiResponse<?> handleUnauthorized(Throwable e) {
 		return ApiResponse.error(HttpStatus.UNAUTHORIZED, e);
 	}
 
 	@ResponseBody
-	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 	@ExceptionHandler(Throwable.class)
 	public ApiResponse<?> handleInternalServerError(Throwable e) {
 		// TODO 发邮件等方式通知开发人员

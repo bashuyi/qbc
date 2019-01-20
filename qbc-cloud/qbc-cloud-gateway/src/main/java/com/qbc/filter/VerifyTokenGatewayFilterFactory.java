@@ -2,6 +2,8 @@ package com.qbc.filter;
 
 import java.nio.CharBuffer;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -118,6 +120,11 @@ public class VerifyTokenGatewayFilterFactory extends AbstractGatewayFilterFactor
 		ServerHttpResponse response = exchange.getResponse();
 		DataBuffer bodyDataBuffer = response.bufferFactory().wrap(bytes);
 		return response.writeWith(Mono.just(bodyDataBuffer));
+	}
+
+	@Override
+	public List<String> shortcutFieldOrder() {
+		return Arrays.asList("applicationName");
 	}
 
 	@Getter

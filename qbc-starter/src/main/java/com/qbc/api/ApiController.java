@@ -7,7 +7,6 @@ import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.math.NumberUtils;
-import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Controller;
@@ -75,9 +74,7 @@ public class ApiController {
 
 	@ResponseBody
 	@ExceptionHandler({
-			// Bean不存在
-			NoSuchBeanDefinitionException.class,
-			// Bean的方法不匹配或者断言异常
+			// 断言异常
 			IllegalArgumentException.class,
 			// 参数验证错误
 			ConstraintViolationException.class,

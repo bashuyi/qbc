@@ -130,7 +130,7 @@ public class ApiManageer implements ApplicationRunner {
 		// 获得方法
 		Method method = methodTable.get(apiName, operationName);
 		Assert.notNull(method,
-				String.format("No api named '%s' and method named '%s' available", apiName, operationName));
+				String.format("no api named '%s' and method named '%s' available", apiName, operationName));
 
 		// 获得Bean
 		Object bean = applicationContext.getBean(apiName);

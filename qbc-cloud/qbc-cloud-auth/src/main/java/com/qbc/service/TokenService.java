@@ -49,7 +49,7 @@ public class TokenService {
 	}
 
 	@ApiOperation(displayName = "验证Token")
-	public ApiMapResponse verifyToken(ApiMapResponse openInterfaceMapResponse,
+	public ApiResponse<?> verifyToken(ApiMapResponse openInterfaceMapResponse,
 			@ApiParam(displayName = "Token") @NotEmpty String token,
 			@ApiParam(displayName = "应用名") @NotEmpty String applicationName,
 			@ApiParam(displayName = "API名") @NotEmpty String apiName,
@@ -64,7 +64,9 @@ public class TokenService {
 
 		// 鉴权
 		boolean hasPermission = authManager.hasPermission(username, applicationName, apiName, operationName);
-		Assert.isTrue(hasPermission, "no permission");
+		if (hasPermission) {
+			return ApiMapResponse.unauthorized();
+		}
 
 		openInterfaceMapResponse.put("userId", String.valueOf(sysUserDO.getId()));
 		openInterfaceMapResponse.put("username", username);

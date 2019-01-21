@@ -46,7 +46,7 @@ public class ApiResponse<T> implements Serializable {
 	/**
 	 * 响应信息
 	 */
-	protected String message = "";
+	protected String message = "ok";
 
 	/**
 	 * 响应内容
@@ -88,7 +88,7 @@ public class ApiResponse<T> implements Serializable {
 	 * @param message 错误信息
 	 */
 	public static <T> ApiResponse<T> badRequest(String message) {
-		return response(BAD_REQUEST, StringUtils.defaultString(message));
+		return response(BAD_REQUEST, StringUtils.defaultIfEmpty(message, "bad request"));
 	}
 
 	/**
@@ -101,12 +101,19 @@ public class ApiResponse<T> implements Serializable {
 	}
 
 	/**
+	 * 请求内容错误响应
+	 */
+	public static <T> ApiResponse<T> badRequest() {
+		return badRequest("");
+	}
+
+	/**
 	 * 认证错误响应
 	 * 
 	 * @param message 错误信息
 	 */
 	public static <T> ApiResponse<T> unauthorized(String message) {
-		return response(UNAUTHORIZED, StringUtils.defaultString(message));
+		return response(UNAUTHORIZED, StringUtils.defaultIfEmpty(message, "unauthorized"));
 	}
 
 	/**
@@ -119,12 +126,26 @@ public class ApiResponse<T> implements Serializable {
 	}
 
 	/**
-	 * 熔断异常响应，微服务熔断时发生。
+	 * 认证错误响应
+	 */
+	public static <T> ApiResponse<T> unauthorized() {
+		return unauthorized("");
+	}
+
+	/**
+	 * 熔断异常响应
 	 * 
 	 * @param message 错误信息
 	 */
 	public static <T> ApiResponse<T> hystrix(String message) {
-		return response(HYSTRIX, message);
+		return response(HYSTRIX, StringUtils.defaultIfEmpty(message, "hystrix"));
+	}
+
+	/**
+	 * 熔断异常响应
+	 */
+	public static <T> ApiResponse<T> hystrix() {
+		return hystrix(null);
 	}
 
 	/**

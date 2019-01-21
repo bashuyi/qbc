@@ -3,7 +3,6 @@ package com.qbc.api;
 import java.io.Serializable;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.http.HttpStatus;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -12,7 +11,12 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
- * API响应
+ * API响应<br>
+ * 0：正常<br>
+ * 1：请求内容错误。请求内容和接口规范不符，需要按照响应信息和接口规范修改后重新请求。<br>
+ * 2：认证错误。没有授权或者没有通过认证，需要获得授权和通过认证才能访问。 <br>
+ * 3：熔断。请求的服务暂时无法访问，需要等待服务恢复后重试。<br>
+ * 4：内部错误。发生预料外的异常，需要联系技术担当修复。<br>
  *
  * @author Ma
  * @param <T> 结果数据的类型
@@ -24,9 +28,15 @@ public class ApiResponse<T> implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	public static final int HYSTRIX = -1;
+	public static final int OK = 0;
 
-	public static final int OK = 200;
+	public static final int BAD_REQUEST = 1;
+
+	public static final int UNAUTHORIZED = 2;
+
+	public static final int ERROR = 3;
+
+	public static final int HYSTRIX = 4;
 
 	/**
 	 * 响应编码
@@ -44,10 +54,15 @@ public class ApiResponse<T> implements Serializable {
 	protected T data;
 
 	/**
-	 * 正常响应
+	 * 自定义响应结果
+	 * 
+	 * @param code    响应编码
+	 * @param message 响应信息
 	 */
-	public static ApiResponse<Void> ok() {
-		ApiResponse<Void> apiResponse = new ApiResponse<>();
+	public static <T> ApiResponse<T> response(int code, String message) {
+		ApiResponse<T> apiResponse = new ApiResponse<>();
+		apiResponse.code = code;
+		apiResponse.message = StringUtils.defaultString(message);
 		return apiResponse;
 	}
 
@@ -56,57 +71,69 @@ public class ApiResponse<T> implements Serializable {
 	 */
 	public static <T> ApiResponse<T> ok(T data) {
 		ApiResponse<T> apiResponse = new ApiResponse<>();
-		apiResponse.data = data;
+		apiResponse.setData(data);
 		return apiResponse;
 	}
 
 	/**
-	 * 异常响应
+	 * 正常响应
+	 */
+	public static ApiResponse<Void> ok() {
+		return ok(null);
+	}
+
+	/**
+	 * 请求内容错误响应
 	 * 
-	 * @param code    错误编码
 	 * @param message 错误信息
 	 */
-	public static <T> ApiResponse<T> error(int code, String message) {
-		ApiResponse<T> apiResponse = new ApiResponse<>();
-		apiResponse.code = code;
-		apiResponse.message = StringUtils.defaultString(message);
-		return apiResponse;
+	public static <T> ApiResponse<T> badRequest(String message) {
+		return response(BAD_REQUEST, StringUtils.defaultString(message));
 	}
 
 	/**
-	 * 异常响应
+	 * 请求内容错误响应
 	 * 
-	 * @param httpStatus HTTP状态码
-	 * @param message    错误信息
+	 * @param e 异常
 	 */
-	public static <T> ApiResponse<T> error(HttpStatus httpStatus, String message) {
-		return error(httpStatus.value(), message);
+	public static <T> ApiResponse<T> badRequest(Throwable e) {
+		return badRequest(e.getMessage());
 	}
 
 	/**
-	 * 异常响应
+	 * 认证错误响应
 	 * 
-	 * @param httpStatus HTTP状态码
-	 * @param e          异常信息
+	 * @param message 错误信息
 	 */
-	public static <T> ApiResponse<T> error(HttpStatus httpStatus, Throwable e) {
-		return error(httpStatus.value(), e.getMessage());
+	public static <T> ApiResponse<T> unauthorized(String message) {
+		return response(UNAUTHORIZED, StringUtils.defaultString(message));
 	}
 
 	/**
-	 * 异常响应
+	 * 认证错误响应
 	 * 
-	 * @param httpStatus HTTP状态码
+	 * @param e 异常
 	 */
-	public static <T> ApiResponse<T> error(HttpStatus httpStatus) {
-		return error(httpStatus.value(), httpStatus.getReasonPhrase());
+	public static <T> ApiResponse<T> unauthorized(Throwable e) {
+		return unauthorized(e.getMessage());
 	}
 
 	/**
 	 * 熔断异常响应，微服务熔断时发生。
+	 * 
+	 * @param message 错误信息
 	 */
-	public static <T> ApiResponse<T> hystrix() {
-		return error(HYSTRIX, "");
+	public static <T> ApiResponse<T> hystrix(String message) {
+		return response(HYSTRIX, message);
+	}
+
+	/**
+	 * 内部错误响应
+	 * 
+	 * @param message 错误信息
+	 */
+	public static <T> ApiResponse<T> error(Throwable e) {
+		return response(ERROR, StringUtils.defaultString(e.getMessage()));
 	}
 
 	/**

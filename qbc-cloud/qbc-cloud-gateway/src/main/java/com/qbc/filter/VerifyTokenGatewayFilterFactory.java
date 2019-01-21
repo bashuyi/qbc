@@ -13,7 +13,6 @@ import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFac
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.core.io.buffer.DataBufferUtils;
 import org.springframework.core.io.buffer.NettyDataBufferFactory;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpRequestDecorator;
 import org.springframework.http.server.reactive.ServerHttpResponse;
@@ -56,7 +55,7 @@ public class VerifyTokenGatewayFilterFactory extends AbstractGatewayFilterFactor
 
 			ApiRequest apiRequest = getBody(request);
 			if (apiRequest == null) {
-				error(chain, exchange, ApiResponse.error(HttpStatus.BAD_REQUEST, "Bad Request Body"));
+				error(chain, exchange, ApiResponse.badRequest("bad request body"));
 			}
 
 			ApiResponse<Map<String, String>> apiResponse = verifyToken(token, config.getApplicationName(),

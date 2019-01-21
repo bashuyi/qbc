@@ -10,7 +10,6 @@ import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -81,21 +80,17 @@ public class ApiController {
 			// Bean的方法不匹配或者断言异常
 			IllegalArgumentException.class,
 			// 参数验证错误
-			ConstraintViolationException.class })
+			ConstraintViolationException.class,
+			// 请求头的MediaType错误
+			UnsupportedMediaTypeStatusException.class })
 	public ApiResponse<?> handleBadRequest(Throwable e) {
-		return ApiResponse.error(HttpStatus.BAD_REQUEST, e);
-	}
-
-	@ResponseBody
-	@ExceptionHandler({ UnsupportedMediaTypeStatusException.class })
-	public ApiResponse<?> handleUnsupportedMediaType(Throwable e) {
-		return ApiResponse.error(HttpStatus.UNSUPPORTED_MEDIA_TYPE, e);
+		return ApiResponse.badRequest(e);
 	}
 
 	@ResponseBody
 	@ExceptionHandler({ UnauthorizedException.class })
 	public ApiResponse<?> handleUnauthorized(Throwable e) {
-		return ApiResponse.error(HttpStatus.UNAUTHORIZED, e);
+		return ApiResponse.unauthorized(e);
 	}
 
 	@ResponseBody
@@ -103,7 +98,7 @@ public class ApiController {
 	public ApiResponse<?> handleInternalServerError(Throwable e) {
 		// TODO 发邮件等方式通知开发人员
 		log.error("未知异常", e);
-		return ApiResponse.error(HttpStatus.INTERNAL_SERVER_ERROR, e);
+		return ApiResponse.error(e);
 	}
 
 }

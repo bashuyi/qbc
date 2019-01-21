@@ -26,7 +26,7 @@ public class ApiClientCloudManager {
 	}
 
 	public <T> ApiResponse<T> postFallback(String applicationName, ApiRequest request) {
-		return ApiResponse.hystrix();
+		return ApiResponse.hystrix(String.format("%s unavailable", applicationName));
 	}
 
 }

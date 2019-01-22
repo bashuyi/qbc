@@ -10,7 +10,7 @@
 	<artifactId>qbc-starter-data</artifactId>
 
 	<dependencies>
-		<!-- 动态数据源 -->
+		<!-- 动态多数据源 -->
 		<dependency>
 			<groupId>com.baomidou</groupId>
 			<artifactId>dynamic-datasource-spring-boot-starter</artifactId>

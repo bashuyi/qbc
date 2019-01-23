@@ -23,6 +23,7 @@ spring-data-jpa-extra|JPA扩展|[https://github.com/slyak/spring-data-jpa-extra]
 Spring Data Redis|Redis|[https://spring.io/projects/spring-data-redis](https://spring.io/projects/spring-data-redis)
 Java JWT|JWT|[https://github.com/auth0/java-jwt](https://github.com/auth0/java-jwt)
 Spring Cloud|微服务|[https://spring.io/projects/spring-cloud](https://spring.io/projects/spring-cloud)
+p3c|阿里巴巴Java开发手册和Eclipse插件|[https://github.com/alibaba/p3c](https://github.com/alibaba/p3c)
 
 ## <a name="系统架构"></a>系统架构
 

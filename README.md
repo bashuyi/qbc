@@ -12,6 +12,7 @@
 * [应用分层](#应用分层)
 * [框架说明](#框架说明)
     * [开放接口](#开放接口)
+    * [数据访问](#数据访问)
 
 ## <a name="技术选型"></a>技术选型
 
@@ -75,6 +76,8 @@ qbc
 
 - **通用处理层(Manager层)** 
 
+    - 使用DTO(Data Transfer Object)向上层传输对象；
+
     - 对第三方平台封装的层，预处理返回结果及转化异常信息；
 
     - 对 Service 层通用能力的下沉，如缓存方案、中间件通用处理；
@@ -83,11 +86,15 @@ qbc
 
 - **数据访问层(DAO层)** 
 
+    - 使用DO(Data Object)向上层传输对象；
+
     - 与底层数据库进行交互。
 
 ## <a name="框架说明"></a>框架说明
 
 ### <a name="开放接口"></a>开放接口
+
+所有的开放接口，拥有统一的请求和响应格式。
 
 - **请求** 
 
@@ -120,3 +127,62 @@ data|响应内容|Object|否
     "data": {}
 }
 ```
+
+- **响应编码** 
+
+框架定义了以下的共通响应编码。业务模块可以返回自定义的响应编码。
+
+编码值|编码名称|描述
+--|--|--
+0|正常|请求成功。
+1|请求错误|请求内容和接口规范不符，需要按照响应信息和接口规范修改后重新请求。
+2|认证错误|没有授权或者没有通过认证，需要获得授权和通过认证才能访问。
+3|熔断|请求的服务暂时无法访问，需要等待服务恢复后重试。
+4|系统错误|发生预料外的异常，需要联系技术担当修复。
+
+### <a name="数据访问"></a>数据访问
+
+普通的CRUD可以使用JPA，复杂的SQL可以给JPA方法加上@TemplateQueryz注解，并把SQL语句写在 src/main/resources/sqls/实体名.sftl 文件中。
+
+``` java
+@TemplateQuery
+List<SysRoleDO> searchByUsername(String username);
+```
+
+``` sql
+--searchByUsername
+select
+	sys_role.id,
+	sys_role.created_by,
+	sys_role.created_date_time,
+	sys_role.last_modified_by,
+	sys_role.last_modified_date_time,
+	sys_role.deleted,
+	sys_role."name",
+	sys_role.display_name,
+	sys_role.description
+from
+	sys_role
+join sys_user_role on
+	sys_user_role.role_id = sys_role.id
+	and sys_user_role.deleted = false
+	and sys_role.deleted = false
+join sys_user on
+	sys_user.id = sys_user_role.user_id
+	and sys_user.deleted = false
+where
+	sys_user.username = :username
+
+```
+
+对于DO对象，框架提供了抽象的父类，用于封装数据库共通的字段，并自动设值。
+
+字段名|字段表示名|字段类型|描述
+--|--|--|--
+id|ID|Long|主键。插入到数据库时，自动设置分布式 SnowFlake ID。
+createdBy|创建者|Long|插入到数据库时，自动设置当前请求的用户ID。
+createdDateTime|创建时间|LocalDateTime|插入到数据库时，自动设置当前时间。
+lastModifiedBy|最后更新者|Long|插入和更新到数据库时，自动设置当前请求的用户ID。
+lastModifiedDateTime|最后更新时间|LocalDateTime|插入和更新到数据库时，自动设置当前时间。
+deleted|已删除|Boolean|逻辑删除时，手动设置true。
+

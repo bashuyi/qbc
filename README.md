@@ -31,7 +31,7 @@ p3c|阿里巴巴Java开发手册和Eclipse插件|[https://github.com/alibaba/p3c
 
 ## <a name="框架模块"></a>框架模块
 
-``` lua
+```
 qbc
 ├── qbc-cloud -- 微服务框架
 |    ├──qbc-cloud-auth -- 认证中心

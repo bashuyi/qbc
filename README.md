@@ -157,7 +157,7 @@ data|响应内容|Object|否
 
 ### <a name="数据访问"></a>数据访问
 
-普通的CRUD可以使用JPA，复杂的SQL可以给JPA方法加上@TemplateQueryz注解，并把SQL语句写在 src/main/resources/sqls/实体名.sftl 文件中。
+普通的 CRUD 可以使用 JPA ，复杂的 SQL 可以给 JPA 方法加上 @TemplateQueryz 注解，并把 SQL 语句写在 src/main/resources/sqls/实体名.sftl 文件中。
 
 ``` java
 @TemplateQuery
@@ -190,7 +190,7 @@ where
 
 ```
 
-对于DO对象，框架提供了抽象的父类，用于封装数据库共通的字段，并自动设值。
+对于 DO 对象，框架提供了抽象的父类，用于封装数据库共通的字段，并自动设值。
 
 字段名|字段表示名|字段类型|描述
 --|--|--|--

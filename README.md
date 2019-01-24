@@ -10,6 +10,8 @@
     * [认证中心](#认证中心)
     * [网关中心](#网关中心)
 * [应用分层](#应用分层)
+* [框架说明](#框架说明)
+    * [开放接口](#开放接口)
 
 ## <a name="技术选型"></a>技术选型
 
@@ -83,4 +85,38 @@ qbc
 
     - 与底层数据库进行交互。
 
+## <a name="框架说明"></a>框架说明
 
+### <a name="开放接口"></a>开放接口
+
+- **请求** 
+
+参数名|参数表示名|参数类型|是否必须
+--|--|--|--
+apiName|API名|String|是
+operationName|API操作名|String|是
+params|API参数|Object|否
+
+``` json
+{
+    "apiName": "applicationService",
+    "operationName": "info",
+    "params": {}
+}
+```
+
+- **响应** 
+
+参数名|参数表示名|参数类型|是否必须
+--|--|--|--
+code|响应编码|int|是
+message|响应信息|String|是
+data|响应内容|Object|否
+
+``` json
+{
+    "code": 0,
+    "message": "ok",
+    "data": {}
+}
+```

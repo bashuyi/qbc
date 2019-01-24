@@ -67,7 +67,7 @@ qbc
 
 ### <a name="配置中心"></a>配置中心
 
-通过 Spring Cloud Config 实现配置中心。配置中心注册到注册中心。在生产环境中服务从配置中心读取文件，而配置中心从Git读取配置文件，将配置中心做成一个集群化微服务即可实现高可用，满足大量服务的需求。
+通过 Spring Cloud Config 实现配置中心。配置中心注册到注册中心。在生产环境中服务从配置中心读取文件，而配置中心从 Git 读取配置文件，将配置中心做成一个集群化微服务即可实现高可用，满足大量服务的需求。
 
 ### <a name="认证中心"></a>认证中心
 
@@ -79,19 +79,19 @@ qbc
 
 ## <a name="应用分层"></a>应用分层
 
-- **开放接口层(API层)**
+- **开放接口层 (API 层)**
 
     - 通过注解的形式，直接封装 Service 方法暴露成 RPC 接口；
 
     - 通过注解的形式，验证请求参数，统一处理异常，封装返回结果。
 
-- **业务逻辑层(Service层)**
+- **业务逻辑层 (Service 层)**
 
-    - 通过调用Manager层或DAO层实现对业务逻辑和流程的控制。
+    - 通过调用 Manager 层或 DAO 层实现对业务逻辑和流程的控制。
 
-- **通用处理层(Manager层)** 
+- **通用处理层 (Manager 层)** 
 
-    - 使用DTO(Data Transfer Object)向上层传输对象；
+    - 使用 DTO (Data Transfer Object) 向上层传输对象；
 
     - 对第三方平台封装的层，预处理返回结果及转化异常信息；
 
@@ -99,9 +99,9 @@ qbc
 
     - 与 DAO 层交互，对多个 DAO 的组合复用。
 
-- **数据访问层(DAO层)** 
+- **数据访问层 (DAO 层)** 
 
-    - 使用DO(Data Object)向上层传输对象；
+    - 使用 DO (Data Object) 向上层传输对象；
 
     - 与底层数据库进行交互。
 
@@ -231,7 +231,7 @@ deleted|已删除|Boolean|逻辑删除时，手动设置true。
 
 - [[分布式敏捷开发系统架构] zheng](https://github.com/shuzheng/zheng)
 
-- [[云框架]基于Spring Cloud的微服务架构-用户指南](https://github.com/cloudframeworks-springcloud/user-guide-springcloud)
+- [[云框架]基于 Spring Cloud 的微服务架构-用户指南](https://github.com/cloudframeworks-springcloud/user-guide-springcloud)
 
 ### <a name="技术博客"></a>技术博客
 

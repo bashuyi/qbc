@@ -25,6 +25,9 @@
     * [SFTP](#SFTP)
     * [系统参数](#系统参数)
     * [数据字段](#数据字段)
+* [参考资料](#参考资料)
+    * [开源项目](#开源项目)
+    * [技术博客](#技术博客)
 
 ## <a name="技术选型"></a>技术选型
 
@@ -221,5 +224,17 @@ deleted|已删除|Boolean|逻辑删除时，手动设置true。
 ### <a name="系统参数"></a>系统参数
 
 ### <a name="数据字段"></a>数据字段
+
+## <a name="参考资料"></a>参考资料
+
+### <a name="开源项目"></a>开源项目
+
+- [[分布式敏捷开发系统架构] zheng](https://github.com/shuzheng/zheng)
+
+- [[云框架]基于Spring Cloud的微服务架构-用户指南](https://github.com/cloudframeworks-springcloud/user-guide-springcloud)
+
+### <a name="技术博客"></a>技术博客
+
+- [程序员你为什么这么累](https://xwjie.github.io/rule/)
 
 

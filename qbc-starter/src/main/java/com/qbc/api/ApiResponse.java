@@ -13,10 +13,10 @@ import lombok.Setter;
 /**
  * API响应<br>
  * 0：正常<br>
- * 1：请求内容错误。请求内容和接口规范不符，需要按照响应信息和接口规范修改后重新请求。<br>
+ * 1：请求错误。请求内容和接口规范不符，需要按照响应信息和接口规范修改后重新请求。<br>
  * 2：认证错误。没有授权或者没有通过认证，需要获得授权和通过认证才能访问。 <br>
  * 3：熔断。请求的服务暂时无法访问，需要等待服务恢复后重试。<br>
- * 4：内部错误。发生预料外的异常，需要联系技术担当修复。<br>
+ * 4：系统错误。发生预料外的异常，需要联系技术担当修复。<br>
  *
  * @author Ma
  * @param <T> 结果数据的类型
@@ -34,9 +34,9 @@ public class ApiResponse<T> implements Serializable {
 
 	public static final int UNAUTHORIZED = 2;
 
-	public static final int ERROR = 3;
+	public static final int HYSTRIX = 3;
 
-	public static final int HYSTRIX = 4;
+	public static final int ERROR = 4;
 
 	/**
 	 * 响应编码

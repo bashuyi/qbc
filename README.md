@@ -16,11 +16,11 @@
     * [多数据源](#多数据源)
     * [代码生成](#代码生成)
     * [Redis](#Redis)
-    * [消息队列](#消息队列)
-    * [定时任务](#定时任务)
+    * [日志](#日志)
     * [参数校验](#参数校验)
     * [国际化](#国际化)
-    * [日志](#日志)
+    * [消息队列](#消息队列)
+    * [定时任务](#定时任务)
     * [邮件](#邮件)
     * [SFTP](#SFTP)
     * [系统参数](#系统参数)
@@ -205,19 +205,51 @@ deleted|已删除|Boolean|逻辑删除时，手动设置true。
 
 ### <a name="多数据源"></a>多数据源
 
+在 [dynamic-datasource-spring-boot-starter](https://github.com/baomidou/dynamic-datasource-spring-boot-starter) 的基础上，提供了 DataSourceManager，封装了动态添加、移除和获得数据源的方法，并提供了执行指定数据源下操作的方法。
+
 ### <a name="代码生成"></a>代码生成
 
+框架提供了 DatabaseInfoManager, 用于获取数据库信息。根据获得的数据库信息，使用 CodeGeneratorManager，可以根据 FreeMarker 模板生成DAO和DO。
+
 ### <a name="Redis"></a>Redis
+
+通过配置，将 Redis 的数据格式化可读性较强的 JSON 格式，并自定义了 KeyGenerator。
+
+### <a name="日志"></a>日志
+
+每次请求时，缓存用户信息到 MDC, 在日志中可以获取和输出这些用户信息。为了防止线程池重用导致的用户信息获取不正确，在请求结束后会清除 MDC 中的信息。
+
+### <a name="参数校验"></a>参数校验
+
+在 Service 层进行参数校验。给类添加 @Validated 注解，然后给方法参数添加 @NotEmpty 等注解，框架会自动捕获验证异常，然后封装成统一的响应。
+
+``` java
+@Api(displayName = "Token服务")
+@Validated
+public class TokenService {
+    
+    @ApiOperation(displayName = "创建Token")
+	public ApiResponse<String> createToken(@ApiParam(displayName = "用户名") @NotEmpty String username,
+			@ApiParam(displayName = "密码") @NotEmpty String password) {
+        ...
+    }
+
+}
+```
+
+``` json
+{
+    "code": 1,
+    "message": "...",
+    "data": {}
+}
+```
+
+### <a name="国际化"></a>国际化
 
 ### <a name="消息队列"></a>消息队列
 
 ### <a name="定时任务"></a>定时任务
-
-### <a name="参数校验"></a>参数校验
-
-### <a name="国际化"></a>国际化
-
-### <a name="日志"></a>日志
 
 ### <a name="邮件"></a>邮件
 

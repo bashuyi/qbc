@@ -201,7 +201,7 @@ createdBy|创建者|Long|插入到数据库时，自动设置当前请求的用�
 createdDateTime|创建时间|LocalDateTime|插入到数据库时，自动设置当前时间。
 lastModifiedBy|最后更新者|Long|插入和更新到数据库时，自动设置当前请求的用户ID。
 lastModifiedDateTime|最后更新时间|LocalDateTime|插入和更新到数据库时，自动设置当前时间。
-deleted|已删除|Boolean|逻辑删除时，手动设置true。
+deleted|已删除|Boolean|逻辑删除时，手动设置true。查询时注意加上该条件。
 
 ### <a name="多数据源"></a>多数据源
 

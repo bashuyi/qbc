@@ -16,7 +16,7 @@ spring:
         master:
           driver-class-name: org.postgresql.Driver
           password: ENC(uJxB0DorJ6dxT3IXggUKNGqYCgrejPTW)
-          url: jdbc:postgresql://localhost:5432/postgres
+          url: jdbc:postgresql://localhost:5432/auth
           username: postgres
       primary: master
   jpa:

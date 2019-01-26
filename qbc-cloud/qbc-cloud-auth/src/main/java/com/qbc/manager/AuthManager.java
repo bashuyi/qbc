@@ -8,10 +8,10 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 
 import com.qbc.constant.KeyGenerators;
-import com.qbc.dao.sys.SysRoleDAO;
-import com.qbc.dao.sys.SysRoleDO;
-import com.qbc.dao.sys.SysRoleResourceDAO;
-import com.qbc.dao.sys.SysRoleResourceDO;
+import com.qbc.dao.auth.AuthRoleDAO;
+import com.qbc.dao.auth.AuthRoleDO;
+import com.qbc.dao.auth.AuthRoleResourceDAO;
+import com.qbc.dao.auth.AuthRoleResourceDO;
 
 /**
  * 认证处理
@@ -22,22 +22,22 @@ import com.qbc.dao.sys.SysRoleResourceDO;
 public class AuthManager {
 
 	@Autowired
-	private SysRoleResourceDAO sysRoleResourceDAO;
+	private AuthRoleResourceDAO authRoleResourceDAO;
 
 	@Autowired
-	private SysRoleDAO sysRoleDAO;
+	private AuthRoleDAO authRoleDAO;
 
 	@Autowired(required = false)
 	private AuthManager authManager;
 
 	@Cacheable(value = "ROLE_RESOURCE", keyGenerator = KeyGenerators.REFLECT_KEY)
-	public List<SysRoleResourceDO> findByRoleName(String roleName) {
-		return sysRoleResourceDAO.findByRoleName(roleName);
+	public List<AuthRoleResourceDO> findByRoleName(String roleName) {
+		return authRoleResourceDAO.findByRoleName(roleName);
 	}
 
 	@Cacheable(value = "USER_ROLE")
-	public List<SysRoleDO> searchByUsername(String username) {
-		return sysRoleDAO.searchByUsername(username);
+	public List<AuthRoleDO> searchByUsername(String username) {
+		return authRoleDAO.searchByUsername(username);
 	}
 
 	/**
@@ -50,12 +50,12 @@ public class AuthManager {
 	 * @return 是否有权限
 	 */
 	public boolean hasPermission(String username, String applicationName, String apiName, String operationName) {
-		List<SysRoleDO> sysRoleDOs = authManager.searchByUsername(username);
-		return sysRoleDOs.stream().map(SysRoleDO::getName).map(authManager::findByRoleName)
-				.anyMatch(sysRoleResourceDOs -> sysRoleResourceDOs.stream().anyMatch(sysRoleResourceDO -> {
-					return StringUtils.equals(sysRoleResourceDO.getApplicationName(), applicationName)
-							&& StringUtils.equals(sysRoleResourceDO.getApiName(), apiName)
-							&& StringUtils.equals(sysRoleResourceDO.getOperationName(), operationName);
+		List<AuthRoleDO> authRoleDOs = authManager.searchByUsername(username);
+		return authRoleDOs.stream().map(AuthRoleDO::getName).map(authManager::findByRoleName)
+				.anyMatch(authRoleResourceDOs -> authRoleResourceDOs.stream().anyMatch(authRoleResourceDO -> {
+					return StringUtils.equals(authRoleResourceDO.getApplicationName(), applicationName)
+							&& StringUtils.equals(authRoleResourceDO.getApiName(), apiName)
+							&& StringUtils.equals(authRoleResourceDO.getOperationName(), operationName);
 				}));
 	}
 

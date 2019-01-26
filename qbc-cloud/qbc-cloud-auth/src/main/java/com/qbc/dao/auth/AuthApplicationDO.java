@@ -1,4 +1,4 @@
-package com.qbc.dao.sys;
+package com.qbc.dao.auth;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -10,7 +10,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * 系统用户表数据访问实体类
+ * 应用表数据访问实体类
  *
  * @author Ma
  */
@@ -18,21 +18,18 @@ import lombok.ToString;
 @Setter
 @ToString
 @Entity
-@Table(name = "sys_user")
-public class SysUserDO extends AbstractDO {
+@Table(name = "auth_application")
+public class AuthApplicationDO extends AbstractDO {
 
 	private static final long serialVersionUID = 1L;
 
-	/** 用户名 */
-	private String username;
+	/** 应用名 */
+	private String name;
 
-	/** 密码 */
-	private String password;
-
-	/** 签名密钥 */
-	private String secret;
-
-	/** 用户表示名 */
+	/** 应用表示名 */
 	private String displayName;
+
+	/** 应用描述 */
+	private String description;
 
 }

@@ -8,16 +8,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.qbc.dao.sys.SysApiOperationDAO;
-import com.qbc.dao.sys.SysApiOperationDO;
-import com.qbc.dao.sys.SysRoleDAO;
-import com.qbc.dao.sys.SysRoleDO;
-import com.qbc.dao.sys.SysRoleOperationDAO;
-import com.qbc.dao.sys.SysRoleOperationDO;
-import com.qbc.dao.sys.SysUserDAO;
-import com.qbc.dao.sys.SysUserDO;
-import com.qbc.dao.sys.SysUserRoleDAO;
-import com.qbc.dao.sys.SysUserRoleDO;
+import com.qbc.dao.auth.AuthApiOperationDAO;
+import com.qbc.dao.auth.AuthApiOperationDO;
+import com.qbc.dao.auth.AuthRoleDAO;
+import com.qbc.dao.auth.AuthRoleDO;
+import com.qbc.dao.auth.AuthRoleOperationDAO;
+import com.qbc.dao.auth.AuthRoleOperationDO;
+import com.qbc.dao.auth.AuthUserDAO;
+import com.qbc.dao.auth.AuthUserDO;
+import com.qbc.dao.auth.AuthUserRoleDAO;
+import com.qbc.dao.auth.AuthUserRoleDO;
 import com.qbc.dto.core.ApplicationDTO;
 import com.qbc.dto.core.DatabaseInfoDTO;
 import com.qbc.manager.ApiDataManager;
@@ -48,32 +48,32 @@ public class ApplicationTest {
 	private ApiDataManager apiDataManager;
 
 	@Autowired
-	private SysApiOperationDAO sysApiOperationDAO;
+	private AuthApiOperationDAO authApiOperationDAO;
 
 	@Autowired
-	private SysRoleDAO sysRoleDAO;
+	private AuthRoleDAO authRoleDAO;
 
 	@Autowired
-	private SysRoleOperationDAO sysRoleOperationDAO;
+	private AuthRoleOperationDAO authRoleOperationDAO;
 
 	@Autowired
-	private SysUserDAO sysUserDAO;
+	private AuthUserDAO authUserDAO;
 
 	@Autowired
-	private SysUserRoleDAO sysUserRoleDAO;
+	private AuthUserRoleDAO authUserRoleDAO;
 
 	@Test
 	public void generateCode() {
 		DatabaseInfoDTO databaseInfoDTO = databaseInfoManager.getDatabaseInfoDTO();
-		codeGeneratorManager.generateAll("DAO", "com.qbc.dao", databaseInfoDTO);
-//		codeGeneratorManager.generateAll("DO", "com.qbc.dao", databaseInfoDTO);
+		codeGeneratorManager.generateAll("DAO", "com.qbc.dao.auth", databaseInfoDTO);
+		codeGeneratorManager.generateAll("DO", "com.qbc.dao.auth", databaseInfoDTO);
 	}
 
 	@Test
 	public void generateOneCode() {
-		DatabaseInfoDTO databaseInfoDTO = databaseInfoManager.getDatabaseInfoDTO(null, "sys_role_resource");
-		codeGeneratorManager.generateAll("DAO", "com.qbc.dao", databaseInfoDTO);
-		codeGeneratorManager.generateAll("DO_VIEW", "com.qbc.dao", databaseInfoDTO);
+		DatabaseInfoDTO databaseInfoDTO = databaseInfoManager.getDatabaseInfoDTO(null, "auth_role_resource");
+		codeGeneratorManager.generateAll("DAO", "com.qbc.dao.auth", databaseInfoDTO);
+		codeGeneratorManager.generateAll("DO_VIEW", "com.qbc.dao.auth", databaseInfoDTO);
 	}
 
 	@Test
@@ -84,34 +84,34 @@ public class ApplicationTest {
 
 	@Test
 	public void generateRoleData() {
-		SysRoleDO sysRoleDO = new SysRoleDO();
-		sysRoleDO.setName("admin");
-		sysRoleDO.setDisplayName("超级管理员");
-		sysRoleDO = sysRoleDAO.save(sysRoleDO);
+		AuthRoleDO authRoleDO = new AuthRoleDO();
+		authRoleDO.setName("admin");
+		authRoleDO.setDisplayName("超级管理员");
+		authRoleDO = authRoleDAO.save(authRoleDO);
 
-		List<SysApiOperationDO> sysApiOperationDOs = sysApiOperationDAO.findAll();
-		for (SysApiOperationDO sysApiOperationDO : sysApiOperationDOs) {
-			SysRoleOperationDO sysRoleOperationDO = new SysRoleOperationDO();
-			sysRoleOperationDO.setRoleId(sysRoleDO.getId());
-			sysRoleOperationDO.setOperationId(sysApiOperationDO.getId());
-			sysRoleOperationDAO.save(sysRoleOperationDO);
+		List<AuthApiOperationDO> authApiOperationDOs = authApiOperationDAO.findAll();
+		for (AuthApiOperationDO authApiOperationDO : authApiOperationDOs) {
+			AuthRoleOperationDO authRoleOperationDO = new AuthRoleOperationDO();
+			authRoleOperationDO.setRoleId(authRoleDO.getId());
+			authRoleOperationDO.setOperationId(authApiOperationDO.getId());
+			authRoleOperationDAO.save(authRoleOperationDO);
 		}
 	}
 
 	@Test
 	public void generateUserData() {
-		SysUserDO sysUserDO = new SysUserDO();
-		sysUserDO.setUsername("qbc");
-		sysUserDO.setPassword("123456");
-		sysUserDO.setSecret(SnowflakeUtils.nextString());
-		sysUserDO = sysUserDAO.save(sysUserDO);
+		AuthUserDO authUserDO = new AuthUserDO();
+		authUserDO.setUsername("qbc");
+		authUserDO.setPassword("123456");
+		authUserDO.setSecret(SnowflakeUtils.nextString());
+		authUserDO = authUserDAO.save(authUserDO);
 
-		List<SysRoleDO> sysRoleDOs = sysRoleDAO.findAll();
-		for (SysRoleDO sysRoleDO : sysRoleDOs) {
-			SysUserRoleDO sysUserRoleDO = new SysUserRoleDO();
-			sysUserRoleDO.setUserId(sysUserDO.getId());
-			sysUserRoleDO.setRoleId(sysRoleDO.getId());
-			sysUserRoleDAO.save(sysUserRoleDO);
+		List<AuthRoleDO> authRoleDOs = authRoleDAO.findAll();
+		for (AuthRoleDO authRoleDO : authRoleDOs) {
+			AuthUserRoleDO authUserRoleDO = new AuthUserRoleDO();
+			authUserRoleDO.setUserId(authUserDO.getId());
+			authUserRoleDO.setRoleId(authRoleDO.getId());
+			authUserRoleDAO.save(authUserRoleDO);
 		}
 	}
 

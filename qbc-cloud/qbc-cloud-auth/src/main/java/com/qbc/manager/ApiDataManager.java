@@ -4,14 +4,14 @@ import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.qbc.dao.sys.SysApiDAO;
-import com.qbc.dao.sys.SysApiDO;
-import com.qbc.dao.sys.SysApiOperationDAO;
-import com.qbc.dao.sys.SysApiOperationDO;
-import com.qbc.dao.sys.SysApiParamDAO;
-import com.qbc.dao.sys.SysApiParamDO;
-import com.qbc.dao.sys.SysApplicationDAO;
-import com.qbc.dao.sys.SysApplicationDO;
+import com.qbc.dao.auth.AuthApiDAO;
+import com.qbc.dao.auth.AuthApiDO;
+import com.qbc.dao.auth.AuthApiOperationDAO;
+import com.qbc.dao.auth.AuthApiOperationDO;
+import com.qbc.dao.auth.AuthApiParamDAO;
+import com.qbc.dao.auth.AuthApiParamDO;
+import com.qbc.dao.auth.AuthApplicationDAO;
+import com.qbc.dao.auth.AuthApplicationDO;
 import com.qbc.dto.core.ApiDTO;
 import com.qbc.dto.core.ApiOperationDTO;
 import com.qbc.dto.core.ApiParamDTO;
@@ -29,35 +29,35 @@ public class ApiDataManager {
 	private DozerBeanMapper dozerBeanMapper;
 
 	@Autowired
-	private SysApplicationDAO sysApplicationDAO;
+	private AuthApplicationDAO authApplicationDAO;
 
 	@Autowired
-	private SysApiDAO sysApiDAO;
+	private AuthApiDAO authApiDAO;
 
 	@Autowired
-	private SysApiOperationDAO sysApiOperationDAO;
+	private AuthApiOperationDAO authApiOperationDAO;
 
 	@Autowired
-	private SysApiParamDAO sysApiParamDAO;
+	private AuthApiParamDAO authApiParamDAO;
 
 	public void save(ApplicationDTO applicationDTO) {
-		SysApplicationDO sysApplicationDO = dozerBeanMapper.map(applicationDTO, SysApplicationDO.class);
-		sysApplicationDO = sysApplicationDAO.save(sysApplicationDO);
+		AuthApplicationDO authApplicationDO = dozerBeanMapper.map(applicationDTO, AuthApplicationDO.class);
+		authApplicationDO = authApplicationDAO.save(authApplicationDO);
 
 		for (ApiDTO apiDTO : applicationDTO.getApiList()) {
-			SysApiDO sysApiDO = dozerBeanMapper.map(apiDTO, SysApiDO.class);
-			sysApiDO.setApplicationId(sysApplicationDO.getId());
-			sysApiDO = sysApiDAO.save(sysApiDO);
+			AuthApiDO authApiDO = dozerBeanMapper.map(apiDTO, AuthApiDO.class);
+			authApiDO.setApplicationId(authApplicationDO.getId());
+			authApiDO = authApiDAO.save(authApiDO);
 
 			for (ApiOperationDTO apiOperationDTO : apiDTO.getApiOperationList()) {
-				SysApiOperationDO sysApiOperationDO = dozerBeanMapper.map(apiOperationDTO, SysApiOperationDO.class);
-				sysApiOperationDO.setApiId(sysApiDO.getId());
-				sysApiOperationDO = sysApiOperationDAO.save(sysApiOperationDO);
+				AuthApiOperationDO authApiOperationDO = dozerBeanMapper.map(apiOperationDTO, AuthApiOperationDO.class);
+				authApiOperationDO.setApiId(authApiDO.getId());
+				authApiOperationDO = authApiOperationDAO.save(authApiOperationDO);
 
 				for (ApiParamDTO apiParamDTO : apiOperationDTO.getApiParamList()) {
-					SysApiParamDO sysApiParamDO = dozerBeanMapper.map(apiParamDTO, SysApiParamDO.class);
-					sysApiParamDO.setOperationId(sysApiOperationDO.getId());
-					sysApiParamDAO.save(sysApiParamDO);
+					AuthApiParamDO authApiParamDO = dozerBeanMapper.map(apiParamDTO, AuthApiParamDO.class);
+					authApiParamDO.setOperationId(authApiOperationDO.getId());
+					authApiParamDAO.save(authApiParamDO);
 				}
 			}
 		}

@@ -1,4 +1,4 @@
-package com.qbc.dao.sys;
+package com.qbc.dao.auth;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -10,7 +10,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * 系统API参数表数据访问实体类
+ * 应用API表数据访问实体类
  *
  * @author Ma
  */
@@ -18,27 +18,21 @@ import lombok.ToString;
 @Setter
 @ToString
 @Entity
-@Table(name = "sys_api_param")
-public class SysApiParamDO extends AbstractDO {
+@Table(name = "auth_api")
+public class AuthApiDO extends AbstractDO {
 
 	private static final long serialVersionUID = 1L;
 
-	/** API参数名 */
+	/** API名 */
 	private String name;
 
-	/** API参数表示名 */
+	/** API表示名 */
 	private String displayName;
 
-	/** API参数描述 */
+	/** API描述 */
 	private String description;
 
-	/** API参数类型名 */
-	private String typeName;
-
-	/** 必须 */
-	private Boolean required;
-
-	/** API操作ID */
-	private Long operationId;
+	/** 应用ID */
+	private Long applicationId;
 
 }

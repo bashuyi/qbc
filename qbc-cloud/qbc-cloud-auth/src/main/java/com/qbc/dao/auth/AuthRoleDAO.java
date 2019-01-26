@@ -1,4 +1,4 @@
-package com.qbc.dao.sys;
+package com.qbc.dao.auth;
 
 import java.util.List;
 
@@ -6,11 +6,11 @@ import com.slyak.spring.jpa.GenericJpaRepository;
 import com.slyak.spring.jpa.TemplateQuery;
 
 /**
- * 系统角色表数据访问类
+ * 角色表数据访问类
  *
  * @author Ma
  */
-public interface SysRoleDAO extends GenericJpaRepository<SysRoleDO, Long> {
+public interface AuthRoleDAO extends GenericJpaRepository<AuthRoleDO, Long> {
 
 	/**
 	 * 根据用户名查询角色列表
@@ -19,6 +19,6 @@ public interface SysRoleDAO extends GenericJpaRepository<SysRoleDO, Long> {
 	 * @return 角色列表
 	 */
 	@TemplateQuery
-	List<SysRoleDO> searchByUsername(String username);
-
+	List<AuthRoleDO> searchByUsername(String username);
+	
 }

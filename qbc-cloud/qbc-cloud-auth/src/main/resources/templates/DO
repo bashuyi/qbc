@@ -1,4 +1,4 @@
-package com.qbc.dao;
+package ${packageName};
 
 import javax.persistence.Entity;
 import javax.persistence.Table;

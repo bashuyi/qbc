@@ -1,4 +1,4 @@
-package com.qbc.dao.sys;
+package com.qbc.dao.auth;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -10,7 +10,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * 系统角色表数据访问实体类
+ * API操作表数据访问实体类
  *
  * @author Ma
  */
@@ -18,18 +18,21 @@ import lombok.ToString;
 @Setter
 @ToString
 @Entity
-@Table(name = "sys_role")
-public class SysRoleDO extends AbstractDO {
+@Table(name = "auth_api_operation")
+public class AuthApiOperationDO extends AbstractDO {
 
 	private static final long serialVersionUID = 1L;
 
-	/** 角色名 */
+	/** API操作名 */
 	private String name;
 
-	/** 角色表示名 */
+	/** API操作表示名 */
 	private String displayName;
 
-	/** 角色描述 */
+	/** API操作描述 */
 	private String description;
+
+	/** API ID */
+	private Long apiId;
 
 }

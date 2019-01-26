@@ -1,4 +1,4 @@
-package com.qbc.dao.sys;
+package com.qbc.dao.auth;
 
 import java.io.Serializable;
 
@@ -11,7 +11,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * 系统角色资源视图数据访问实体类
+ * 角色资源视图数据访问实体类
  *
  * @author Ma
  */
@@ -19,8 +19,8 @@ import lombok.ToString;
 @Setter
 @ToString
 @Entity
-@Table(name = "sys_role_resource")
-public class SysRoleResourceDO implements Serializable {
+@Table(name = "auth_role_resource")
+public class AuthRoleResourceDO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 

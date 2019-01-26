@@ -32,7 +32,7 @@ public class AuthManager {
 
 	@Cacheable(value = "ROLE_RESOURCE", keyGenerator = KeyGenerators.REFLECT_KEY)
 	public List<AuthRoleResourceDO> findByRoleName(String roleName) {
-		return authRoleResourceDAO.findByRoleName(roleName);
+		return authRoleResourceDAO.findByRoleNameAndDeletedFalse(roleName);
 	}
 
 	@Cacheable(value = "USER_ROLE")

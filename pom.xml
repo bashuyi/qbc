@@ -12,6 +12,7 @@
 		<module>qbc-cloud</module>
 		<module>qbc-cloud-samples</module>
 		<module>qbc-starter-data</module>
+		<module>qbc-starter-system</module>
 	</modules>
 
 	<properties>

@@ -17,6 +17,6 @@ public interface AuthRoleResourceDAO extends GenericJpaRepository<AuthRoleResour
 	 * @param roleName 角色名
 	 * @return 角色资源列表
 	 */
-	List<AuthRoleResourceDO> findByRoleNameAndDeletedFalse(String roleName);
+	List<AuthRoleResourceDO> findByRoleName(String roleName);
 	
 }

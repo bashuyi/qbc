@@ -31,7 +31,7 @@ public class AuthManager {
 
 	@Cacheable(value = "ROLE_RESOURCE")
 	public List<AuthRoleResourceDO> findByRoleName(String roleName) {
-		return authRoleResourceDAO.findByRoleNameAndDeletedFalse(roleName);
+		return authRoleResourceDAO.findByRoleName(roleName);
 	}
 
 	@Cacheable(value = "USER_ROLE")

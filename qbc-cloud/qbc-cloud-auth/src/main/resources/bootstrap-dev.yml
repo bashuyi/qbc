@@ -13,13 +13,18 @@ spring:
         serviceId: qbc-cloud-config
   datasource:
     dynamic:
+      primary: master
       datasource:
         master:
           driver-class-name: org.postgresql.Driver
           password: ENC(uJxB0DorJ6dxT3IXggUKNGqYCgrejPTW)
+          url: jdbc:postgresql://localhost:5432/auth
+          username: postgres
+        system:
+          driver-class-name: org.postgresql.Driver
+          password: ENC(uJxB0DorJ6dxT3IXggUKNGqYCgrejPTW)
           url: jdbc:postgresql://localhost:5432/system
           username: postgres
-      primary: master
   jpa:
     properties:
       hibernate:

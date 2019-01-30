@@ -16,10 +16,10 @@
 			<artifactId>qbc-cloud-starter</artifactId>
 		</dependency>
 
-		<!-- QBC数据访问框架 -->
+		<!-- QBC系统框架 -->
 		<dependency>
 			<groupId>com.qbc</groupId>
-			<artifactId>qbc-starter-data</artifactId>
+			<artifactId>qbc-starter-system</artifactId>
 		</dependency>
 
 		<!-- PostgreSQL -->

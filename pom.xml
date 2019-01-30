@@ -9,10 +9,10 @@
 
 	<modules>
 		<module>qbc-starter</module>
-		<module>qbc-cloud</module>
-		<module>qbc-cloud-samples</module>
 		<module>qbc-starter-data</module>
 		<module>qbc-starter-system</module>
+		<module>qbc-cloud</module>
+		<module>qbc-cloud-samples</module>
 	</modules>
 
 	<properties>
@@ -140,6 +140,12 @@
 			<dependency>
 				<groupId>com.qbc</groupId>
 				<artifactId>qbc-starter-data</artifactId>
+				<version>${revision}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.qbc</groupId>
+				<artifactId>qbc-starter-system</artifactId>
 				<version>${revision}</version>
 			</dependency>
 

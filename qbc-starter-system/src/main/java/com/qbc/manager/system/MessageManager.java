@@ -4,18 +4,15 @@ import java.text.MessageFormat;
 import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.support.AbstractMessageSource;
 import org.springframework.stereotype.Component;
 
 import com.qbc.dao.system.SystemMessageDAO;
 import com.qbc.dao.system.SystemMessageDO;
-import com.qbc.manager.core.DataSourceManager;
 
 @Component
 public class MessageManager extends AbstractMessageSource {
-
-	@Autowired
-	private DataSourceManager dataSourceManager;
 
 	@Autowired
 	private SystemMessageDAO systemMessageDAO;
@@ -25,11 +22,16 @@ public class MessageManager extends AbstractMessageSource {
 
 	@Override
 	protected MessageFormat resolveCode(String code, Locale locale) {
-		SystemMessageDO messageDO = systemMessageDAO.findByCodeAndLocaleAndDeletedFalse(code, locale.toString());
-		if (messageDO == null) {
+		SystemMessageDO systemMessageDO = messageManager.findByCodeAndLocale(code, locale.toString());
+		if (systemMessageDO == null) {
 			return null;
 		}
-		return new MessageFormat(messageDO.getText(), locale);
+		return new MessageFormat(systemMessageDO.getText(), locale);
+	}
+
+	@Cacheable(value = "MESSAGE")
+	public SystemMessageDO findByCodeAndLocale(String code, String locale) {
+		return systemMessageDAO.findByCodeAndLocaleAndDeletedFalse(code, locale);
 	}
 
 }

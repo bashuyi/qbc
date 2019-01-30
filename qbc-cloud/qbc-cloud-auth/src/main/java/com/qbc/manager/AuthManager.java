@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 
-import com.qbc.constant.KeyGenerators;
 import com.qbc.dao.auth.AuthRoleDAO;
 import com.qbc.dao.auth.AuthRoleDO;
 import com.qbc.dao.auth.AuthRoleResourceDAO;
@@ -30,7 +29,7 @@ public class AuthManager {
 	@Autowired(required = false)
 	private AuthManager authManager;
 
-	@Cacheable(value = "ROLE_RESOURCE", keyGenerator = KeyGenerators.REFLECT_KEY)
+	@Cacheable(value = "ROLE_RESOURCE")
 	public List<AuthRoleResourceDO> findByRoleName(String roleName) {
 		return authRoleResourceDAO.findByRoleNameAndDeletedFalse(roleName);
 	}

@@ -73,7 +73,7 @@
 			</export_ddl_setting>
 			<export_excel_setting>
 				<category_id>null</category_id>
-				<output_path>db\qbc.xls</output_path>
+				<output_path>db\qbc-common.xls</output_path>
 				<template></template>
 				<template_path></template_path>
 				<used_default_template_lang>en</used_default_template_lang>
@@ -135,7 +135,7 @@
 			</connections>
 			<display>false</display>
 			<creation_date>2019-02-03 20:37:57</creation_date>
-			<updated_date>2019-02-03 23:11:28</updated_date>
+			<updated_date>2019-02-03 23:16:54</updated_date>
 			<model_property>
 				<name>Project Name</name>
 				<value></value>

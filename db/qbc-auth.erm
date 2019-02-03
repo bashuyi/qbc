@@ -12,7 +12,7 @@
 	<category_index>0</category_index>
 	<zoom>0.75</zoom>
 	<x>0</x>
-	<y>123</y>
+	<y>121</y>
 	<default_color>
 		<r>128</r>
 		<g>128</g>
@@ -73,13 +73,13 @@
 			</export_ddl_setting>
 			<export_excel_setting>
 				<category_id>null</category_id>
-				<output_path>db\qbc.xls</output_path>
+				<output_path>db\qbc-auth.xls</output_path>
 				<template></template>
 				<template_path></template_path>
 				<used_default_template_lang>en</used_default_template_lang>
 				<image_output></image_output>
 				<is_open_after_saved>true</is_open_after_saved>
-				<is_put_diagram>false</is_put_diagram>
+				<is_put_diagram>true</is_put_diagram>
 				<is_use_logical_name>true</is_use_logical_name>
 			</export_excel_setting>
 			<export_html_setting>
@@ -135,7 +135,7 @@
 			</connections>
 			<display>false</display>
 			<creation_date>2019-02-03 20:37:57</creation_date>
-			<updated_date>2019-02-03 23:10:26</updated_date>
+			<updated_date>2019-02-03 23:16:07</updated_date>
 			<model_property>
 				<name>Project Name</name>
 				<value></value>

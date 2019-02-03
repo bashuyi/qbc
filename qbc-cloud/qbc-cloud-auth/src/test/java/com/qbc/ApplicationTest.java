@@ -24,6 +24,8 @@ import com.qbc.manager.ApiDataManager;
 import com.qbc.manager.core.ApiManageer;
 import com.qbc.manager.core.CodeGeneratorManager;
 import com.qbc.manager.core.DatabaseInfoManager;
+import com.qbc.manager.core.DatabaseInfoManager.TableType;
+import com.qbc.manager.core.DatabaseInfoQuery;
 import com.qbc.utils.core.SnowflakeUtils;
 
 /**
@@ -64,14 +66,17 @@ public class ApplicationTest {
 
 	@Test
 	public void generateCode() {
-		DatabaseInfoDTO databaseInfoDTO = databaseInfoManager.getDatabaseInfoDTO();
+		DatabaseInfoQuery databaseInfoQuery = new DatabaseInfoQuery();
+		DatabaseInfoDTO databaseInfoDTO = databaseInfoManager.getDatabaseInfoDTO(databaseInfoQuery);
 		codeGeneratorManager.generateAll("DAO", "com.qbc.dao.auth", databaseInfoDTO);
 		codeGeneratorManager.generateAll("DO", "com.qbc.dao.auth", databaseInfoDTO);
 	}
 
 	@Test
 	public void generateOneCode() {
-		DatabaseInfoDTO databaseInfoDTO = databaseInfoManager.getDatabaseInfoDTO(null, "auth_role_resource");
+		DatabaseInfoQuery databaseInfoQuery = new DatabaseInfoQuery();
+		databaseInfoQuery.setTableType(TableType.VIEW);
+		DatabaseInfoDTO databaseInfoDTO = databaseInfoManager.getDatabaseInfoDTO(databaseInfoQuery);
 		codeGeneratorManager.generateAll("DAO", "com.qbc.dao.auth", databaseInfoDTO);
 		codeGeneratorManager.generateAll("DO_VIEW", "com.qbc.dao.auth", databaseInfoDTO);
 	}

@@ -1,22 +1,14 @@
 package com.qbc.manager.core;
 
-import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.JDBCType;
 import java.sql.ResultSet;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.OffsetDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -29,6 +21,7 @@ import com.qbc.dto.core.DatabaseInfoDTO;
 import com.qbc.dto.core.TableInfoDTO;
 import com.qbc.utils.core.StringUtils;
 
+import lombok.AllArgsConstructor;
 import lombok.Cleanup;
 import lombok.SneakyThrows;
 
@@ -46,55 +39,60 @@ public class DatabaseInfoManager {
 	private DynamicRoutingDataSource dynamicRoutingDataSource;
 
 	/** 表类型 */
+	@AllArgsConstructor
 	public enum TableType {
 
 		/** 表 */
-		TABLE,
+		TABLE(new String[] { "TABLE" }),
 
 		/** 视图 */
-		VIEW
+		VIEW(new String[] { "VIEW" }),
+
+		/** 表和视图 */
+		ALL(new String[] { "TABLE", "VIEW" });
+
+		private String[] value;
 
 	}
 
 	/**
 	 * 获得数据库所有表和试图信息
 	 * 
-	 * @param dataSourceName   数据源名称
-	 * @param catalog          类别名称；它必须与存储在数据库中的类别名称匹配；该参数为 "" 表示获取没有类别的那些描述；为null
-	 *                         则表示该类别名称不应该用于缩小搜索范围
-	 * @param schemaPattern    模式名称的模式； 它必须与存储在数据库中的模式名称匹配； 该参数为 "" 表示获取没有模式的那些描述；
-	 *                         为null 则表示该模式名称不应该用于缩小搜索范围
-	 * @param tableNamePattern 表名称模式； 它必须与存储在数据库中的表名称匹配
-	 * @param tableTypes       要包括的表类型所组成的列表； 为null则表示返回所有类型
-	 * @param jdbcTypeMap      java.sql.Types的SQL类型与Java类型的映射关系
+	 * @return 数据库所有表和试图信息
+	 */
+	public DatabaseInfoDTO getDatabaseInfoDTO() {
+		return getDatabaseInfoDTO(new DatabaseInfoQuery());
+	}
+
+	/**
+	 * 获得数据库所有表和试图信息
+	 * 
+	 * @param databaseInfoQuery 条件
 	 * @return 数据库所有表和试图信息
 	 */
 	@SneakyThrows
-	public DatabaseInfoDTO getDatabaseInfoDTO(String dataSourceName, String catalog, String schemaPattern,
-			String tableNamePattern, TableType[] tableTypes, Map<JDBCType, String> jdbcTypeMap) {
-		tableTypes = ObjectUtils.defaultIfNull(tableTypes, TableType.values());
-		String[] types = Arrays.asList(tableTypes).stream().map(tableType -> tableType.name()).toArray(String[]::new);
-
-		Map<JDBCType, String> defaultJdbcTypeMap = getDefaultJdbcTypeMap();
-		jdbcTypeMap = ObjectUtils.defaultIfNull(jdbcTypeMap, new HashMap<>(0));
-		defaultJdbcTypeMap.putAll(jdbcTypeMap);
+	public DatabaseInfoDTO getDatabaseInfoDTO(DatabaseInfoQuery databaseInfoQuery) {
+		String[] types = databaseInfoQuery.getTableType().value;
 
 		@Cleanup
-		Connection connection = dynamicRoutingDataSource.getDataSource(dataSourceName).getConnection();
+		Connection connection = dynamicRoutingDataSource.getDataSource(databaseInfoQuery.getDataSourceName())
+				.getConnection();
 		DatabaseMetaData databaseMetaData = connection.getMetaData();
 
 		// PostgreSQL时，默认不查询系统表
+		String schemaPattern = databaseInfoQuery.getSchemaPattern();
 		String databaseProductName = databaseMetaData.getDatabaseProductName();
 		if (DATABASE_POSTGRE_SQL.equalsIgnoreCase(databaseProductName)) {
 			schemaPattern = "public";
 		}
 
 		// 获得所有字段信息
-		Table<String, String, ColumnInfoDTO> columnInfoTable = getColumnInfoTable(catalog, schemaPattern,
-				defaultJdbcTypeMap, databaseMetaData);
+		Table<String, String, ColumnInfoDTO> columnInfoTable = getColumnInfoTable(databaseInfoQuery.getCatalog(),
+				schemaPattern, databaseInfoQuery.getJdbcTypeMap(), databaseMetaData);
 
 		// 设置主键
-		ResultSet primaryKeyResultSet = databaseMetaData.getPrimaryKeys(catalog, schemaPattern, null);
+		ResultSet primaryKeyResultSet = databaseMetaData.getPrimaryKeys(databaseInfoQuery.getCatalog(), schemaPattern,
+				null);
 		while (primaryKeyResultSet.next()) {
 			String tableName = primaryKeyResultSet.getString("TABLE_NAME");
 			String columnName = primaryKeyResultSet.getString("COLUMN_NAME");
@@ -107,7 +105,8 @@ public class DatabaseInfoManager {
 
 		// 获得表信息
 		List<TableInfoDTO> tableInfos = new ArrayList<>();
-		ResultSet tableResultSet = databaseMetaData.getTables(catalog, schemaPattern, tableNamePattern, types);
+		ResultSet tableResultSet = databaseMetaData.getTables(databaseInfoQuery.getCatalog(), schemaPattern,
+				databaseInfoQuery.getTableNamePattern(), types);
 		while (tableResultSet.next()) {
 			String tableName = tableResultSet.getString("TABLE_NAME");
 
@@ -163,62 +162,6 @@ public class DatabaseInfoManager {
 			columnInfoTable.put(tableName, columnName, columnInfoDTO);
 		}
 		return columnInfoTable;
-	}
-
-	private Map<JDBCType, String> getDefaultJdbcTypeMap() {
-		Map<JDBCType, String> defaultJdbcTypeMap = new HashMap<>(50);
-		defaultJdbcTypeMap.put(JDBCType.CHAR, String.class.getSimpleName());
-		defaultJdbcTypeMap.put(JDBCType.VARCHAR, String.class.getSimpleName());
-		defaultJdbcTypeMap.put(JDBCType.NVARCHAR, String.class.getSimpleName());
-		defaultJdbcTypeMap.put(JDBCType.LONGVARCHAR, String.class.getSimpleName());
-		defaultJdbcTypeMap.put(JDBCType.NUMERIC, BigDecimal.class.getName());
-		defaultJdbcTypeMap.put(JDBCType.DECIMAL, BigDecimal.class.getName());
-		defaultJdbcTypeMap.put(JDBCType.BIT, Boolean.class.getSimpleName());
-		defaultJdbcTypeMap.put(JDBCType.TINYINT, Integer.class.getSimpleName());
-		defaultJdbcTypeMap.put(JDBCType.SMALLINT, Integer.class.getSimpleName());
-		defaultJdbcTypeMap.put(JDBCType.INTEGER, Integer.class.getSimpleName());
-		defaultJdbcTypeMap.put(JDBCType.BIGINT, Long.class.getSimpleName());
-		defaultJdbcTypeMap.put(JDBCType.REAL, Float.class.getSimpleName());
-		defaultJdbcTypeMap.put(JDBCType.FLOAT, Double.class.getSimpleName());
-		defaultJdbcTypeMap.put(JDBCType.DOUBLE, Double.class.getSimpleName());
-		defaultJdbcTypeMap.put(JDBCType.BINARY, byte[].class.getSimpleName());
-		defaultJdbcTypeMap.put(JDBCType.VARBINARY, byte[].class.getSimpleName());
-		defaultJdbcTypeMap.put(JDBCType.LONGVARBINARY, byte[].class.getSimpleName());
-		defaultJdbcTypeMap.put(JDBCType.DATE, LocalDate.class.getName());
-		defaultJdbcTypeMap.put(JDBCType.TIME, LocalTime.class.getName());
-		defaultJdbcTypeMap.put(JDBCType.TIMESTAMP, LocalDateTime.class.getName());
-		defaultJdbcTypeMap.put(JDBCType.TIMESTAMP_WITH_TIMEZONE, OffsetDateTime.class.getName());
-		return defaultJdbcTypeMap;
-	}
-
-	/**
-	 * 获得数据库所有表和试图信息
-	 * 
-	 * @param dataSourceName   数据源名称
-	 * @param tableNamePattern 表名称模式； 它必须与存储在数据库中的表名称匹配
-	 * @return 数据库所有表和试图信息
-	 */
-	public DatabaseInfoDTO getDatabaseInfoDTO(String dataSourceName, String tableNamePattern) {
-		return getDatabaseInfoDTO(dataSourceName, null, null, tableNamePattern, null, null);
-	}
-
-	/**
-	 * 获得数据库所有表和试图信息
-	 * 
-	 * @param dataSourceName 数据源名称
-	 * @return 数据库所有表和试图信息
-	 */
-	public DatabaseInfoDTO getDatabaseInfoDTO(String dataSourceName) {
-		return getDatabaseInfoDTO(dataSourceName, null, null, null, null, null);
-	}
-
-	/**
-	 * 获得数据库所有表和试图信息
-	 * 
-	 * @return 数据库所有表和试图信息
-	 */
-	public DatabaseInfoDTO getDatabaseInfoDTO() {
-		return getDatabaseInfoDTO(null);
 	}
 
 }

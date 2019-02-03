@@ -10,7 +10,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * 用户角色表数据访问实体类
+ * 用户角色数据访问实体类
  *
  * @author Ma
  */

@@ -10,7 +10,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * 应用表数据访问实体类
+ * 应用数据访问实体类
  *
  * @author Ma
  */
@@ -23,13 +23,13 @@ public class AuthApplicationDO extends AbstractDO {
 
 	private static final long serialVersionUID = 1L;
 
-	/** 应用名 */
+	/** 名称 */
 	private String name;
 
-	/** 应用表示名 */
+	/** 表示名 */
 	private String displayName;
 
-	/** 应用描述 */
+	/** 描述 */
 	private String description;
 
 }

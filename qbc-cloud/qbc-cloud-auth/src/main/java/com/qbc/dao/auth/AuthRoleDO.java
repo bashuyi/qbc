@@ -10,7 +10,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * 角色表数据访问实体类
+ * 角色数据访问实体类
  *
  * @author Ma
  */
@@ -23,13 +23,13 @@ public class AuthRoleDO extends AbstractDO {
 
 	private static final long serialVersionUID = 1L;
 
-	/** 角色名 */
+	/** 名称 */
 	private String name;
 
-	/** 角色表示名 */
+	/** 表示名 */
 	private String displayName;
 
-	/** 角色描述 */
+	/** 描述 */
 	private String description;
 
 }

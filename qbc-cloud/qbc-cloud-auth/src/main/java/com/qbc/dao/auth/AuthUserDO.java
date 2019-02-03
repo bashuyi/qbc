@@ -10,7 +10,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * 用户表数据访问实体类
+ * 用户数据访问实体类
  *
  * @author Ma
  */
@@ -32,7 +32,7 @@ public class AuthUserDO extends AbstractDO {
 	/** 签名密钥 */
 	private String secret;
 
-	/** 用户表示名 */
+	/** 表示名 */
 	private String displayName;
 
 }

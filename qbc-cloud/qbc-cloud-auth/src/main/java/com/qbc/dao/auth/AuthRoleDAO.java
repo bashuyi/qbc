@@ -6,7 +6,7 @@ import com.slyak.spring.jpa.GenericJpaRepository;
 import com.slyak.spring.jpa.TemplateQuery;
 
 /**
- * 角色表数据访问类
+ * 角色数据访问类
  *
  * @author Ma
  */

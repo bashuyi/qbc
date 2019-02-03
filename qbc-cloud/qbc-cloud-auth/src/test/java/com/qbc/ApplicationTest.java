@@ -71,9 +71,9 @@ public class ApplicationTest {
 
 	@Test
 	public void generateOneCode() {
-		DatabaseInfoDTO databaseInfoDTO = databaseInfoManager.getDatabaseInfoDTO(null, "system_message");
-		codeGeneratorManager.generateAll("DAO", "com.qbc.dao.system", databaseInfoDTO);
-		codeGeneratorManager.generateAll("DO_VIEW", "com.qbc.dao.system", databaseInfoDTO);
+		DatabaseInfoDTO databaseInfoDTO = databaseInfoManager.getDatabaseInfoDTO(null, "auth_role_resource");
+		codeGeneratorManager.generateAll("DAO", "com.qbc.dao.auth", databaseInfoDTO);
+		codeGeneratorManager.generateAll("DO_VIEW", "com.qbc.dao.auth", databaseInfoDTO);
 	}
 
 	@Test

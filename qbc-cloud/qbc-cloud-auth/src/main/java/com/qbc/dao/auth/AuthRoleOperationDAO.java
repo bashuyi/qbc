@@ -5,7 +5,7 @@ import java.util.List;
 import com.slyak.spring.jpa.GenericJpaRepository;
 
 /**
- * 角色操作表数据访问类
+ * 角色操作数据访问类
  *
  * @author Ma
  */

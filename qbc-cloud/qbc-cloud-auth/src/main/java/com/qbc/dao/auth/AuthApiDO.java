@@ -10,7 +10,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * 应用API表数据访问实体类
+ * API数据访问实体类
  *
  * @author Ma
  */
@@ -23,13 +23,13 @@ public class AuthApiDO extends AbstractDO {
 
 	private static final long serialVersionUID = 1L;
 
-	/** API名 */
+	/** 名称 */
 	private String name;
 
-	/** API表示名 */
+	/** 表示名 */
 	private String displayName;
 
-	/** API描述 */
+	/** 描述 */
 	private String description;
 
 	/** 应用ID */

@@ -12,7 +12,7 @@
 	<category_index>0</category_index>
 	<zoom>0.75</zoom>
 	<x>0</x>
-	<y>121</y>
+	<y>134</y>
 	<default_color>
 		<r>128</r>
 		<g>128</g>
@@ -41,7 +41,7 @@
 		<suspend_validator>false</suspend_validator>
 		<export_setting>
 			<export_ddl_setting>
-				<output_path>db\qbc_auth.sql</output_path>
+				<output_path>db\qbc-auth.sql</output_path>
 				<encoding>UTF-8</encoding>
 				<line_feed>CR+LF</line_feed>
 				<is_open_after_saved>true</is_open_after_saved>
@@ -55,13 +55,13 @@
 					<create_table>true</create_table>
 					<create_tablespace>false</create_tablespace>
 					<create_trigger>false</create_trigger>
-					<create_view>false</create_view>
+					<create_view>true</create_view>
 					<drop_index>false</drop_index>
 					<drop_sequence>false</drop_sequence>
 					<drop_table>true</drop_table>
 					<drop_tablespace>false</drop_tablespace>
 					<drop_trigger>false</drop_trigger>
-					<drop_view>false</drop_view>
+					<drop_view>true</drop_view>
 					<inline_column_comment>true</inline_column_comment>
 					<inline_table_comment>true</inline_table_comment>
 					<comment_value_description>false</comment_value_description>
@@ -135,7 +135,7 @@
 			</connections>
 			<display>false</display>
 			<creation_date>2019-02-03 20:37:57</creation_date>
-			<updated_date>2019-02-03 23:16:07</updated_date>
+			<updated_date>2019-02-03 23:32:53</updated_date>
 			<model_property>
 				<name>Project Name</name>
 				<value></value>

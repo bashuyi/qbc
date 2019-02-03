@@ -1,4 +1,4 @@
-package com.qbc.dao.system;
+package com.qbc.dao.common;
 
 import com.slyak.spring.jpa.GenericJpaRepository;
 
@@ -7,7 +7,7 @@ import com.slyak.spring.jpa.GenericJpaRepository;
  *
  * @author Ma
  */
-public interface SystemMessageDAO extends GenericJpaRepository<SystemMessageDO, Long> {
+public interface CommonMessageDAO extends GenericJpaRepository<CommonMessageDO, Long> {
 
 	/**
 	 * 根据消息编码和地区查询
@@ -16,6 +16,6 @@ public interface SystemMessageDAO extends GenericJpaRepository<SystemMessageDO, 
 	 * @param locale 地区
 	 * @return 消息
 	 */
-	SystemMessageDO findByCodeAndLocaleAndDeletedFalse(String code, String locale);
+	CommonMessageDO findByCodeAndLocaleAndDeletedFalse(String code, String locale);
 
 }

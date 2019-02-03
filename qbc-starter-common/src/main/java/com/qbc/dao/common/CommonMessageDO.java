@@ -1,4 +1,4 @@
-package com.qbc.dao.system;
+package com.qbc.dao.common;
 
 import java.io.Serializable;
 
@@ -19,8 +19,8 @@ import lombok.ToString;
 @Setter
 @ToString
 @Entity
-@Table(name = "system_message")
-public class SystemMessageDO implements Serializable {
+@Table(name = "common_message")
+public class CommonMessageDO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 

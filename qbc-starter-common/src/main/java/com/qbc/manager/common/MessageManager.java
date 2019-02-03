@@ -1,4 +1,4 @@
-package com.qbc.manager.system;
+package com.qbc.manager.common;
 
 import java.text.MessageFormat;
 import java.util.Locale;
@@ -9,31 +9,31 @@ import org.springframework.context.support.AbstractMessageSource;
 import org.springframework.stereotype.Component;
 
 import com.baomidou.dynamic.datasource.annotation.DS;
-import com.qbc.dao.system.SystemMessageDAO;
-import com.qbc.dao.system.SystemMessageDO;
+import com.qbc.dao.common.CommonMessageDAO;
+import com.qbc.dao.common.CommonMessageDO;
 
 @Component
-@DS("system")
+@DS("common")
 public class MessageManager extends AbstractMessageSource {
 
 	@Autowired
-	private SystemMessageDAO systemMessageDAO;
+	private CommonMessageDAO commonMessageDAO;
 
 	@Autowired(required = false)
 	private MessageManager messageManager;
 
 	@Override
 	protected MessageFormat resolveCode(String code, Locale locale) {
-		SystemMessageDO systemMessageDO = messageManager.findByCodeAndLocale(code, locale.toString());
-		if (systemMessageDO == null) {
+		CommonMessageDO commonMessageDO = messageManager.findByCodeAndLocale(code, locale.toString());
+		if (commonMessageDO == null) {
 			return null;
 		}
-		return new MessageFormat(systemMessageDO.getText(), locale);
+		return new MessageFormat(commonMessageDO.getText(), locale);
 	}
 
 	@Cacheable(value = "MESSAGE")
-	public SystemMessageDO findByCodeAndLocale(String code, String locale) {
-		return systemMessageDAO.findByCodeAndLocaleAndDeletedFalse(code, locale);
+	public CommonMessageDO findByCodeAndLocale(String code, String locale) {
+		return commonMessageDAO.findByCodeAndLocaleAndDeletedFalse(code, locale);
 	}
 
 }

@@ -17,14 +17,14 @@ spring:
       datasource:
         master:
           driver-class-name: org.postgresql.Driver
-          password: ENC(uJxB0DorJ6dxT3IXggUKNGqYCgrejPTW)
+          password: 123456
           url: jdbc:postgresql://localhost:5432/auth
-          username: postgres
-        system:
+          username: qbc
+        common:
           driver-class-name: org.postgresql.Driver
-          password: ENC(uJxB0DorJ6dxT3IXggUKNGqYCgrejPTW)
-          url: jdbc:postgresql://localhost:5432/system
-          username: postgres
+          password: 123456
+          url: jdbc:postgresql://localhost:5432/common
+          username: qbc
   jpa:
     properties:
       hibernate:

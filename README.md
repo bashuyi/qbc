@@ -59,6 +59,7 @@ qbc
 |    ├──qbc-cloud-starter -- 微服务脚手架
 ├── qbc-starter -- 普通服务脚手架
 ├── qbc-starter-data -- 数据访问服务脚手架
+├── qbc-starter-common -- 共通服务脚手架
 ```
 
 ### <a name="注册中心"></a>注册中心

@@ -12,6 +12,11 @@ import com.baomidou.dynamic.datasource.annotation.DS;
 import com.qbc.dao.common.CommonMessageDAO;
 import com.qbc.dao.common.CommonMessageDO;
 
+/**
+ * 国际化处理
+ *
+ * @author Ma
+ */
 @Component
 @DS("common")
 public class MessageManager extends AbstractMessageSource {

@@ -65,7 +65,7 @@ public class ApplicationTest {
 	private AuthUserRoleDAO authUserRoleDAO;
 
 	@Test
-	public void generateCode() {
+	public void generateAuth() {
 		DatabaseInfoQuery databaseInfoQuery = new DatabaseInfoQuery();
 		DatabaseInfoDTO databaseInfoDTO = databaseInfoManager.getDatabaseInfoDTO(databaseInfoQuery);
 		codeGeneratorManager.generateAll("DAO", "com.qbc.dao.auth", databaseInfoDTO);
@@ -79,6 +79,15 @@ public class ApplicationTest {
 		DatabaseInfoDTO databaseInfoDTO = databaseInfoManager.getDatabaseInfoDTO(databaseInfoQuery);
 		codeGeneratorManager.generateAll("DAO", "com.qbc.dao.auth", databaseInfoDTO);
 		codeGeneratorManager.generateAll("DO_VIEW", "com.qbc.dao.auth", databaseInfoDTO);
+	}
+
+	@Test
+	public void generateCommon() {
+		DatabaseInfoQuery databaseInfoQuery = new DatabaseInfoQuery();
+		databaseInfoQuery.setDataSourceName("common");
+		DatabaseInfoDTO databaseInfoDTO = databaseInfoManager.getDatabaseInfoDTO(databaseInfoQuery);
+		codeGeneratorManager.generateAll("DAO", "com.qbc.dao.common", databaseInfoDTO);
+		codeGeneratorManager.generateAll("DO", "com.qbc.dao.common", databaseInfoDTO);
 	}
 
 	@Test

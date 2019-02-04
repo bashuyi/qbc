@@ -3,7 +3,7 @@ package com.qbc.dao.common;
 import com.slyak.spring.jpa.GenericJpaRepository;
 
 /**
- * 消息表数据访问类
+ * 消息数据访问类
  *
  * @author Ma
  */
@@ -17,5 +17,5 @@ public interface CommonMessageDAO extends GenericJpaRepository<CommonMessageDO, 
 	 * @return 消息
 	 */
 	CommonMessageDO findByCodeAndLocaleAndDeletedFalse(String code, String locale);
-
+	
 }

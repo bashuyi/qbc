@@ -10,7 +10,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * 消息数据访问实体类
+ * 系统变量数据访问实体类
  *
  * @author Ma
  */
@@ -18,18 +18,21 @@ import lombok.ToString;
 @Setter
 @ToString
 @Entity
-@Table(name = "common_message")
-public class CommonMessageDO extends AbstractDO {
+@Table(name = "common_system_parameter")
+public class CommonSystemParameterDO extends AbstractDO {
 
 	private static final long serialVersionUID = 1L;
 
 	/** 编码 */
 	private String code;
 
-	/** 语言 */
-	private String lang;
+	/** 表示名 */
+	private String displayName;
 
 	/** 内容 */
 	private String content;
+
+	/** 描述 */
+	private String description;
 
 }

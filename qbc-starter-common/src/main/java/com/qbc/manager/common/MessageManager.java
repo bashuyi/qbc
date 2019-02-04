@@ -25,15 +25,12 @@ public class MessageManager extends AbstractMessageSource {
 	@Override
 	protected MessageFormat resolveCode(String code, Locale locale) {
 		CommonMessageDO commonMessageDO = messageManager.findByCodeAndLocale(code, locale.toString());
-		if (commonMessageDO == null) {
-			return null;
-		}
-		return new MessageFormat(commonMessageDO.getText(), locale);
+		return commonMessageDO == null ? null : new MessageFormat(commonMessageDO.getContent(), locale);
 	}
 
 	@Cacheable(value = "MESSAGE")
-	public CommonMessageDO findByCodeAndLocale(String code, String locale) {
-		return commonMessageDAO.findByCodeAndLocaleAndDeletedFalse(code, locale);
+	public CommonMessageDO findByCodeAndLocale(String code, String lang) {
+		return commonMessageDAO.findByCodeAndLocaleAndDeletedFalse(code, lang);
 	}
 
 }

@@ -163,33 +163,32 @@ data|响应内容|Object|否
 
 ``` java
 @TemplateQuery
-List<SysRoleDO> searchByUsername(String username);
+List<AuthRoleDO> searchByUsername(String username);
 ```
 
 ``` sql
 --searchByUsername
 select
-	sys_role.id,
-	sys_role.created_by,
-	sys_role.created_date_time,
-	sys_role.last_modified_by,
-	sys_role.last_modified_date_time,
-	sys_role.deleted,
-	sys_role."name",
-	sys_role.display_name,
-	sys_role.description
+	auth_role.id,
+	auth_role.created_by,
+	auth_role.created_date_time,
+	auth_role.last_modified_by,
+	auth_role.last_modified_date_time,
+	auth_role.deleted,
+	auth_role."name",
+	auth_role.display_name,
+	auth_role.description
 from
-	sys_role
-join sys_user_role on
-	sys_user_role.role_id = sys_role.id
-	and sys_user_role.deleted = false
-	and sys_role.deleted = false
-join sys_user on
-	sys_user.id = sys_user_role.user_id
-	and sys_user.deleted = false
+	auth_role
+join auth_user_role on
+	auth_user_role.role_id = auth_role.id
+	and auth_user_role.deleted = false
+	and auth_role.deleted = false
+join auth_user on
+	auth_user.id = auth_user_role.user_id
+	and auth_user.deleted = false
 where
-	sys_user.username = :username
-
+	auth_user.username = :username
 ```
 
 对于 DO 对象，框架提供了抽象的父类，用于封装数据库共通的字段，并自动设值。
